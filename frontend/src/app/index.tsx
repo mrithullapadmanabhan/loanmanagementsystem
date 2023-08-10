@@ -1,4 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 import "./app.module.scss";
 
@@ -9,23 +10,17 @@ import {
   SignUp
 } from "routes";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    // element: <Root />,
-    element: <SignUp />,
-    errorElement: <NotFound />,
-    children: [
-      {
-        path: "login",
-        element: <Login />,
-      },
-    ],
-  },
-]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route  path='/' element={<Root />}/>
+        <Route  path='/login' element={<Login />}/>
+        <Route  path='/register' element={<SignUp />}/>
+      </Routes>
+    </BrowserRouter>
+  );
 };
 
 export default App;
