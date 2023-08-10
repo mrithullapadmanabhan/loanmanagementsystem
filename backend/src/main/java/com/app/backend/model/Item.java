@@ -1,15 +1,24 @@
 package com.app.backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 
 @Entity
 public class Item {
 
 	@Id
+	@NotBlank
 	private String itemId;
+	
+	@NotBlank
 	private String category;
 	private String description;
-	private String value;
+	
+	@NotNull
+	private Integer value;
+	
+	@NotEmpty
 	private String make;
 	private String issueStatus;
 	public String getItemId() {
@@ -30,10 +39,10 @@ public class Item {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getValue() {
+	public Integer getValue() {
 		return value;
 	}
-	public void setValue(String value) {
+	public void setValue(Integer value) {
 		this.value = value;
 	}
 	public String getMake() {

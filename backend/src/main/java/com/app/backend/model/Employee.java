@@ -1,14 +1,20 @@
 package com.app.backend.model;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.*;
+
 import java.util.Date;
 
 @Entity
 public class Employee {
 
 	@Id
+	@NotBlank
 	private String employeeID;
+	
+	@NotBlank
+	@Size(max=28)
 	private String name;
 	private String designation;
 	private String department;

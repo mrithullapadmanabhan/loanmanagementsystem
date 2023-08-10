@@ -1,16 +1,27 @@
 package com.app.backend.model;
 
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.*;
+
 import jakarta.persistence.Id;
 
 @Entity
 public class Loan {
 
 	@Id
+	@NotEmpty
 	private String loanID;
+	
+	@NotEmpty
 	private String employeeID;
+	
+	@NotEmpty
 	private String itemID;
+	
+	@NotNull
 	private int duration;
+	
+	@NotEmpty
 	private String issueStatus;
 	
 	
