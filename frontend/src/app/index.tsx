@@ -5,18 +5,21 @@ import "./app.module.scss";
 import {
   Root,
   NotFound,
+  Login,
+  SignUp
 } from "routes";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    // element: <Root />,
+    element: <SignUp />,
     errorElement: <NotFound />,
     children: [
-      // {
-      //   path: "login",
-      //   element: <Login />,
-      // },
+      {
+        path: "login",
+        element: <Login />,
+      },
     ],
   },
 ]);
