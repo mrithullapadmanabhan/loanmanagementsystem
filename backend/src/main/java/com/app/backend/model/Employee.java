@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
 
-import java.util.Date;
+import java.sql.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class Employee {
@@ -18,7 +20,11 @@ public class Employee {
 	private String name;
 	private String designation;
 	private String department;
+	
+	@JsonFormat(pattern="yyyy-mm-dd")
 	private Date dob;
+	
+	@JsonFormat(pattern="yyyy-mm-dd")
 	private Date doj;
 	
 	

@@ -10,7 +10,8 @@ import com.app.backend.model.Employee;
 import com.app.backend.service.EmployeeService;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
+//@CrossOrigin("http://localhost:3000")
+@CrossOrigin("*")
 public class EmployeeController {
 	@Autowired
 	EmployeeService empService;

@@ -1,10 +1,10 @@
 import axios from 'axios'
-const URL = 'https://localhost:8000'
+const URL = 'http://localhost:8081'
 
 
 export async function addUser(data: any) {
     try {
-      const res = await axios.post(`${URL}/addUser`, {
+      const res = await axios.post(`${URL}/addEmployee`, {
         ...data,
       })
       const token = res.data.token
