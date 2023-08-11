@@ -1,5 +1,7 @@
 package com.app.backend.service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,19 +23,27 @@ public class UserService {
 		
 	}
 
-	public String validateUser(LoginModel lm) {
+	public Map<String,Object> validateUser(LoginModel lm) {
 
-		String result="";
 		User user=null;
 		Optional<User>obj=userRepository.findById(lm.getEmail());
 		if(obj.isPresent())
 			user=obj.get();
-		if(user==null)
-			result="Invalid user";
-		else if(lm.getPassword().equals(user.getPassword()))
-			result="Login success";
-		else result="Login failed";
-		//System.out.println(result);
-		return result;
+		Map<String,Object> response=new HashMap<>();
+	
+		if(user==null) {
+			response.put("success",false);
+			response.put("message", "Invalid user");
+		}
+		else if(lm.getPassword().equals(user.getPassword())) {
+			response.put("success",true);
+			response.put("message", "Login successful");
+			response.put("user", user);
+		}
+		else {
+			response.put("success",false);
+			response.put("message", "Wrong password");
+		}
+		return response;
 	}
 }

@@ -1,5 +1,7 @@
 package com.app.backend.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +26,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/checkLogin")
-	public String validateUSer(@RequestBody LoginModel lm)
+	public Map<String,Object> validateUSer(@RequestBody LoginModel lm)
 	{
 		return userService.validateUser(lm);
 	}

@@ -51,7 +51,7 @@ function SignUp() {
         const res = await addUser(formData);
     
         if (res.success === false) {
-            setError(res.error);
+            setError(res.message);
             return;
         } else {
             window.location.reload();

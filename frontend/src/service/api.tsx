@@ -7,15 +7,15 @@ export async function addUser(data: any) {
       const res = await axios.post(`${URL}/addEmployee`, {
         ...data,
       })
-      setWithExpiry('user',res.data,1800000)
+      saveToSession('user',res.data)
       return { success: true }
     } catch (error: any) {
       if (error.response) {
-        return { success: false, error: error.response.data.error }
+        return { success: false, message: error.response.data.error }
       } else {
         return {
           success: false,
-          error: 'Error occurred while sending the request',
+          message: 'Error occurred while sending the request',
         }
       }
     }
@@ -28,22 +28,25 @@ export async function login(data: any) {
     const res = await axios.post(`${URL}/checkLogin`, {
       ...data,
     })
-    setWithExpiry('user',res.data,1800000)
-    return { success: true }
+    console.log(res.data)
+    if(res.data.success === true){
+      saveToSession('user',res.data.user)
+    }
+    return res.data
   } catch (error: any) {
     if (error.response) {
-      return { success: false, error: error.response.data.error }
+      return { success: false, message: error.response.data.error }
     } else {
       return {
         success: false,
-        error: 'Error occurred while sending the request',
+        message: 'Error occurred while sending the request',
       }
     }
   }
 }
 
 export function getUserByToken(){
-  const storedUser= getWithExpiry('user')
+  const storedUser= getFromSession('user')
   if(storedUser){
     return storedUser
   }
@@ -53,25 +56,16 @@ export function getUserByToken(){
 
 }
 
-function setWithExpiry(key: string,value: any,ttl: number){
-  const now=new Date()
-  const item={
-    value: value,
-    expiry: now.getTime()+ttl
-  }
-  window.sessionStorage.setItem(key,JSON.stringify(item))
+function saveToSession(key: string,value: any){
+  window.sessionStorage.setItem(key,JSON.stringify(value))
 }
 
-function getWithExpiry(key: string){
+function getFromSession(key: string){
   const itemStr=window.sessionStorage.getItem(key)
   console.log("user data",itemStr)
   if(!itemStr){
     return null
   }
   const item=JSON.parse(itemStr);
-  const now=new Date()
-  if(now.getTime()>item.expiry){
-    window.sessionStorage.removeItem(key)
-  }
-  return item.value
+  return item
 }

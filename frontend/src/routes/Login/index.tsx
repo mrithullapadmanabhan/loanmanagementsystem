@@ -27,9 +27,11 @@ function Login() {
             return;
         }
         const res = await login(formData);
+        console.log(res)
         if (res.success === false) {
-            setError(res.error);
+            setError(res.message);
         } else {
+            alert(res.message)
             window.location.reload();
         }
     };
