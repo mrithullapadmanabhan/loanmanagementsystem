@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 //Form Data Handling
 function Login() {
     const [formData, setFormData] = useState({
-        email: '',
+        username: '',
         password: ''
     });
     const [error, setError] = useState("");
@@ -22,7 +22,7 @@ function Login() {
 
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
-        if (!formData.email.trim() || !formData.password.trim()) {
+        if (!formData.username.trim() || !formData.password.trim()) {
             setError("Provide all fields");
             return;
         }
@@ -54,13 +54,13 @@ function Login() {
                 </div>}
                 <form className='mt-8 space-y-5' onSubmit={handleSubmit} >
                     <div className='form-group'>
-                        <label htmlFor='email' className='input-label'>Email</label>
-                        <input type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
+                        <label htmlFor='username' className='input-label'>Username</label>
+                        <input type="text"
+                            id="username"
+                            name="username"
+                            value={formData.username}
                             onChange={handleInputChange}
-                            placeholder='marry@gmail.com'
+                            placeholder='Marry'
                             className='input'
                         />
                     </div>
