@@ -1,15 +1,26 @@
 package com.app.backend.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Loan {
 
 	@Id
 	private String loanID;
-	private String employeeID;
-	private String itemID;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employeeID")
+    private Employee employee;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "itemID")
+    private Item item;
+
 	private int duration;
 	private String issueStatus;
 	
@@ -27,27 +38,6 @@ public class Loan {
 	public void setLoanID(String loanID) {
 		this.loanID = loanID;
 	}
-
-
-	public String getEmployeeID() {
-		return employeeID;
-	}
-
-
-	public void setEmployeeID(String employeeID) {
-		this.employeeID = employeeID;
-	}
-
-
-	public String getItemID() {
-		return itemID;
-	}
-
-
-	public void setItemID(String itemID) {
-		this.itemID = itemID;
-	}
-
 
 	public int getDuration() {
 		return duration;

@@ -1,8 +1,8 @@
 package com.app.backend.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import java.util.Date;
+import jakarta.persistence.*;
+import java.util.*;
 
 @Entity
 public class Employee {
@@ -14,7 +14,6 @@ public class Employee {
 	private String department;
 	private Date dob;
 	private Date doj;
-	
 	
 	public Employee() {
 		// TODO Auto-generated constructor stub

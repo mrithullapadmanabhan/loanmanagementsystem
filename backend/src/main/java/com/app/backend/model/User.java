@@ -9,6 +9,15 @@ public class User {
 	private String email;
 	private String password;
 	private String userType;
+	
+//	@OneToOne(fetch = FetchType.LAZY)
+//	@PrimaryKeyJoinColumn(name="userID")
+//	private Employee employee;
+//	
+//	@OneToOne(fetch = FetchType.LAZY)
+//	@PrimaryKeyJoinColumn(name="userID")
+//	private Admin admin;
+	
 	public String getEmail() {
 		return email;
 	}

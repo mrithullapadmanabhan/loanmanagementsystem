@@ -12,6 +12,7 @@ public class Item {
 	private String value;
 	private String make;
 	private String issueStatus;
+	
 	public String getItemId() {
 		return itemId;
 	}
