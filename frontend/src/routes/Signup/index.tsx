@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-// import { GoogleSignIn, signUp } from '../../service/api';
+import { addUser } from '../../service/api';
 import { Link } from 'react-router-dom';
 // import { withRouter } from '../../authentication/withRouter';
 import { BiMoney } from 'react-icons/bi'
@@ -8,12 +8,15 @@ import { BiMoney } from 'react-icons/bi'
 function SignUp() {
 
     const [formData, setFormData] = useState({
-        first_name: '',
-        last_name: '',
-        email: '',
-        password: '',
-        confirm_password: '',
-        reference: ''
+        name: '',
+        employeeID: '',
+        // email: "",
+        // password: '',
+        // confirm_password: '',
+        dob: "",
+        doj: '',
+        department:'',
+        designation: ""
     });
     const [error, setError] = useState("");
 
@@ -28,17 +31,18 @@ function SignUp() {
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         // You can perform form validation or submit the form data to a server here
-        if (formData.password !== formData.confirm_password) {
-            setError("Password Don't Match");
-            return;
-        }
-        // const res = await signUp(formData);
-        // if (res.success === false) {
-        //     setError(res.error);
+        // if (formData.password !== formData.confirm_password) {
+        //     setError("Password Don't Match");
         //     return;
-        // } else {
-        //     window.location.reload();
         // }
+        const res = await addUser(formData);
+    
+        if (res.success === false) {
+            setError(res.error);
+            return;
+        } else {
+            window.location.reload();
+        }   
     };
 
 
@@ -59,30 +63,57 @@ function SignUp() {
                     <p className='text-center text-white font-semibold'>{error}</p>
                 </div>}
                 <form className='mt-8 space-y-3' onSubmit={handleSubmit}>
-                    <div className='flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-2'>
-                        <div className='form-group'>
-                            <label htmlFor='first_name' className='input-label'>First Name</label>
-                            <input type="text"
-                                name="first_name"
-                                value={formData.first_name}
-                                onChange={handleChange} className='input' placeholder='Mary' />
-                        </div>
-                        <div className='form-group'>
-                            <label htmlFor='last_name' className='input-label'>Last Name</label>
-                            <input type="text"
-                                name="last_name"
-                                value={formData.last_name}
-                                onChange={handleChange} className='input' placeholder='Westmacott' />
-                        </div>
-                    </div>
                     <div className='form-group'>
+                        <label htmlFor='name' className='input-label'>Name</label>
+                        <input type="name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange} className='input' placeholder='Mary' />
+                    </div>
+                    
+                    <div className='form-group'>
+                        <label htmlFor='employeeID' className='input-label'>Employee ID</label>
+                        <input type="employeeID"
+                            name="employeeID"
+                            value={formData.employeeID}
+                            onChange={handleChange} className='input' placeholder='123456' />
+                    </div>
+                    {/* <div className='form-group'>
                         <label htmlFor='email' className='input-label'>Email</label>
                         <input type="email"
                             name="email"
                             value={formData.email}
-                            onChange={handleChange} className='input' placeholder='marry@gmail.com' />
+                            onChange={handleChange} className='input' placeholder='joe@wellsfargo.com' />
+                    </div> */}
+                    <div className='form-group'>
+                        <label htmlFor='designation' className='input-label'>Designation</label>
+                        <input type="designation"
+                            name="designation"
+                            value={formData.designation}
+                            onChange={handleChange} className='input' placeholder='manager' />
                     </div>
                     <div className='form-group'>
+                        <label htmlFor='department' className='input-label'>Department</label>
+                        <input type="department"
+                            name="department"
+                            value={formData.department}
+                            onChange={handleChange} className='input' placeholder='Manager' />
+                    </div>
+                    <div className='form-group'>
+                        <label htmlFor='doj' className='input-label'>Date of Joining</label>
+                        <input type="doj"
+                            name="doj"
+                            value={formData.doj}
+                            onChange={handleChange} className='input' placeholder='dd/mm/yyyy' />
+                    </div>
+                    <div className='form-group'>
+                        <label htmlFor='dob' className='input-label'>Date of Birth</label>
+                        <input type="dob"
+                            name="dob"
+                            value={formData.dob}
+                            onChange={handleChange} className='input' placeholder='dd/mm/yyyy' />
+                    </div>
+                    {/* <div className='form-group'>
                         <label htmlFor='password' className='input-label'>Password</label>
                         <input type="password"
                             name="password"
@@ -95,14 +126,7 @@ function SignUp() {
                             name="confirm_password"
                             value={formData.confirm_password}
                             onChange={handleChange} className='input'/>
-                    </div>
-                    <div className='form-group'>
-                        <label htmlFor='detail' className='input-label'>How did you learn about us? (Go into as much detail as you like)</label>
-                        <input type="text"
-                            name="reference"
-                            value={formData.reference}
-                            onChange={handleChange} className='input' />
-                    </div>
+                    </div> */}
                     <button className='bg-[#4338CA] long-button'>Create Account</button>
                 </form>
 
