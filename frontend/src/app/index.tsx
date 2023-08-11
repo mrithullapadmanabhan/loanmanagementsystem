@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
+
 import "./app.module.scss";
 
 import {
@@ -9,18 +10,17 @@ import {
   Login,
   SignUp
 } from "routes";
+import withAuthentication from "authentication/withAuthentication";
 
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route  path='/' element={<Root />}/>
-        <Route  path='/login' element={<Login />}/>
-        <Route  path='/register' element={<SignUp />}/>
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route  path='/' element={<Root />}/>
+      <Route  path='/login' element={<Login />}/>
+      <Route  path='/register' element={<SignUp />}/>
+    </Routes>
   );
 };
 
-export default App;
+export default withAuthentication(App);

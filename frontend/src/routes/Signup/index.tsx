@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { BiMoney } from 'react-icons/bi'
 
 
+
+
 function SignUp() {
 
     const [formData, setFormData] = useState({
