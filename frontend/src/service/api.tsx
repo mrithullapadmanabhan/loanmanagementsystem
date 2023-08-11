@@ -28,7 +28,13 @@ export async function login(data: any) {
     const res = await axios.post(`${URL}/checkLogin`, {
       ...data,
     })
-    setWithExpiry('user',res.data,1800000)
+    console.log("data="+data)
+    console.log("res="+res)
+    // if (res.data)
+    if (data['value'] === "Invalid user"){
+      alert("Invalid User")
+    }
+    setWithExpiry('user',res.data,18000)
     return { success: true }
   } catch (error: any) {
     if (error.response) {

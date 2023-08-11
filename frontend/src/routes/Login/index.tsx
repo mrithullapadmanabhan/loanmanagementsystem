@@ -34,6 +34,7 @@ function Login() {
 
 
         const res = await login(formData);
+        console.log(res)
         if (res.success === false) {
             setError(res.error);
         } else {
