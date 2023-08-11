@@ -43,7 +43,6 @@ function SignUp() {
             return;
         }
         console.log(formData)
-        return
         
         const res = await addUser(formData);
     
