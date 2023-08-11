@@ -1,11 +1,8 @@
 package com.app.backend.model;
 
 import jakarta.persistence.*;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
-
 import java.sql.Date;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -46,66 +43,53 @@ public class Employee {
 	@JsonFormat(pattern="yyyy-mm-dd")
 	private Date doj;
 	
-	
 	public Employee() {
-		// TODO Auto-generated constructor stub
-	}
 
+	}
 
 	public String getEmployeeID() {
 		return employeeID;
 	}
 
-
 	public void setEmployeeID(String employeeID) {
 		this.employeeID = employeeID;
 	}
-
 
 	public String getName() {
 		return name;
 	}
 
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 	public String getDesignation() {
 		return designation;
 	}
 
-
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
-
 
 	public String getDepartment() {
 		return department;
 	}
 
-
 	public void setDepartment(String department) {
 		this.department = department;
 	}
-
 
 	public Date getDob() {
 		return dob;
 	}
 
-
 	public void setDob(Date dob) {
 		this.dob = dob;
 	}
 
-
 	public Date getDoj() {
 		return doj;
 	}
-
 
 	public void setDoj(Date doj) {
 		this.doj = doj;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { BiMoney } from 'react-icons/bi'
+import { Link } from 'react-router-dom';
 // import { GoogleSignIn, login } from '../../service/api';
 
 
@@ -39,8 +40,13 @@ function Login() {
         <div className='flex justify-center  h-screen'>
             <div className='px-5 py-8 md:px-0 md:w-[25%] mt-12'>
                 {/* logo */}
-                <div className='mb-10 flex justify-center'>
-                    <BiMoney className="w-20 aspect-auto mr-2" />
+                <div className='mb-5 flex justify-center'>
+                    <BiMoney size={40} />
+                </div>
+                {/* Heading */}
+                <div className='space-y-2'>
+                    <h2 className='text-xl md:text-3xl font-bold text-center'>Login</h2>
+                    <p className='text-center'>Or <Link to='/register' className={`text-[#4338CA] font-semibold text-sm`}>Create an account</Link></p>
                 </div>
                 {/* Heading */}
                 {error && <div className='bg-red-500 my-3 py-2 rounded'>

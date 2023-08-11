@@ -1,9 +1,5 @@
 package com.app.backend.exception;
-//
-//public class CustomExceptionHandler()
-//{
-//	
-//}
+
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -31,7 +27,6 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		responseBody.put("errors", errors);
 		
 		return new ResponseEntity<>(responseBody, headers, status);
-	}
-			
+	}			
 	
 }
