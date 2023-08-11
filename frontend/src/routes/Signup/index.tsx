@@ -10,6 +10,7 @@ function SignUp() {
     const [formData, setFormData] = useState({
         name: '',
         employeeID: '',
+        // email: "",
         // password: '',
         // confirm_password: '',
         dob: "",
@@ -35,6 +36,7 @@ function SignUp() {
         //     return;
         // }
         const res = await addUser(formData);
+    
         if (res.success === false) {
             setError(res.error);
             return;
@@ -76,6 +78,13 @@ function SignUp() {
                             value={formData.employeeID}
                             onChange={handleChange} className='input' placeholder='123456' />
                     </div>
+                    {/* <div className='form-group'>
+                        <label htmlFor='email' className='input-label'>Email</label>
+                        <input type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange} className='input' placeholder='joe@wellsfargo.com' />
+                    </div> */}
                     <div className='form-group'>
                         <label htmlFor='designation' className='input-label'>Designation</label>
                         <input type="designation"
