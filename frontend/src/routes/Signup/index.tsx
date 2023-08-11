@@ -15,6 +15,7 @@ function SignUp() {
         confirm_password: '',
         dob: "",
         doj: '',
+        username: "",
         department:'',
         gender: "",
         designation: ""
@@ -83,6 +84,14 @@ function SignUp() {
                             onChange={handleChange} className='input' placeholder='Mary' />
                     </div>
                     
+                    <div className='form-group'>
+                        <label htmlFor='username' className='input-label'>Username</label>
+                        <input type="name"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange} className='input' placeholder='Mary12' />
+                    </div>
+
                     <div className='form-group'>
                         <label htmlFor='employeeID' className='input-label'>Employee ID</label>
                         <input type="employeeID"

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.backend.model.LoginModel;
 import com.app.backend.model.User;
 import com.app.backend.service.UserService;
 
@@ -20,6 +21,12 @@ public class UserController {
 	{
 		User u=userService.saveUser(user);
 		return u;
+	}
+	
+	@PostMapping("/checkLogin")
+	public String validateUSer(@RequestBody LoginModel lm)
+	{
+		return userService.validateUser(lm);
 	}
 
 }
