@@ -16,6 +16,7 @@ function SignUp() {
         dob: "",
         doj: '',
         department:'',
+        gender: "",
         designation: ""
     });
     const [error, setError] = useState("");
@@ -95,6 +96,16 @@ function SignUp() {
                             name="email"
                             value={formData.email}
                             onChange={handleChange} className='input' placeholder='joe@wellsfargo.com' />
+                    </div>
+                    <div className='form-group'>
+                        <label htmlFor='gender' className='input-label'>Gender</label>
+                        <select name="gender" value={formData.gender} onChange={handleChange} className='input'>
+                            <option value={""} disabled hidden>Select Gender</option>
+                            <option value={"male"}>Male</option>
+                            <option value={"female"}>Female</option>
+                            <option value={"other"}>Other</option>
+
+                        </select>
                     </div>
                     <div className='form-group'>
                         <label htmlFor='designation' className='input-label'>Designation</label>
