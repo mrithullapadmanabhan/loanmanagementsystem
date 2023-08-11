@@ -21,6 +21,7 @@ public class Item {
 	@NotEmpty
 	private String make;
 	private String issueStatus;
+	
 	public String getItemId() {
 		return itemId;
 	}
@@ -57,6 +58,5 @@ public class Item {
 	public void setIssueStatus(String issueStatus) {
 		this.issueStatus = issueStatus;
 	}
-	
 	
 }
