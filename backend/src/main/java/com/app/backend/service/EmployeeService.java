@@ -3,8 +3,8 @@ package com.app.backend.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.app.backend.dao.EmployeeRepository;
 import com.app.backend.model.Employee;
+import com.app.backend.repository.EmployeeRepository;
 
 @Service
 public class EmployeeService {

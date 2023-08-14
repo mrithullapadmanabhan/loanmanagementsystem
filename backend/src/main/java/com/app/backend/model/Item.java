@@ -1,18 +1,32 @@
 package com.app.backend.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import java.util.UUID;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Item {
 
 	@Id
-	@NotBlank
-	private String itemId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 	
 	@NotBlank(message="Category cannot be blank")
-	private String category;
+	private ItemCategoryEnum category;
 	
 	@NotBlank(message="Description cannot be blank")
 	private String description;
@@ -25,42 +39,5 @@ public class Item {
 	
 	@NotEmpty(message="i")
 	private String issueStatus;
-	
-	public String getItemId() {
-		return itemId;
-	}
-	public void setItemId(String itemId) {
-		this.itemId = itemId;
-	}
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public Integer getValue() {
-		return value;
-	}
-	public void setValue(Integer value) {
-		this.value = value;
-	}
-	public String getMake() {
-		return make;
-	}
-	public void setMake(String make) {
-		this.make = make;
-	}
-	public String getIssueStatus() {
-		return issueStatus;
-	}
-	public void setIssueStatus(String issueStatus) {
-		this.issueStatus = issueStatus;
-	}
 	
 }

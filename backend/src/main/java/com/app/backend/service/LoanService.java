@@ -5,9 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.app.backend.dao.LoanRepository;
-import com.app.backend.model.Item;
 import com.app.backend.model.Loan;
+import com.app.backend.repository.LoanRepository;
 
 @Service
 public class LoanService {

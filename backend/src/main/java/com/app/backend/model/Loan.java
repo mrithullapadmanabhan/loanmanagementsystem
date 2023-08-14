@@ -1,21 +1,44 @@
 package com.app.backend.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import java.util.UUID;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Loan {
 
 	@Id
-	@NotEmpty
-	private String loanID;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employeeID")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinTable(
+        name = "employee_loans",
+        joinColumns = @JoinColumn(name="loan_id"),
+        inverseJoinColumns = @JoinColumn(name="employee_id")
+    )
     private Employee employee;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "itemID")
+	@OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "item_id")
     private Item item;
 
 	@NotNull
@@ -23,33 +46,5 @@ public class Loan {
 	
 	@NotEmpty
 	private String issueStatus;
-	
-	public Loan() {
-
-	}
-
-	public String getLoanID() {
-		return loanID;
-	}
-
-	public void setLoanID(String loanID) {
-		this.loanID = loanID;
-	}
-	
-	public int getDuration() {
-		return duration;
-	}
-
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
-
-	public String getIssueStatus() {
-		return issueStatus;
-	}
-
-	public void setIssueStatus(String issueStatus) {
-		this.issueStatus = issueStatus;
-	}
 	
 }
