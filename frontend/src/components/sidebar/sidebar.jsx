@@ -17,7 +17,7 @@ function Sidebar() {
   const authUser=useContext(AuthUserContext)
 
   const analystOptions = [
-    { label: 'View Loans', Icon: faHome, route: '/dashboard' },
+    { label: 'View Loans', Icon: faHome, route: '/view-loans' },
     { label: 'View Items Purchased', Icon: faCog, route: '/new-trade' },
     { label: 'Apply for loan', Icon: faMoneyBillWave, route: '/current-trades' },
   ]
