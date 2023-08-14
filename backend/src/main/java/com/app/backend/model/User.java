@@ -1,48 +1,98 @@
 package com.app.backend.model;
 
-import jakarta.persistence.*;
+import java.util.Collection;
+import java.util.UUID;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class User {
+@Table(name="appUser")
+public class User implements UserDetails {
 
-	@Id
-	private String email;
-	private String password;
-	private String userType;
-	
-	@OneToOne(optional=true,cascade=CascadeType.ALL)
-	private Employee emp;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-	public Employee getEmp() {
-		return emp;
-	}
+    @Email
+    @NotNull
+    @Column(unique = true)
+    private String email;
 
-	public void setEmp(Employee emp) {
-		this.emp = emp;
-	}
+    // one number, one lowercase character, one uppercase character, one symbol, and minlength 8
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,}$")
+    private String password;
 
-	public String getEmail() {
-		return email;
-	}
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = @JoinColumn(name="user_id"),
+        inverseJoinColumns = @JoinColumn(name="role_id")
+    )
+    private Collection<Role> roles;
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    @OneToOne(optional=true,cascade=CascadeType.ALL)
+	private Employee employee;
 
-	public String getPassword() {
-		return password;
-	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    @Override
+    public String getUsername() {
+        return email;
+    }
 
-	public String getUserType() {
-		return userType;
-	}
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName().name())).toList();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 }

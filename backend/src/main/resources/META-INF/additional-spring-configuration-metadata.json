@@ -1,0 +1,27 @@
+{"properties": [
+  {
+    "name": "luma.app.jwt-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'luma.app.jwt-secret'"
+  },
+  {
+    "name": "luma.app.accessExpirationTime",
+    "type": "java.lang.Integer",
+    "description": "A description for 'luma.app.accessExpirationTime'"
+  },
+  {
+    "name": "luma.app.refreshExpirationTime",
+    "type": "java.lang.Integer",
+    "description": "A description for 'luma.app.refreshExpirationTime'"
+  },
+  {
+    "name": "luma.app.superuserEmail",
+    "type": "java.lang.String",
+    "description": "A description for 'luma.app.superuserEmail'"
+  },
+  {
+    "name": "luma.app.superuserPassword",
+    "type": "java.lang.String",
+    "description": "A description for 'luma.app.superuserPassword'"
+  }
+]}
