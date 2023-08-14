@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import com.app.backend.model.Employee;
 import com.app.backend.service.EmployeeService;
 
+import jakarta.validation.Valid;
+
 @RestController
 //@CrossOrigin("http://localhost:3000")
 @CrossOrigin("*")
@@ -15,7 +17,7 @@ public class EmployeeController {
 	EmployeeService empService;
 	
 	@PostMapping("/addEmployee")
-	public Employee saveEmployee(@RequestBody Employee emp)
+	public Employee saveEmployee(@Valid @RequestBody Employee emp)
 	{
 		Employee e=empService.saveEmployee(emp);
 		return e;

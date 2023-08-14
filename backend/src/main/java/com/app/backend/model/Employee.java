@@ -9,18 +9,31 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Employee {
 
 	@Id
-	@NotBlank
+	@NotBlank(message = "Employee ID cannot be blank")
 	private String employeeID;
 	
-	@NotBlank
-	@Size(max=28)
+	@NotBlank(message = "Name cannot be blank")
+	@Size(min=5, max=28, message="Name can only be from 5 to 15 characters")
 	private String name;
+	
+	@NotBlank(message="Designation cannot be blank")
 	private String designation;
+	
+	@NotBlank(message="Department cannot be blank")
 	private String department;
 	
+	@NotBlank(message="Gender cannot be blank")
+	private String gender;
+	
+	@NotBlank(message="Username cannot be blank")
+	private String username;
+	
+	
+	@NotBlank(message="Date of birth cannot be empty")
 	@JsonFormat(pattern="yyyy-mm-dd")
 	private Date dob;
 	
+	@NotBlank(message="Date of joining cannot be blank")
 	@JsonFormat(pattern="yyyy-mm-dd")
 	private Date doj;
 	
@@ -29,6 +42,23 @@ public class Employee {
 	
 	public Employee() {
 
+	}
+	
+	public String getGender() {
+		return gender;
+	}
+
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getEmployeeID() {

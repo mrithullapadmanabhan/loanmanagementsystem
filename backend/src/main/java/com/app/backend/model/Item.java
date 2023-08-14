@@ -11,15 +11,19 @@ public class Item {
 	@NotBlank
 	private String itemId;
 	
-	@NotBlank
+	@NotBlank(message="Category cannot be blank")
 	private String category;
+	
+	@NotBlank(message="Description cannot be blank")
 	private String description;
 	
-	@NotNull
+	@NotNull(message="Value cannot be empty")
 	private Integer value;
 	
-	@NotEmpty
+	@NotEmpty(message="Make cannot be blank")
 	private String make;
+	
+	@NotEmpty(message="i")
 	private String issueStatus;
 	
 	public String getItemId() {

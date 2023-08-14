@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
 import { BiMoney } from 'react-icons/bi'
 import { Link } from 'react-router-dom';
+// <<<<<<< HEAD
+// import { loginUser } from 'service/loginService';
+// // import { GoogleSignIn, login } from '../../service/api';
+// =======
 import { login } from '../../service/api';
+// >>>>>>> e3bd1927594047abfc43c094ce3f3395358a1eb2
 
 
 //Form Data Handling
@@ -26,6 +31,8 @@ function Login() {
             setError("Provide all fields");
             return;
         }
+
+
         const res = await login(formData);
         console.log(res)
         if (res.success === false) {
@@ -33,6 +40,7 @@ function Login() {
         } else {
             alert(res.message)
             window.location.reload();
+
         }
     };
 
