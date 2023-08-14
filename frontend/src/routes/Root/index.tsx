@@ -9,7 +9,7 @@ const Root = () => {
   return (
     <>
     <h1 className="text-lg font-bold	">
-      Hello {authUser?.email}
+      Hello {authUser?.emp?.name}
     </h1>
     </>
   );

@@ -9,6 +9,17 @@ public class User {
 	private String email;
 	private String password;
 	private String userType;
+	
+	@OneToOne(optional=true,cascade=CascadeType.ALL)
+	private Employee emp;
+
+	public Employee getEmp() {
+		return emp;
+	}
+
+	public void setEmp(Employee emp) {
+		this.emp = emp;
+	}
 
 	public String getEmail() {
 		return email;

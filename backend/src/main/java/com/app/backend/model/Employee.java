@@ -24,6 +24,9 @@ public class Employee {
 	@JsonFormat(pattern="yyyy-mm-dd")
 	private Date doj;
 	
+//	@OneToOne(mappedBy="Employee")
+//	private User user;
+	
 	public Employee() {
 
 	}
