@@ -20,7 +20,7 @@ function ApplyLoan() {
   const [selectItemCategory,setSelectItemCategory]=useState('')
   const authUser=useContext<any>(AuthUserContext)
 
-  const [items,setItems]=useState([])
+  const [items,setItems]=useState<any[]>([])
 
   useEffect(()=>{
     getItems()
@@ -40,6 +40,13 @@ function ApplyLoan() {
 
   function submitButton(){
 
+  }
+
+  const handleItemCategoryChange= (e: { target: { value: React.SetStateAction<string>; }; })=>{
+    setSelectItemCategory(e.target.value)
+    const filteredData=items.filter((item) => item.category==e.target.value)
+    const newMake=filteredData.map((item: { make: any; })=> item.make).filter((value: any,index: any,self: { indexOf: (arg0: any) => any; })=>self.indexOf(value)==index)
+    setItemMakeData(newMake)
   }
 
 
@@ -67,7 +74,7 @@ function ApplyLoan() {
                   <select
                     className="w-full lg:w-48 h-12 px-4 text-sm text-todayQ-black border border-gray-900 rounded appearance-none"
                     value={selectItemCategory}
-                    onChange={(e) => setSelectItemCategory(e.target.value)}
+                    onChange={handleItemCategoryChange}
                   >
                     <option value="">Select Type</option>
                     {loanTypeData.map((loantype, index) => (
