@@ -1,10 +1,13 @@
 package com.app.backend.service;
 
+import com.app.backend.model.Item;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.backend.dao.ItemRepository;
-import com.app.backend.model.Item;
+
 
 @Service
 public class ItemService {
@@ -17,4 +20,9 @@ public class ItemService {
 		return obj;
 		
 	}
-}
+	
+	public List<Item> getItems()
+{
+		List<Item> itemList = itemRepository.findAll();
+		return itemList;
+}}
