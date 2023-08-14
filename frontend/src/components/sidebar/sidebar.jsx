@@ -19,7 +19,7 @@ function Sidebar() {
   const analystOptions = [
     { label: 'View Loans', Icon: faHome, route: '/view-loans' },
     { label: 'View Items Purchased', Icon: faCog, route: '/new-trade' },
-    { label: 'Apply for loan', Icon: faMoneyBillWave, route: '/current-trades' },
+    { label: 'Apply for loan', Icon: faMoneyBillWave, route: '/apply-loan' }
   ]
   
   const adminOptions = [

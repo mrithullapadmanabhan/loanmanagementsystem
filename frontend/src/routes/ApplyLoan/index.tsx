@@ -2,6 +2,7 @@ import AuthUserContext from 'authentication/AuthUserContext';
 import Sidebar from 'components/sidebar/sidebar';
 import React, { useContext, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { getItemsApi } from 'service/api';
 
 function ApplyLoan() {
  
@@ -10,13 +11,31 @@ function ApplyLoan() {
 
   const navigate = useNavigate();
 
-  const [loanTypeData,setLoanTypeData]=useState([])
-  const [itemMakeData,setItemMakeData]=useState([])
+  const [loanTypeData,setLoanTypeData]=useState<any[]>([])
+  const [itemMakeData,setItemMakeData]=useState<any[]>([])
   const [itemValue,setItemValue]=useState('')
   const [employeeId,setEmployeeId]=useState('')
   const [description,setDescription]=useState('')
   const [selectItemMake,setSelectItemMake]=useState('')
   const [selectItemCategory,setSelectItemCategory]=useState('')
+  const authUser=useContext<any>(AuthUserContext)
+
+  const [items,setItems]=useState([])
+
+  useEffect(()=>{
+    getItems()
+  },[])
+
+  async function getItems(){
+    const res=await getItemsApi()
+    console.log(res)
+    if(res.success){
+      setItems(res.data)
+      setLoanTypeData(res.data.map((item: { category: any; })=> item.category).filter((value: any,index: any,self: { indexOf: (arg0: any) => any; })=>self.indexOf(value)==index))
+      setItemMakeData(res.data.map((item: { make: any; })=> item.make).filter((value: any,index: any,self: { indexOf: (arg0: any) => any; })=>self.indexOf(value)==index))
+
+    }
+  }
 
 
   function submitButton(){
@@ -30,7 +49,6 @@ function ApplyLoan() {
       <div
         className='overflow-hidden  ml-0   sm:ml-[240px]'>
         <Sidebar />
-
         <div className="p-7 sm:p-8 md:p-11">
           <div className="flex flex-col gap-8  xl:flex-row justify-start md:gap-12  xl:justify-between xl:gap-0">
             <div className="hidden lg:flex flex-col justify-start gap-8">
@@ -87,7 +105,7 @@ function ApplyLoan() {
                   <input
                     type="text"
                     className="w-full lg:w-48 h-12 px-4 text-sm text-todayQ-black border border-gray-900 rounded"
-                    value={employeeId}
+                    value={authUser?.emp?.employeeID}
                     disabled
                   />
                 </div>

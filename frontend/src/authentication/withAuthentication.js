@@ -15,20 +15,13 @@ const withAuthentication = (Component) => {
       const user = await getUserByToken()
       if (user) {
         console.log("from WithAuthentication",user);
-        if (user == "Invalid user"){
-          alert("Invalid")
-        }
-        else{
-          alert("Valid User")
-          this.setState({ authUser: user })
+        this.setState({ authUser: user })
         const path = window.location.pathname.split('/')[1]
         console.log(path);
         if (path === 'register' || path === 'login') {
           this.props.router.navigate('/');
         }
-      
-        }
-        }
+      }
        else {
         const path = window.location.pathname.split('/')[1]
         console.log(path);

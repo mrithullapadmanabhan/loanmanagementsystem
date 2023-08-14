@@ -45,6 +45,24 @@ export async function login(data: any) {
   }
 }
 
+export async function getItemsApi(){
+  try {
+    const res = await axios.get(`${URL}/getAllItems`)
+    console.log(res.data)
+    return {success: true,data: res.data}
+  } catch (error: any) {
+    if (error.response) {
+      return { success: false, message: error.response.data.error }
+    } else {
+      return {
+        success: false,
+        message: 'Error occurred while getting the request',
+      }
+    }
+  }
+
+}
+
 export function getUserByToken(){
   const storedUser= getFromSession('user')
   if(storedUser){
