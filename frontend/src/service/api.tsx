@@ -4,7 +4,7 @@ const URL = 'http://localhost:8081'
 
 export async function addUser(data: any) {
     try {
-      const res = await axios.post(`${URL}/addEmployee`, {
+      const res = await axios.post(`${URL}/addUser`, {
         ...data,
       })
       saveToSession('user',res.data)

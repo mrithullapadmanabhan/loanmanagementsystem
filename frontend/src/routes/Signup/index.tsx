@@ -10,17 +10,21 @@ import { BiMoney } from 'react-icons/bi'
 function SignUp() {
 
     const [formData, setFormData] = useState({
-        name: '',
-        employeeID: '',
+        
         email: "",
         password: '',
         confirm_password: '',
-        dob: "",
-        doj: '',
-        username: "",
-        department:'',
-        gender: "",
-        designation: ""
+        userType: 'employee',
+        emp: {
+            dob: "",
+            doj: '',
+            username: "",
+            department:'',
+            gender: "",
+            designation: "",
+            name: '',
+            employeeID: '' 
+        },
     });
     const [error, setError] = useState("");
 
@@ -29,6 +33,19 @@ function SignUp() {
         setFormData((prevData) => ({
             ...prevData,
             [name]: value
+        }));
+    };
+
+
+    
+    const handleChangeEmp = (e: { target: { name: any; value: any; }; }) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            emp: {
+                ...prevData.emp,
+                [name]: value
+            }
         }));
     };
 
@@ -82,24 +99,24 @@ function SignUp() {
                         <label htmlFor='name' className='input-label'>Name</label>
                         <input type="name"
                             name="name"
-                            value={formData.name}
-                            onChange={handleChange} className='input' placeholder='Mary' />
+                            value={formData.emp.name}
+                            onChange={handleChangeEmp} className='input' placeholder='Mary' />
                     </div>
                     
                     <div className='form-group'>
                         <label htmlFor='username' className='input-label'>Username</label>
                         <input type="name"
                             name="username"
-                            value={formData.username}
-                            onChange={handleChange} className='input' placeholder='Mary12' />
+                            value={formData.emp.username}
+                            onChange={handleChangeEmp} className='input' placeholder='Mary12' />
                     </div>
 
                     <div className='form-group'>
                         <label htmlFor='employeeID' className='input-label'>Employee ID</label>
                         <input type="employeeID"
                             name="employeeID"
-                            value={formData.employeeID}
-                            onChange={handleChange} className='input' placeholder='123456' />
+                            value={formData.emp.employeeID}
+                            onChange={handleChangeEmp} className='input' placeholder='123456' />
                     </div>
                     <div className='form-group'>
                         <label htmlFor='email' className='input-label'>Email</label>
@@ -110,7 +127,7 @@ function SignUp() {
                     </div>
                     <div className='form-group'>
                         <label htmlFor='gender' className='input-label'>Gender</label>
-                        <select name="gender" value={formData.gender} onChange={handleChange} className='input'>
+                        <select name="gender" value={formData.emp.gender} onChange={handleChangeEmp} className='input'>
                             <option value={""} disabled hidden>Select Gender</option>
                             <option value={"male"}>Male</option>
                             <option value={"female"}>Female</option>
@@ -122,29 +139,29 @@ function SignUp() {
                         <label htmlFor='designation' className='input-label'>Designation</label>
                         <input type="designation"
                             name="designation"
-                            value={formData.designation}
-                            onChange={handleChange} className='input' placeholder='Manager' />
+                            value={formData.emp.designation}
+                            onChange={handleChangeEmp} className='input' placeholder='Manager' />
                     </div>
                     <div className='form-group'>
                         <label htmlFor='department' className='input-label'>Department</label>
                         <input type="department"
                             name="department"
-                            value={formData.department}
-                            onChange={handleChange} className='input' placeholder='Technology' />
+                            value={formData.emp.department}
+                            onChange={handleChangeEmp} className='input' placeholder='Technology' />
                     </div>
                     <div className='form-group'>
                         <label htmlFor='doj' className='input-label'>Date of Joining</label>
                         <input type="date"
                             name="doj"
-                            value={formData.doj}
-                            onChange={handleChange} className='input' placeholder='yyyy-mm-dd' />
+                            value={formData.emp.doj}
+                            onChange={handleChangeEmp} className='input' placeholder='yyyy-mm-dd' />
                     </div>
                     <div className='form-group'>
                         <label htmlFor='dob' className='input-label'>Date of Birth</label>
                         <input type="date"
                             name="dob"
-                            value={formData.dob}
-                            onChange={handleChange} className='input' placeholder='yyyy-mm-dd' />
+                            value={formData.emp.dob}
+                            onChange={handleChangeEmp} className='input' placeholder='yyyy-mm-dd' />
                     </div>
                     <div className='form-group'>
                         <label htmlFor='password' className='input-label'>Password</label>
