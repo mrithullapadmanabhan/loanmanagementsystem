@@ -1,4 +1,5 @@
 
+import Sidebar from 'components/sidebar/sidebar';
 import AuthUserContext from '../../authentication/AuthUserContext'
 import React, { useEffect, useState, useContext } from 'react'
 
@@ -8,9 +9,12 @@ const Root = () => {
 
   return (
     <>
-    <h1 className="text-lg font-bold	">
-      Hello {authUser?.emp?.name}
-    </h1>
+      <div className='overflow-hidden  ml-0 sm:ml-[240px]'>
+        <Sidebar/>
+        <h1 className="text-lg font-bold	">
+          Hello {authUser?.emp?.name}
+        </h1>
+      </div>
     </>
   );
 };

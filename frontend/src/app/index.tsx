@@ -8,7 +8,8 @@ import {
   Root,
   NotFound,
   Login,
-  SignUp
+  SignUp,
+  ApplyLoan
 } from "routes";
 import withAuthentication from "authentication/withAuthentication";
 
@@ -19,6 +20,7 @@ const App = () => {
       <Route  path='/' element={<Root />}/>
       <Route  path='/login' element={<Login />}/>
       <Route  path='/register' element={<SignUp />}/>
+      <Route  path='/apply-loan' element={<ApplyLoan />}/>
     </Routes>
   );
 };

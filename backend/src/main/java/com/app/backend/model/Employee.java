@@ -37,8 +37,8 @@ public class Employee {
 	@JsonFormat(pattern="yyyy-mm-dd")
 	private Date doj;
 	
-//	@OneToOne(mappedBy="Employee")
-//	private User user;
+	@OneToOne(mappedBy="emp")
+	private User user;
 	
 	public Employee() {
 
