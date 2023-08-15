@@ -1,6 +1,9 @@
 package com.app.backend.model;
 
+import java.util.List;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -8,11 +11,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,23 +23,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Item {
+public class ItemCategory {
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-	
-	@NotBlank(message="Description cannot be blank")
-	private String description;
-	
-	@NotNull(message="Value cannot be empty")
-	private Double value;
 
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name = "make_id")
-	private ItemMake make;
+    @NotBlank(message = "Category name cannot be blank")
+    private String name;
 
-	@OneToOne(fetch = FetchType.EAGER)
-	private Loan loan;
-	
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
+    private List<ItemMake> makes;
+
 }

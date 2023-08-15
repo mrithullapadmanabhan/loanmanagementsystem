@@ -33,8 +33,5 @@ public class Role {
 
     @ManyToMany(mappedBy = "roles")
     private Collection<User> users;
-
-    public Role(RoleEnum name) {
-        this.name = name;
-    }
+    
 }

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.backend.communication.request.JWTLoginRequest;
 import com.app.backend.communication.request.JWTRefreshRequest;
-import com.app.backend.communication.request.UserRegisterRequest;
 import com.app.backend.communication.response.JWTResponse;
 import com.app.backend.service.auth.AuthenticationService;
 
@@ -36,13 +35,6 @@ public class AuthenticationController {
         @Valid @RequestBody JWTRefreshRequest request
     ) {
         return ResponseEntity.ok(service.refresh(request));
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<JWTResponse> register(
-        @Valid @RequestBody UserRegisterRequest request
-    ) {
-        return ResponseEntity.ok(service.register(request));
     }
     
 }

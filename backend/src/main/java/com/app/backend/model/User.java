@@ -56,7 +56,7 @@ public class User implements UserDetails {
     )
     private Collection<Role> roles;
 
-    @OneToOne(optional=true,cascade=CascadeType.ALL)
+    @OneToOne(optional = true, cascade = CascadeType.ALL)
 	private Employee employee;
 
 

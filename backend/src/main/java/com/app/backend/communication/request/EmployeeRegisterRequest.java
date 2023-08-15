@@ -16,9 +16,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class UserRegisterRequest {
+@AllArgsConstructor
+public class EmployeeRegisterRequest {
     
     @Email(message = "Email is invalid")
     @NotNull(message = "Email must not be Null")
@@ -44,10 +44,10 @@ public class UserRegisterRequest {
 	@NotBlank(message="Gender cannot be blank")
 	private String gender;
 
-	@JsonFormat(pattern="yyyy-mm-dd")
+	@JsonFormat(pattern="dd-mm-yyyy")
 	private Date dob;
 
-	@JsonFormat(pattern="yyyy-mm-dd")
+	@JsonFormat(pattern="dd-mm-yyyy")
 	private Date doj;
 
 }
