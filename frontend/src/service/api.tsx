@@ -1,89 +1,53 @@
-import axios from 'axios'
-const URL = 'http://localhost:8081'
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
+const api = axios.create({
+  baseURL: "http://localhost:8080/api",
+});
 
-export async function addUser(data: any) {
-    try {
-      const res = await axios.post(`${URL}/addUser`, {
-        ...data,
-      })
-      saveToSession('user',res.data)
-      return { success: true }
-    } catch (error: any) {
-      if (error.response) {
-        return { success: false, message: error.response.data.error }
-      } else {
-        return {
-          success: false,
-          message: 'Error occurred while sending the request',
-        }
+api.interceptors.request.use(
+  (config) => {
+    const access = localStorage.getItem("accessToken");
+    if (access) {
+      config.headers.Authorization = `Bearer ${access}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const refreshToken = localStorage.getItem("refreshToken");
+        const res = await axios.post("/auth/refresh", { refreshToken });
+
+        const { accessToken } = res.data.accessToken;
+        localStorage.setItem("accessToken", accessToken);
+
+        const roles = res.data.userRoles
+          .map((role: { name: string }) => role.name)
+          .join();
+        localStorage.setItem("roles", roles);
+
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+        return axios(originalRequest);
+      } catch (error) {
+        localStorage.clear();
+
+        const navigate = useNavigate();
+        navigate("/login");
       }
     }
+
+    return Promise.reject(error);
   }
+);
 
-
-  
-export async function login(data: any) {
-  try {
-    const res = await axios.post(`${URL}/checkLogin`, {
-      ...data,
-    })
-    console.log(res.data)
-    if(res.data.success === true){
-      saveToSession('user',res.data.user)
-    }
-    return res.data
-  } catch (error: any) {
-    if (error.response) {
-      return { success: false, message: error.response.data.error }
-    } else {
-      return {
-        success: false,
-        message: 'Error occurred while sending the request',
-      }
-    }
-  }
-}
-
-export async function getItemsApi(){
-  try {
-    const res = await axios.get(`${URL}/getAllItems`)
-    console.log(res.data)
-    return {success: true,data: res.data}
-  } catch (error: any) {
-    if (error.response) {
-      return { success: false, message: error.response.data.error }
-    } else {
-      return {
-        success: false,
-        message: 'Error occurred while getting the request',
-      }
-    }
-  }
-
-}
-
-export function getUserByToken(){
-  const storedUser= getFromSession('user')
-  if(storedUser){
-    return storedUser
-  }
-  else{
-    return null
-  }
-
-}
-
-function saveToSession(key: string,value: any){
-  window.sessionStorage.setItem(key,JSON.stringify(value))
-}
-
-function getFromSession(key: string){
-  const itemStr=window.sessionStorage.getItem(key)
-  console.log("user data",itemStr)
-  if(!itemStr){
-    return null
-  }
-  const item=JSON.parse(itemStr);
-  return item
-}
+export default api;

@@ -1,19 +1,29 @@
+import { Outlet } from 'react-router-dom';
 
-import Sidebar from 'components/sidebar/sidebar';
-import AuthUserContext from '../../authentication/AuthUserContext'
-import React, { useEffect, useState, useContext } from 'react'
+import {
+  faHome,
+  faMoneyBillWave,
+  faCog,
+} from "@fortawesome/free-solid-svg-icons";
 
+import Sidebar from 'components/Sidebar';
+import { isLoggedIn } from 'service/auth';
+
+
+const options = [
+  { label: "View Loans", Icon: faHome, route: "/loans" },
+  { label: "View Items Purchased", Icon: faCog, route: "/items" },
+  { label: "Apply for loan", Icon: faMoneyBillWave, route: "/loan/apply" },
+];
 
 const Root = () => {
-  const authUser = useContext<any>(AuthUserContext)
+  const loggedIn = isLoggedIn();
 
   return (
     <>
-      <div className='overflow-hidden  ml-0 sm:ml-[240px]'>
-        <Sidebar/>
-        <h1 className="text-lg font-bold	">
-          Hello {authUser?.emp?.name}
-        </h1>
+      <div className={ loggedIn ? 'overflow-hidden ml-0 sm:ml-[240px]' : 'overflow-hidden ml-0' }>
+        { loggedIn && <Sidebar options = {options} /> }
+        <Outlet />
       </div>
     </>
   );

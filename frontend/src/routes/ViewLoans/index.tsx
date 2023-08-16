@@ -1,4 +1,4 @@
-import Sidebar from 'components/sidebar/sidebar'
+import Sidebar from 'components/Sidebar'
 import React, { useRef, useContext, useEffect, useState } from 'react'
 
 

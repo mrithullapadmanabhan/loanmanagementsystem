@@ -1,12 +1,10 @@
-import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Form } from "components";
-import { apiLogin } from "service/auth";
+import { employeeRegister } from "service/auth";
 
-const Login = () => {
+function SignUp() {
   const navigate = useNavigate();
-
   const formFields = [
     {
       name: "email",
@@ -29,10 +27,52 @@ const Login = () => {
         "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,}$",
       initialData: "",
     },
+    {
+      name: "name",
+      type: "text",
+      label: "Name",
+      placeholder: "John doe",
+      initialData: "",
+    },
+    {
+      name: "designation",
+      type: "text",
+      label: "Designation",
+      placeholder: "Manager",
+      initialData: "",
+    },
+    {
+      name: "department",
+      type: "text",
+      label: "Department",
+      placeholder: "Technology",
+      initialData: "",
+    },
+    {
+      name: "gender",
+      type: "text",
+      label: "Gender",
+      placeholder: "Male",
+      initialData: "",
+    },
+    {
+      name: "dob",
+      type: "date",
+      label: "Date of Birth",
+      placeholder: "dd-mm-yyyy",
+      initialData: "",
+    },
+    {
+      name: "doj",
+      type: "date",
+      label: "Date of Joining",
+      placeholder: "dd-mm-yyyy",
+      initialData: "",
+    }
   ];
 
   const handleSubmit = async (data: any) => {
-    const res = await apiLogin(data);
+    const res = await employeeRegister(data);
     if (res) {
       navigate("/dashboard");
     } else {
@@ -45,22 +85,20 @@ const Login = () => {
     color: "#4338CA",
   };
 
-  useEffect(() => {
-    localStorage.clear();
-  });
-
   return (
-    <div className="flex justify-center h-screen">
-      <div className="px-5 py-8 md:px-0 md:w-[25%] mt-12">
+    <div className="flex justify-center  h-screen">
+      <div className="px-5 md:px-0 md:w-[25%] mt-12">
         <div className="space-y-2">
-          <h2 className="text-xl md:text-3xl font-bold text-center">Login</h2>
+          <h2 className="text-xl md:text-3xl font-bold text-center">
+            Create an Employee
+          </h2>
           <p className="text-center">
             Or{" "}
             <Link
-              to="/register"
+              to="/login"
               className={`text-[#4338CA] font-semibold text-sm`}
             >
-              Create an account
+              login to your account
             </Link>
           </p>
         </div>
@@ -72,6 +110,6 @@ const Login = () => {
       </div>
     </div>
   );
-};
+}
 
-export default Login;
+export default SignUp;
