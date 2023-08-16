@@ -12,6 +12,7 @@ import com.app.backend.repository.ItemCardRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class ItemCardService {
 		return itemCardRepository.findAll();
 	}
 
-	public List<ItemCard> getByMakeID(UUID makeID) {
+	public Optional<ItemCard> getByMakeID(UUID makeID) {
 		Make make = makeRepository.findById(makeID).orElseThrow();
 		return itemCardRepository.findByMake(make);
 	}

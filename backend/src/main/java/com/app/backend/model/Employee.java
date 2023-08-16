@@ -4,8 +4,10 @@ import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -53,7 +55,9 @@ public class Employee {
 	@OneToOne(mappedBy = "employee", fetch = FetchType.LAZY)
 	private User user;
 
-	@OneToMany(fetch = FetchType.EAGER)
+	
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JsonBackReference
 	private List<EmployeeLoan> loans;
 	
 }

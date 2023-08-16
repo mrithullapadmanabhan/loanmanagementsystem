@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,8 +31,7 @@ public class LoanCard {
 	@NotNull
 	private int duration;
 
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name = "make_id")
-	private Make make;
-	
+	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name = "category_id")
+	private Category category;
 }

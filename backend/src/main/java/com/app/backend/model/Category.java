@@ -32,7 +32,7 @@ public class Category {
     @NotBlank(message = "Category name cannot be blank")
     private String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JsonBackReference
     private List<Make> makes;
 
