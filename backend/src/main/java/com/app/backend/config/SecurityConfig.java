@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/error/**").permitAll()
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/auth/refresh").permitAll()
+                        .requestMatchers("/api/employee/register").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess

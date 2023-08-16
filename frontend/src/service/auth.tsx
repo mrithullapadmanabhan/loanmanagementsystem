@@ -22,6 +22,7 @@ export const apiLogin = async (data: loginData) => {
 
     localStorage.setItem("accessToken", res.data.accessToken);
     localStorage.setItem("refreshToken", res.data.refreshToken);
+    localStorage.setItem("employeeID", res.data.employeeID);
 
     const roles = res.data.userRoles
       .map((role: { name: string }) => role.name)

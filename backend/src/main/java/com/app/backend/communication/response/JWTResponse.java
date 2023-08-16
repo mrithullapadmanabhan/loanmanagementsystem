@@ -1,6 +1,7 @@
 package com.app.backend.communication.response;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.app.backend.model.Role;
 
@@ -24,5 +25,7 @@ public class JWTResponse {
 
     @NotBlank
     private List<Role> userRoles;
+
+    private UUID employeeID;
     
 }

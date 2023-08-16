@@ -62,6 +62,7 @@ public class AuthenticationService {
             .accessToken(jwtToken)
             .refreshToken(refreshToken)
             .userRoles(user.getRoles())
+            .employeeID(user.getEmployee() != null ? user.getEmployee().getId() : null)
             .build();
     }
 
