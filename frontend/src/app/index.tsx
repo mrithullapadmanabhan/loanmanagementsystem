@@ -3,9 +3,10 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import {
   Root,
   NotFound,
-
+  ApplyLoan,
   Login,
   Register,
+  ViewLoans
 } from "routes";
 
 
@@ -23,10 +24,14 @@ const router = createBrowserRouter([
         path: "register",
         element: <Register />,
       },
-      // {
-      //   path: "loan/apply",
-      //   element: <ApplyLoan />,
-      // }
+      {
+        path: "loan/apply",
+        element: <ApplyLoan />,
+      },
+      {
+        path: "loans",
+        element: <ViewLoans />,
+      }
     ],
   },
 ]);

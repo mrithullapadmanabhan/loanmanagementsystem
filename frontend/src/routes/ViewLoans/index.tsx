@@ -6,10 +6,7 @@ function ViewLoans() {
   const [tableData, setTableData] = useState<any[]>([])
 
   return (
-    <div
-      className={`font-poppins overflow-hidden  ml-0 sm:ml-[240px]`}>
-      <Sidebar/>
-
+    <div>
       <div className="p-4 sm:p-8 md:p-11 flex flex-col gap-12">
         <div className="w-full  flex flex-col justify-center gap-4 mb-6 lg:mb-0">
           <h1 className=" text-lg font-semibold">Loan cards availed</h1>
