@@ -27,6 +27,6 @@ export const getItemsFromMake = async(make: any) => {
         console.log(res.data)
         return res.data
     } catch {
-        return []
+        return {}
     }
 }

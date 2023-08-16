@@ -46,10 +46,8 @@ function ApplyLoan() {
     console.log(e.target.value)
     const res: any=await getItemsFromMake(e.target.value)
     console.log(res)
-    if(res && res.length>0){
-      setDescription(res[0]?.description)
-      setItemValue(res[0]?.value)
-    }
+    setDescription(res?.description)
+    setItemValue(res?.value)
   }
 
   return (
