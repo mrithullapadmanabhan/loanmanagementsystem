@@ -22,7 +22,7 @@ public class ItemCardService {
 
 	private final ItemCardRepository itemCardRepository;
 
-	private final MakeRepository itemMakeRepository;
+	private final MakeRepository makeRepository;
 	private final EmployeeRepository employeeRepository;
 
 	
@@ -30,13 +30,18 @@ public class ItemCardService {
 		return itemCardRepository.findAll();
 	}
 
-	public List<ItemCard> get(UUID employeeID) {
+	public List<ItemCard> getByMakeID(UUID makeID) {
+		Make make = makeRepository.findById(makeID).orElseThrow();
+		return itemCardRepository.findByMake(make);
+	}
+
+	public List<ItemCard> getByEmployeeID(UUID employeeID) {
 		Employee employee = employeeRepository.findById(employeeID).orElseThrow();
 		return employee.getLoans().stream().map(loan -> loan.getItem()).toList();
 	}
 
 	public ItemCardCreationResponse create(ItemCardCreationRequest request) {
-		Make make = itemMakeRepository.findById(request.getMakeID()).orElseThrow();
+		Make make = makeRepository.findById(request.getMakeID()).orElseThrow();
 
 		ItemCard itemCard = ItemCard.builder()
 			.description(request.getDescription())

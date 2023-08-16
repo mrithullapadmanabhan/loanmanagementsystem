@@ -34,9 +34,14 @@ public class ItemCardController {
 		return itemCardService.get();
 	}
 
+	@GetMapping("/make/{makeID}")
+	public List<ItemCard> getByMakeID(@PathVariable("makeID") UUID makeID){
+		return itemCardService.getByMakeID(makeID);
+	}
+
 	@GetMapping("/employee/{employeeID}")
-	public List<ItemCard> get(@PathVariable("employeeID") UUID employeeID){
-		return itemCardService.get(employeeID);
+	public List<ItemCard> getByEmployeeID(@PathVariable("employeeID") UUID employeeID){
+		return itemCardService.getByEmployeeID(employeeID);
 	}
 	
 	@PostMapping("/create")
