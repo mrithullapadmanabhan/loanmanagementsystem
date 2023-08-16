@@ -7,13 +7,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.app.backend.model.ItemCategory;
-import com.app.backend.model.ItemMake;
+import com.app.backend.model.Category;
+import com.app.backend.model.Make;
 import com.app.backend.model.Role;
 import com.app.backend.model.RoleEnum;
 import com.app.backend.model.User;
-import com.app.backend.repository.ItemCategoryRepository;
-import com.app.backend.repository.ItemMakeRepository;
+import com.app.backend.repository.CategoryRepository;
+import com.app.backend.repository.MakeRepository;
 import com.app.backend.repository.RoleRepository;
 import com.app.backend.repository.UserRepository;
 
@@ -26,8 +26,8 @@ public class startupRunner implements CommandLineRunner {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     
-    private final ItemCategoryRepository itemCategoryRepository;
-    private final ItemMakeRepository itemMakeRepository;
+    private final CategoryRepository itemCategoryRepository;
+    private final MakeRepository itemMakeRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -58,17 +58,17 @@ public class startupRunner implements CommandLineRunner {
         userRepository.save(user);
 
 
-        ItemCategory furniture = ItemCategory.builder()
+        Category furniture = Category.builder()
             .name("Furniture")
             .makes(List.of())
             .build();
 
-        ItemCategory vehicles = ItemCategory.builder()
+        Category vehicles = Category.builder()
             .name("Vehicles")
             .makes(List.of())
             .build();
 
-        ItemCategory jewellery = ItemCategory.builder()
+        Category jewellery = Category.builder()
             .name("Jewellery")
             .makes(List.of())
             .build();
@@ -77,32 +77,32 @@ public class startupRunner implements CommandLineRunner {
         itemCategoryRepository.save(vehicles);
         itemCategoryRepository.save(jewellery);
 
-        ItemMake wood = ItemMake.builder()
+        Make wood = Make.builder()
             .category(furniture)
             .name("Wood")
             .build();
 
-        ItemMake metal = ItemMake.builder()
+        Make metal = Make.builder()
             .category(furniture)
             .name("Metal")
             .build();
 
-        ItemMake auto = ItemMake.builder()
+        Make auto = Make.builder()
             .category(vehicles)
             .name("Automatic")
             .build();
 
-        ItemMake manual = ItemMake.builder()
+        Make manual = Make.builder()
             .category(vehicles)
             .name("Manual")
             .build();
 
-        ItemMake gold = ItemMake.builder()
+        Make gold = Make.builder()
             .category(jewellery)
             .name("Gold")
             .build();
 
-        ItemMake silver = ItemMake.builder()
+        Make silver = Make.builder()
             .category(jewellery)
             .name("Silver")
             .build();

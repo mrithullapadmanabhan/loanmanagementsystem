@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.app.backend.model.ItemMake;
+import com.app.backend.model.Make;
 
 
-public interface ItemMakeRepository extends JpaRepository<ItemMake, UUID> {}
+public interface MakeRepository extends JpaRepository<Make, UUID> {}

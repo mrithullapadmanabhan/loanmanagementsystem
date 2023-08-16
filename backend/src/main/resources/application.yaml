@@ -6,9 +6,9 @@ spring:
             hibernate:
                 dialect: org.hibernate.dialect.MySQLDialect
     datasource:
-        url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/jwtTest
-        username: ashutoshsharma
-        password: ashutoshsharma
+        url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/loandb
+        username: root
+        password: rps@123
         driver-class-name: com.mysql.cj.jdbc.Driver
 logging:
     level:

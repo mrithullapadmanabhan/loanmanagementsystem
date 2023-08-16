@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -54,7 +53,7 @@ public class Employee {
 	@OneToOne(mappedBy = "employee", fetch = FetchType.LAZY)
 	private User user;
 
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<Loan> loans;
+	@OneToMany(fetch = FetchType.EAGER)
+	private List<EmployeeLoan> loans;
 	
 }

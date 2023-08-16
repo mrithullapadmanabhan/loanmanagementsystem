@@ -14,36 +14,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.backend.communication.request.ItemCreationRequest;
-import com.app.backend.communication.response.ItemCreationResponse;
-import com.app.backend.model.Item;
-import com.app.backend.service.ItemService;
+import com.app.backend.communication.request.ItemCardCreationRequest;
+import com.app.backend.communication.response.ItemCardCreationResponse;
+import com.app.backend.model.ItemCard;
+import com.app.backend.service.ItemCardService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/item")
+@RequestMapping("/api/itemcard")
 @CrossOrigin
 @RequiredArgsConstructor
-public class ItemController {
+public class ItemCardController {
 	
-	private final ItemService itemService;
+	private final ItemCardService itemCardService;
 
 	@GetMapping("/")
-	public List<Item> getItems(){
-		return itemService.getItems();
+	public List<ItemCard> get(){
+		return itemCardService.get();
 	}
 
-	@GetMapping("/employee/{employee_id}")
-	public List<Item> getItems(@PathVariable("employee_id") UUID employeeID){
-		return itemService.getItems(employeeID);
+	@GetMapping("/employee/{employeeID}")
+	public List<ItemCard> get(@PathVariable("employeeID") UUID employeeID){
+		return itemCardService.get(employeeID);
 	}
 	
-	@PostMapping("/add")
+	@PostMapping("/create")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public ResponseEntity<ItemCreationResponse> saveItem(@RequestBody ItemCreationRequest item)
+	public ResponseEntity<ItemCardCreationResponse> saveItem(@RequestBody ItemCardCreationRequest item)
 	{
-		return ResponseEntity.status(HttpStatus.CREATED).body(itemService.saveItem(item));
+		return ResponseEntity.status(HttpStatus.CREATED).body(itemCardService.create(item));
 	}
 
 }

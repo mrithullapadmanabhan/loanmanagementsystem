@@ -2,7 +2,6 @@ package com.app.backend.communication.request;
 
 import java.util.UUID;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,14 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoanCreationRequest {
+public class MakeCreationRequest {
+    
+    private UUID categoryID;
 
-    @NotNull
-    private UUID employeeID;
+    private String name;
 
-    @NotNull
-    private UUID itemID;
-
-    @NotNull
-    private UUID loanCardID;
 }

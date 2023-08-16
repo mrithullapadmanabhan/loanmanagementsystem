@@ -2,6 +2,7 @@ package com.app.backend.communication.request;
 
 import java.util.UUID;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,14 +13,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoanCreationRequest {
+public class ItemCardCreationRequest {
+    
+    @NotBlank(message="Description cannot be blank")
+	private String description;
+	
+	@NotNull(message="Value cannot be empty")
+	private Double value;
 
     @NotNull
-    private UUID employeeID;
+    private UUID makeID;
 
-    @NotNull
-    private UUID itemID;
-
-    @NotNull
-    private UUID loanCardID;
 }
