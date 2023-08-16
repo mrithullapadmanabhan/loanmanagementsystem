@@ -1,9 +1,20 @@
 import Sidebar from 'components/Sidebar'
 import React, { useRef, useContext, useEffect, useState } from 'react'
+import { getLoansApi } from 'service/loan'
 
 
 function ViewLoans() {
   const [tableData, setTableData] = useState<any[]>([])
+
+
+  useEffect(()=>{
+    getLoans()
+  })
+
+  async function getLoans(){
+    const resp=await getLoansApi()
+    setTableData(resp)
+  }
 
   return (
     <div>

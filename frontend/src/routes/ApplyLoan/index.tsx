@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getItemsCategories, getItemsFromMake, getItemsMake } from "service/loan";
+import { applyLoanApi, getItemsCategories, getItemsFromMake, getItemsMake } from "service/loan";
 
 function ApplyLoan() {
   const navigate = useNavigate();
@@ -31,7 +31,17 @@ function ApplyLoan() {
     // }
   }
 
-  function submitButton() {}
+  async function submitButton() {
+    const data={
+      'makeID': selectItemMake,
+      'employeeID': employeeId
+    }
+    const resp=await applyLoanApi(data)
+    if(resp){
+      alert("loan created successfully")
+      navigate('/loans')
+    }
+  }
 
   const handleItemCategoryChange = async (e: {
     target: { value: React.SetStateAction<string> };
