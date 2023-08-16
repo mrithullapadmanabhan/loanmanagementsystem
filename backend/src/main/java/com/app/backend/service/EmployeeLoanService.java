@@ -41,8 +41,8 @@ public class EmployeeLoanService {
     }
 
     public LoanCreationResponse create(LoanCreationRequest request) {
-        LoanCard loanCard = loanCardRepository.findById(request.getLoanCardID()).orElseThrow();
-        ItemCard itemCard = itemCardRepository.findById(request.getItemID()).orElseThrow();
+        LoanCard loanCard = loanCardRepository.findByMake(request.getMakeID()).orElseThrow();
+        ItemCard itemCard = itemCardRepository.findByMake(request.getMakeID()).orElseThrow();
 
         EmployeeLoan loan = EmployeeLoan.builder()
             .issueDate(new Date(System.currentTimeMillis()))
