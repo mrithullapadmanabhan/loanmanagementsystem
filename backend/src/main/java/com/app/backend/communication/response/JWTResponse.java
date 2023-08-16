@@ -1,5 +1,9 @@
 package com.app.backend.communication.response;
 
+import java.util.List;
+
+import com.app.backend.model.Role;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,5 +21,8 @@ public class JWTResponse {
 
     @NotBlank
     private String refreshToken;
+
+    @NotBlank
+    private List<Role> userRoles;
     
 }

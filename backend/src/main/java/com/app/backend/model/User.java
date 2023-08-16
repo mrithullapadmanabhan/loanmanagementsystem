@@ -1,6 +1,7 @@
 package com.app.backend.model;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -54,7 +55,7 @@ public class User implements UserDetails {
         joinColumns = @JoinColumn(name="user_id"),
         inverseJoinColumns = @JoinColumn(name="role_id")
     )
-    private Collection<Role> roles;
+    private List<Role> roles;
 
     @OneToOne(optional = true, cascade = CascadeType.ALL)
 	private Employee employee;

@@ -3,6 +3,9 @@ package com.app.backend.model;
 import java.util.Collection;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,6 +28,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JsonIgnore
     private UUID id;
 
     @Enumerated(EnumType.STRING)
@@ -32,6 +36,7 @@ public class Role {
     private RoleEnum name;
 
     @ManyToMany(mappedBy = "roles")
+    @JsonBackReference
     private Collection<User> users;
     
 }
