@@ -3,6 +3,7 @@ package com.app.backend.model;
 import java.sql.Date;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.CascadeType;
@@ -45,6 +46,7 @@ public class EmployeeLoan {
     private ItemCard item;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference
     private Employee employee;
 
 }

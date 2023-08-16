@@ -57,7 +57,6 @@ public class Employee {
 
 	
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JsonBackReference
 	private List<EmployeeLoan> loans;
 	
 }
