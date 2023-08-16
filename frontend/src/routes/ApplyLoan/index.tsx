@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getItemsCategories } from "service/loan";
 
 function ApplyLoan() {
   const navigate = useNavigate();
@@ -15,12 +16,12 @@ function ApplyLoan() {
   const [items, setItems] = useState<any[]>([]);
 
   useEffect(() => {
-    getItems();
+    getCategories();
   }, []);
 
-  async function getItems() {
-    // const res=await getItemsApi()
-    // console.log(res)
+  async function getCategories() {
+    const res=await getItemsCategories()
+    console.log(res)
     // if(res.success){
     //   setItems(res.data)
     //   setLoanTypeData(res.data.map((item: { category: any; })=> item.category).filter((value: any,index: any,self: { indexOf: (arg0: any) => any; })=>self.indexOf(value)==index))
@@ -50,21 +51,28 @@ function ApplyLoan() {
     <>
       <div className="p-7 sm:p-8 md:p-11">
         <div className="flex flex-col gap-8  xl:flex-row justify-start md:gap-12  xl:justify-between xl:gap-0">
-          <div className="hidden lg:flex flex-col justify-start gap-8">
+          <div className="lg:flex flex-col justify-start gap-8">
             <div className="flex flex-col gap-4">
               <div className="flex items-center">
-                <p className="font-medium text-sm text-todayQ-black">
+                <p className="font-bold text-base ">
                   Apply for loan:
                 </p>
               </div>
             </div>
             <div className="flex justify-start gap-7">
               <div className="">
-                <p className="font-medium text-sm text-todayQ-black mb-2">
+                <p className="font-medium text-sm mb-2">
+                  Employee Id
+                </p>
+              </div>
+            </div>
+            <div className="flex justify-start gap-7">
+              <div className="">
+                <p className="font-medium text-sm mb-2">
                   Select Item Category
                 </p>
                 <select
-                  className="w-full lg:w-48 h-12 px-4 text-sm text-todayQ-black border border-gray-900 rounded appearance-none"
+                  className="w-full lg:w-48 h-12 px-4 text-sm border border-gray-900 rounded appearance-none"
                   value={selectItemCategory}
                   onChange={handleItemCategoryChange}
                 >
@@ -76,14 +84,12 @@ function ApplyLoan() {
                   ))}
                 </select>
               </div>
-            </div>
-            <div className="flex justify-start gap-7">
               <div className="">
-                <p className="font-medium text-sm text-todayQ-black mb-2">
+                <p className="font-medium text-sm mb-2">
                   Select Item Make
                 </p>
                 <select
-                  className="w-full lg:w-48 h-12 px-4 text-sm text-todayQ-black border border-gray-900 rounded appearance-none"
+                  className="w-full lg:w-48 h-12 px-4 text-sm border border-gray-900 rounded appearance-none"
                   value={selectItemMake}
                   onChange={(e) => setSelectItemMake(e.target.value)}
                 >
@@ -97,30 +103,26 @@ function ApplyLoan() {
               </div>
             </div>
             <div className="flex justify-start gap-7">
+              
               <div className="">
-                <p className="font-medium text-sm text-todayQ-black mb-2">
-                  Employee Id
-                </p>
-              </div>
-              <div className="">
-                <p className="font-medium text-sm text-todayQ-black mb-2">
+                <p className="font-medium text-sm mb-2">
                   Item Description
                 </p>
                 <input
                   type="text"
-                  className="w-full lg:w-48 h-12 px-4 text-sm text-todayQ-black border border-gray-900 rounded"
+                  className="w-full lg:w-48 h-12 px-4 text-sm border border-gray-900 rounded"
                   placeholder="Description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
               <div className="">
-                <p className="font-medium text-sm text-todayQ-black mb-2">
+                <p className="font-medium text-sm mb-2">
                   Item Value
                 </p>
                 <input
                   type="text"
-                  className="w-full lg:w-48 h-12 px-4 text-sm text-todayQ-black border border-gray-900 rounded"
+                  className="w-full lg:w-48 h-12 px-4 text-sm border border-gray-900 rounded"
                   value={itemValue}
                   disabled
                 />
