@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import {
   faHome,
@@ -8,6 +8,7 @@ import {
 
 import Sidebar from 'components/Sidebar';
 import { isLoggedIn } from 'service/auth';
+import { useEffect } from 'react';
 
 
 const options = [
@@ -18,6 +19,14 @@ const options = [
 
 const Root = () => {
   const loggedIn = isLoggedIn();
+  const navigate=useNavigate()
+
+  useEffect(()=>{
+    if(!loggedIn){
+      navigate('/login')
+    }
+  },[loggedIn])
+  
 
   return (
     <>

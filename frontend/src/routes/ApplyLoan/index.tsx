@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getItemsCategories } from "service/loan";
+import { getItemsCategories, getItemsMake } from "service/loan";
 
 function ApplyLoan() {
   const navigate = useNavigate();
@@ -20,8 +20,9 @@ function ApplyLoan() {
   }, []);
 
   async function getCategories() {
-    const res=await getItemsCategories()
+    const res: any=await getItemsCategories()
     console.log(res)
+    setLoanTypeData(res)
     // if(res.success){
     //   setItems(res.data)
     //   setLoanTypeData(res.data.map((item: { category: any; })=> item.category).filter((value: any,index: any,self: { indexOf: (arg0: any) => any; })=>self.indexOf(value)==index))
@@ -31,20 +32,21 @@ function ApplyLoan() {
 
   function submitButton() {}
 
-  const handleItemCategoryChange = (e: {
+  const handleItemCategoryChange = async (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
     setSelectItemCategory(e.target.value);
-    const filteredData = items.filter(
-      (item) => item.category == e.target.value
-    );
-    const newMake = filteredData
-      .map((item: { make: any }) => item.make)
-      .filter(
-        (value: any, index: any, self: { indexOf: (arg0: any) => any }) =>
-          self.indexOf(value) == index
-      );
-    setItemMakeData(newMake);
+    const res: any= await getItemsMake(e.target.value)
+    // const filteredData = items.filter(
+    //   (item) => item.category == e.target.value
+    // );
+    // const newMake = filteredData
+    //   .map((item: { make: any }) => item.make)
+    //   .filter(
+    //     (value: any, index: any, self: { indexOf: (arg0: any) => any }) =>
+    //       self.indexOf(value) == index
+    //   );
+    setItemMakeData(res);
   };
 
   return (
@@ -78,8 +80,8 @@ function ApplyLoan() {
                 >
                   <option value="">Select Type</option>
                   {loanTypeData.map((loantype, index) => (
-                    <option key={index} value={loantype}>
-                      {loantype}
+                    <option key={index} value={loantype.id}>
+                      {loantype.name}
                     </option>
                   ))}
                 </select>
@@ -95,8 +97,8 @@ function ApplyLoan() {
                 >
                   <option value="">Select Item</option>
                   {itemMakeData.map((itemMake, index) => (
-                    <option key={index} value={itemMake}>
-                      {itemMake}
+                    <option key={index} value={itemMake.id}>
+                      {itemMake.name}
                     </option>
                   ))}
                 </select>

@@ -74,7 +74,7 @@ function SignUp() {
   const handleSubmit = async (data: any) => {
     const res = await employeeRegister(data);
     if (res) {
-      navigate("/dashboard");
+      navigate("/");
     } else {
       alert("Invalid Credentials");
     }
