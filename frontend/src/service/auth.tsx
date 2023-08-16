@@ -37,7 +37,7 @@ export const apiLogin = async (data: loginData) => {
 
 export const employeeRegister = async (data: loginData) => {
   try {
-    await api.post("/auth/register", data);
+    await api.post("/employee/register", data);
     return true;
   } catch {
     return false;
