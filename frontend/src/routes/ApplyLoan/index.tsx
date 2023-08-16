@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getItemsCategories, getItemsMake } from "service/loan";
+import { getItemsCategories, getItemsFromMake, getItemsMake } from "service/loan";
 
 function ApplyLoan() {
   const navigate = useNavigate();
@@ -8,7 +8,8 @@ function ApplyLoan() {
   const [loanTypeData, setLoanTypeData] = useState<any[]>([]);
   const [itemMakeData, setItemMakeData] = useState<any[]>([]);
   const [itemValue, setItemValue] = useState("");
-  const [employeeId, setEmployeeId] = useState("");
+  const employeeId=localStorage.getItem("employeeID");
+
   const [description, setDescription] = useState("");
   const [selectItemMake, setSelectItemMake] = useState("");
   const [selectItemCategory, setSelectItemCategory] = useState("");
@@ -37,17 +38,19 @@ function ApplyLoan() {
   }) => {
     setSelectItemCategory(e.target.value);
     const res: any= await getItemsMake(e.target.value)
-    // const filteredData = items.filter(
-    //   (item) => item.category == e.target.value
-    // );
-    // const newMake = filteredData
-    //   .map((item: { make: any }) => item.make)
-    //   .filter(
-    //     (value: any, index: any, self: { indexOf: (arg0: any) => any }) =>
-    //       self.indexOf(value) == index
-    //   );
     setItemMakeData(res);
   };
+
+  const handleMakeChange= async(e: any)=>{
+    setSelectItemMake(e.target.value)
+    console.log(e.target.value)
+    const res: any=await getItemsFromMake(e.target.value)
+    console.log(res)
+    if(res && res.length>0){
+      setDescription(res[0]?.description)
+      setItemValue(res[0]?.value)
+    }
+  }
 
   return (
     <>
@@ -64,7 +67,7 @@ function ApplyLoan() {
             <div className="flex justify-start gap-7">
               <div className="">
                 <p className="font-medium text-sm mb-2">
-                  Employee Id
+                  Employee Id: {employeeId}
                 </p>
               </div>
             </div>
@@ -93,7 +96,7 @@ function ApplyLoan() {
                 <select
                   className="w-full lg:w-48 h-12 px-4 text-sm border border-gray-900 rounded appearance-none"
                   value={selectItemMake}
-                  onChange={(e) => setSelectItemMake(e.target.value)}
+                  onChange={handleMakeChange}
                 >
                   <option value="">Select Item</option>
                   {itemMakeData.map((itemMake, index) => (

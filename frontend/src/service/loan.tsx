@@ -13,7 +13,7 @@ export const getItemsCategories = async () => {
 
 export const getItemsMake = async (category: any) => {
     try {
-      const res=await api.get(`/make/${category}`);
+      const res=await api.get(`/make/category/${category}`);
       console.log(res.data)
       return res.data;
     } catch {
@@ -21,3 +21,12 @@ export const getItemsMake = async (category: any) => {
     }
   };
   
+export const getItemsFromMake = async(make: any) => {
+    try{
+        const res=await api.get(`itemcard/make/${make}`);
+        console.log(res.data)
+        return res.data
+    } catch {
+        return []
+    }
+}
