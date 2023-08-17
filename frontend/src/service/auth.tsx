@@ -3,10 +3,7 @@ import api from "./api";
 export const isLoggedIn = () => {
   const access = localStorage.getItem("accessToken");
   return (
-    access != null &&
-    !window.location.href.includes("/login") &&
-    !window.location.href.includes("/register")
-  );
+    access != null);
 };
 
 type loginData = {

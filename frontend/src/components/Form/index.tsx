@@ -89,7 +89,7 @@ const Form = ({ onSubmit, formFields, submitButton }: FormType) => {
           </div>
         ))}
         <button
-          className={`bg-[${submitButton.color==""?"#4338CA":submitButton.color}] long-button`}
+          className={`bg-[#4338CA] long-button`}
           type="submit"
         >
           {submitButton.text}

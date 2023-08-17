@@ -22,8 +22,12 @@ const Root = () => {
   const navigate=useNavigate()
 
   useEffect(()=>{
-    if(!loggedIn){
+    console.log(loggedIn)
+    if(!loggedIn && !window.location.href.includes("/login") && !window.location.href.includes("/register")){
       navigate('/login')
+    }
+    if(loggedIn && (window.location.href.includes("/login") || window.location.href.includes("/register"))){
+      navigate('/')
     }
   },[loggedIn])
   

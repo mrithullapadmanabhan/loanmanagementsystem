@@ -81,12 +81,12 @@ function SignUp() {
   };
 
   const submitButton = {
-    text: "Login",
+    text: "Register",
     color: "#4338CA",
   };
 
   return (
-    <div className="flex justify-center  h-screen">
+    <div className="flex justify-center mb-10">
       <div className="px-5 md:px-0 md:w-[25%] mt-12">
         <div className="space-y-2">
           <h2 className="text-xl md:text-3xl font-bold text-center">
