@@ -34,7 +34,7 @@ const Login = () => {
   const handleSubmit = async (data: any) => {
     const res = await apiLogin(data);
     if (res) {
-      navigate("/");
+      navigate("/loans");
     } else {
       alert("Invalid Credentials");
     }

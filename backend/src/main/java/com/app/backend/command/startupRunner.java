@@ -121,18 +121,18 @@ public class startupRunner implements CommandLineRunner {
         itemMakeRepository.save(silver);
 
         ItemCard wardrobeWood=ItemCard.builder()
-            .description("wardrobe")
+            .description("Wardrobe")
             .value(100.0)
             .make(wood)
             .build();
 
-        ItemCard wardrobeSteel=ItemCard.builder()
-            .description("wardrobe")
-            .value(100.0)
+        ItemCard tableSteel=ItemCard.builder()
+            .description("Table")
+            .value(200.0)
             .make(metal)
             .build();
 
-        itemCardRepository.save(wardrobeSteel);
+        itemCardRepository.save(tableSteel);
         itemCardRepository.save(wardrobeWood);
 
         
