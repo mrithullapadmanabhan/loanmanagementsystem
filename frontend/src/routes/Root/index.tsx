@@ -21,11 +21,11 @@ const Root = () => {
   const loggedIn = isLoggedIn();
   const navigate=useNavigate()
 
-  useEffect(()=>{
-    if(!loggedIn){
-      navigate('/login')
-    }
-  },[loggedIn])
+  // useEffect(()=>{
+  //   if(!loggedIn){
+  //     navigate('/login')
+  //   }
+  // },[loggedIn])
   
 
   return (
