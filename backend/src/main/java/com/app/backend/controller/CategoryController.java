@@ -17,6 +17,7 @@ import com.app.backend.communication.response.CategoryCreationResponse;
 import com.app.backend.model.Category;
 import com.app.backend.service.CategoryService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -34,7 +35,7 @@ public class CategoryController {
 
 	@PostMapping("/create")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public ResponseEntity<CategoryCreationResponse> create(@RequestBody CategoryCreationRequest request) {
+	public ResponseEntity<CategoryCreationResponse> create(@Valid @RequestBody CategoryCreationRequest request) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.create(request));
 	}
 

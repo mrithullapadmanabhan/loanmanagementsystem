@@ -2,7 +2,7 @@ package com.app.backend.communication.request;
 
 import java.util.UUID;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LoanCardCreationRequest {
 
-    @NotBlank
+    @NotNull
     private UUID categoryID;
 
-    @NotBlank
+    @NotNull
     private int duration;
 
 }
