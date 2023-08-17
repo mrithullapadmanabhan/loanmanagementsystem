@@ -1,6 +1,7 @@
 package com.app.backend.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,7 @@ public class ItemCardController {
 	}
 
 	@GetMapping("/make/{makeID}")
-	public List<ItemCard> getByMakeID(@PathVariable("makeID") UUID makeID){
+	public Optional<ItemCard> getByMakeID(@PathVariable("makeID") UUID makeID){
 		return itemCardService.getByMakeID(makeID);
 	}
 

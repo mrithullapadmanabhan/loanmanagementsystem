@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getItemsCategories, getItemsFromMake, getItemsMake } from "service/loan";
+import { applyLoanApi, getItemsCategories, getItemsFromMake, getItemsMake } from "service/loan";
 
 function ApplyLoan() {
   const navigate = useNavigate();
@@ -31,7 +31,17 @@ function ApplyLoan() {
     // }
   }
 
-  function submitButton() {}
+  async function submitButton() {
+    const data={
+      'makeID': selectItemMake,
+      'employeeID': employeeId
+    }
+    const resp=await applyLoanApi(data)
+    if(resp){
+      alert("loan created successfully")
+      navigate('/loans')
+    }
+  }
 
   const handleItemCategoryChange = async (e: {
     target: { value: React.SetStateAction<string> };
@@ -46,17 +56,15 @@ function ApplyLoan() {
     console.log(e.target.value)
     const res: any=await getItemsFromMake(e.target.value)
     console.log(res)
-    if(res && res.length>0){
-      setDescription(res[0]?.description)
-      setItemValue(res[0]?.value)
-    }
+    setDescription(res?.description)
+    setItemValue(res?.value)
   }
 
   return (
     <>
       <div className="p-7 sm:p-8 md:p-11">
         <div className="flex flex-col gap-8  xl:flex-row justify-start md:gap-12  xl:justify-between xl:gap-0">
-          <div className="lg:flex flex-col justify-start gap-8">
+          <div className="flex flex-col justify-start gap-8">
             <div className="flex flex-col gap-4">
               <div className="flex items-center">
                 <p className="font-bold text-base ">

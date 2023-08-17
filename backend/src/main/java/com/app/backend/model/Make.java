@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,8 +36,8 @@ public class Make {
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
-    @OneToMany(mappedBy = "make", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "make", fetch = FetchType.LAZY)
     @JsonBackReference
-    private List<ItemCard> items;
+    private ItemCard items;
 
 }

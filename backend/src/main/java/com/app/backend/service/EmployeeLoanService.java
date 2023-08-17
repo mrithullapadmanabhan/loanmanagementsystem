@@ -11,10 +11,12 @@ import com.app.backend.model.EmployeeLoan;
 import com.app.backend.model.ItemCard;
 import com.app.backend.model.LoanCard;
 import com.app.backend.model.LoanStatusEnum;
+import com.app.backend.model.Make;
 import com.app.backend.repository.EmployeeLoanRepository;
 import com.app.backend.repository.EmployeeRepository;
 import com.app.backend.repository.ItemCardRepository;
 import com.app.backend.repository.LoanCardRepository;
+import com.app.backend.repository.MakeRepository;
 import com.app.backend.communication.request.LoanCreationRequest;
 import com.app.backend.communication.response.LoanCreationResponse;
 
@@ -28,6 +30,7 @@ public class EmployeeLoanService {
 
     private final EmployeeRepository employeeRepository;
     private final LoanCardRepository loanCardRepository;
+    private final MakeRepository makeRepository;
     private final ItemCardRepository itemCardRepository;
 
 
@@ -41,14 +44,18 @@ public class EmployeeLoanService {
     }
 
     public LoanCreationResponse create(LoanCreationRequest request) {
-        LoanCard loanCard = loanCardRepository.findById(request.getLoanCardID()).orElseThrow();
-        ItemCard itemCard = itemCardRepository.findById(request.getItemID()).orElseThrow();
+        Make make = makeRepository.findById(request.getMakeID()).orElse(null);
+        LoanCard loanCard = loanCardRepository.findByCategory(make.getCategory()).orElse(null);
+        ItemCard itemCard = itemCardRepository.findByMake(make).orElse(null);
+        Employee employee= employeeRepository.findById(request.getEmployeeID()).orElse(null);
 
         EmployeeLoan loan = EmployeeLoan.builder()
             .issueDate(new Date(System.currentTimeMillis()))
             .loan(loanCard)
             .item(itemCard)
+            .employee(employee)
             .build();
+        
 
         employeeLoanRepository.save(loan);
 
@@ -59,7 +66,7 @@ public class EmployeeLoanService {
 
     public void setCompleted(UUID employeeLoanID) {
         EmployeeLoan loan = employeeLoanRepository.findById(employeeLoanID).orElseThrow();
-        loan.setStatus(LoanStatusEnum.COMPLETED);
+        // loan.setStatus(LoanStatusEnum.COMPLETED);
         employeeLoanRepository.save(loan);
     }
 

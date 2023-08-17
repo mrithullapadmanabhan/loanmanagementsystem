@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -34,7 +35,7 @@ public class ItemCard {
 	@NotNull(message="Value cannot be empty")
 	private Double value;
 
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, optional = false)
+	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "make_id")
 	private Make make;
 	

@@ -3,6 +3,7 @@ package com.app.backend.model;
 import java.sql.Date;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.CascadeType;
@@ -31,9 +32,9 @@ public class EmployeeLoan {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Enumerated(EnumType.STRING)
-    @NotBlank
-    private LoanStatusEnum status;
+    // @Enumerated(EnumType.STRING)
+    // @NotBlank
+    // private LoanStatusEnum status;
 
     @JsonFormat(pattern = "dd-mm-yyyy")
 	private Date issueDate;
@@ -43,5 +44,9 @@ public class EmployeeLoan {
 
     @ManyToOne(cascade = CascadeType.ALL)
     private ItemCard item;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference
+    private Employee employee;
 
 }

@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class LoanCardCreationRequest {
 
     @NotBlank
-    private UUID makeID;
+    private UUID categoryID;
 
     @NotBlank
     private int duration;

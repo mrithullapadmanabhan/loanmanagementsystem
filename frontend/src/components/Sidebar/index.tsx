@@ -8,7 +8,7 @@ const Sidebar = ({ options } : any) => {
 
   return (
     <div>
-      <div className="h-full w-full  z-10 sm:w-[240px] py-10 bg-gray-100 font-poppins flex flex-col items-center gap-16  fixed top-0 left-0 transition-transform translate-x-0 ease-in-out">
+      <div className="hidden sm:block sm:pl-5 h-full w-full  z-10 sm:w-[240px] py-10 bg-gray-100 font-poppins flex flex-col items-center gap-16  fixed top-0 left-0 transition-transform translate-x-0 ease-in-out">
         <div className="flex flex-col justify-start gap-10">
           {options.map((option: any, index: any) => {
             return (

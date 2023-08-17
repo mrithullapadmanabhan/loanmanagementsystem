@@ -18,8 +18,5 @@ public class LoanCreationRequest {
     private UUID employeeID;
 
     @NotNull
-    private UUID itemID;
-
-    @NotNull
-    private UUID loanCardID;
+    private UUID makeID;
 }
