@@ -66,14 +66,14 @@ const Form = ({ onSubmit, formFields, submitButton }: FormType) => {
 
   return (
     <>
-    <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
-      {formFields.map((field) => (
-        <div className="form-group" key={field.name}>
-          <label htmlFor={field.name} className="input-label">
-            {field.label}
-          </label>
-          {field.type === "input" ? (
+      <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+        {formFields.map((field) => (
+          <div className="form-group" key={field.name}>
+            <label htmlFor="username" className="input-label">
+              {field.label}
+            </label>
             <input
+              type={field.type}
               id={field.name}
               name={field.name}
               value={formData[field.name]}
@@ -81,36 +81,21 @@ const Form = ({ onSubmit, formFields, submitButton }: FormType) => {
               placeholder={field.placeholder}
               className="input"
             />
-          ) : field.type === "dropdown" ? (
-            <select 
-              id={field.name} 
-              name={field.name} 
-              value={formData[field.name]} 
-              onChange={handleChange} 
-              className="input"
-            >
-              {field.options.map((option: any) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          ) : null}
-          {formError[field.name] !== "" && (
-            <span className="text-sm text-red-600">
-              {formError[field.name]}
-            </span>
-          )}
-        </div>
-      ))}
-      <button
-        className={`bg-[${submitButton.color}] long-button`}
-        type="submit"
-      >
-        {submitButton.text}
-      </button>
-    </form>
-  </>
+            {formError[field.name] !== "" && (
+              <span className="text-sm text-red-600">
+                {formError[field.name]}
+              </span>
+            )}
+          </div>
+        ))}
+        <button
+          className={`bg-[${submitButton.color==""?"#4338CA":submitButton.color}] long-button`}
+          type="submit"
+        >
+          {submitButton.text}
+        </button>
+      </form>
+    </>
   );
 };
 
