@@ -64,7 +64,7 @@ function ApplyLoan() {
     <>
       <div className="p-7 sm:p-8 md:p-11">
         <div className="flex flex-col gap-8  xl:flex-row justify-start md:gap-12  xl:justify-between xl:gap-0">
-          <div className="lg:flex flex-col justify-start gap-8">
+          <div className="flex flex-col justify-start gap-8">
             <div className="flex flex-col gap-4">
               <div className="flex items-center">
                 <p className="font-bold text-base ">
