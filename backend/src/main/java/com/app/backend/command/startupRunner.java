@@ -18,7 +18,6 @@ import com.app.backend.repository.CategoryRepository;
 import com.app.backend.repository.ItemCardRepository;
 import com.app.backend.repository.LoanCardRepository;
 import com.app.backend.repository.MakeRepository;
-import com.app.backend.repository.RoleRepository;
 import com.app.backend.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -28,14 +27,13 @@ import lombok.RequiredArgsConstructor;
 public class startupRunner implements CommandLineRunner {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    
-    private final CategoryRepository itemCategoryRepository;
-    private final MakeRepository itemMakeRepository;
-    private final LoanCardRepository loanCardRepository;
-    private final ItemCardRepository itemCardRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    ItemCardRepository itemCardRepository;
+    LoanCardRepository loanCardRepository;
+    MakeRepository itemMakeRepository;
+    CategoryRepository itemCategoryRepository;
 
     @Value("${luma.app.superuserEmail}")
     private String superuserEmail;
@@ -49,12 +47,10 @@ public class startupRunner implements CommandLineRunner {
         Role adminRole = Role.builder()
             .name(RoleEnum.ADMIN)
             .build();
-        roleRepository.save(adminRole);
 
         Role userRole = Role.builder()
             .name(RoleEnum.USER)
             .build();
-        roleRepository.save(userRole);
 
         User user = User.builder()
             .email(superuserEmail)

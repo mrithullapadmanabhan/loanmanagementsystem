@@ -19,13 +19,14 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EmployeeService {
-	
-	private final EmployeeRepository employeeRepository;
+
+    private final EmployeeRepository employeeRepository;
     
 	private final UserRepository userRepository;
 	private final RoleRepository roleRepository;
 	private final PasswordEncoder passwordEncoder;
 
+    
 	public EmployeeRegisterResponse register(EmployeeRegisterRequest request) {
         Employee employee = Employee.builder()
             .name(request.getName())

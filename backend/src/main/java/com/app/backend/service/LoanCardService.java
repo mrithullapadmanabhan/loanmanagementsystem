@@ -9,10 +9,8 @@ import com.app.backend.communication.request.LoanCardCreationRequest;
 import com.app.backend.communication.response.LoanCardCreationResponse;
 import com.app.backend.model.Category;
 import com.app.backend.model.LoanCard;
-import com.app.backend.model.Make;
 import com.app.backend.repository.CategoryRepository;
 import com.app.backend.repository.LoanCardRepository;
-import com.app.backend.repository.MakeRepository;
 
 import lombok.RequiredArgsConstructor;
 

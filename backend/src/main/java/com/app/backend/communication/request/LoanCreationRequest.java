@@ -19,4 +19,5 @@ public class LoanCreationRequest {
 
     @NotNull
     private UUID makeID;
+    
 }
