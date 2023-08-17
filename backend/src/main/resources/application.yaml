@@ -17,7 +17,7 @@ logging:
 # Application properties
 luma:
     app:
-        jwtSecret: bc54dac40d2a7d2c54c111c9dfe404a75c5a3ddf0e981c4c4e8dec6fa86974d6
+        jwt-secret: bc54dac40d2a7d2c54c111c9dfe404a75c5a3ddf0e981c4c4e8dec6fa86974d6
         accessExpirationTime: 600000
         refreshExpirationTime: 3600000
         superuserEmail: ashutoshshrm529@gmail.com
