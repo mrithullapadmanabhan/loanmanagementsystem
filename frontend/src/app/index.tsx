@@ -6,7 +6,8 @@ import {
   ApplyLoan,
   Login,
   Register,
-  ViewLoans
+  ViewLoans,
+  ViewEmployeeItems
 } from "routes";
 
 
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "loans",
         element: <ViewLoans />,
+      },
+      {
+        path: "employee/items",
+        element: <ViewEmployeeItems />
       }
     ],
   },

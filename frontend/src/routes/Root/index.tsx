@@ -13,7 +13,7 @@ import { useEffect } from 'react';
 
 const options = [
   { label: "View Loans", Icon: faHome, route: "/loans" },
-  { label: "View Items Purchased", Icon: faCog, route: "/items" },
+  { label: "View Items Purchased", Icon: faCog, route: "/employee/items" },
   { label: "Apply for loan", Icon: faMoneyBillWave, route: "/loan/apply" },
 ];
 
