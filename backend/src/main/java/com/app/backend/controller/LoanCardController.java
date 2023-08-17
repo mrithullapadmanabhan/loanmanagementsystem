@@ -19,6 +19,7 @@ import com.app.backend.communication.response.LoanCardCreationResponse;
 import com.app.backend.model.LoanCard;
 import com.app.backend.service.LoanCardService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -39,9 +40,9 @@ public class LoanCardController {
 		return loanCardService.get(loanCardID);
 	}
 
-	@PostMapping("/add")
+	@PostMapping("/create")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public ResponseEntity<LoanCardCreationResponse> create(@RequestBody LoanCardCreationRequest request)
+	public ResponseEntity<LoanCardCreationResponse> create(@Valid @RequestBody LoanCardCreationRequest request)
 	{
 		return ResponseEntity.status(HttpStatus.CREATED).body((loanCardService.create(request)));
 	}

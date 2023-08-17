@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +19,7 @@ import com.app.backend.communication.response.MakeCreationResponse;
 import com.app.backend.model.Make;
 import com.app.backend.service.MakeService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -40,7 +42,7 @@ public class MakeController {
 
 	@PostMapping("/create")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public ResponseEntity<MakeCreationResponse> create(MakeCreationRequest request) {
+	public ResponseEntity<MakeCreationResponse> create(@Valid @RequestBody MakeCreationRequest request) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(makeService.create(request));
 	}
 

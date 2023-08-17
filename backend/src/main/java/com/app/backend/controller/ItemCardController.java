@@ -20,6 +20,7 @@ import com.app.backend.communication.response.ItemCardCreationResponse;
 import com.app.backend.model.ItemCard;
 import com.app.backend.service.ItemCardService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -47,7 +48,7 @@ public class ItemCardController {
 	
 	@PostMapping("/create")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public ResponseEntity<ItemCardCreationResponse> saveItem(@RequestBody ItemCardCreationRequest item)
+	public ResponseEntity<ItemCardCreationResponse> saveItem(@Valid @RequestBody ItemCardCreationRequest item)
 	{
 		return ResponseEntity.status(HttpStatus.CREATED).body(itemCardService.create(item));
 	}

@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import com.app.backend.communication.response.LoanCreationResponse;
 import com.app.backend.model.EmployeeLoan;
 import com.app.backend.service.EmployeeLoanService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -29,6 +31,7 @@ public class EmployeeLoanController {
     private final EmployeeLoanService employeeLoanService;
 
     @GetMapping("/")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<EmployeeLoan> get() {
         return employeeLoanService.get();
     }
@@ -39,13 +42,14 @@ public class EmployeeLoanController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<LoanCreationResponse> create(@RequestBody LoanCreationRequest request) {
+    public ResponseEntity<LoanCreationResponse> create(@Valid @RequestBody LoanCreationRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(employeeLoanService.create(request));
     }
 
-    @GetMapping("/{loanCardID}/status/completed")
-    public ResponseEntity<String> markCompleted(@PathVariable("loanCardID") UUID employeeCardID) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Updated Successfully");
+    @GetMapping("/{loanID}/status/completed")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<String> markCompleted(@PathVariable("loanID") UUID loanID) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(employeeLoanService.setCompleted(loanID));
     }
 
 }

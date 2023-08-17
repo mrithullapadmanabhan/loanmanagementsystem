@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.app.backend.communication.request.LoanCreationRequest;
+import com.app.backend.communication.response.LoanCreationResponse;
 import com.app.backend.model.Employee;
 import com.app.backend.model.EmployeeLoan;
 import com.app.backend.model.ItemCard;
@@ -17,8 +19,6 @@ import com.app.backend.repository.EmployeeRepository;
 import com.app.backend.repository.ItemCardRepository;
 import com.app.backend.repository.LoanCardRepository;
 import com.app.backend.repository.MakeRepository;
-import com.app.backend.communication.request.LoanCreationRequest;
-import com.app.backend.communication.response.LoanCreationResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,13 +44,17 @@ public class EmployeeLoanService {
     }
 
     public LoanCreationResponse create(LoanCreationRequest request) {
-        Make make = makeRepository.findById(request.getMakeID()).orElse(null);
-        LoanCard loanCard = loanCardRepository.findByCategory(make.getCategory()).orElse(null);
-        ItemCard itemCard = itemCardRepository.findByMake(make).orElse(null);
-        Employee employee= employeeRepository.findById(request.getEmployeeID()).orElse(null);
+        Make make = makeRepository.findById(request.getMakeID()).orElseThrow();
+        System.out.println((make.getName()));
+        LoanCard loanCard = loanCardRepository.findByCategory(make.getCategory()).orElseThrow();
+        System.out.println(loanCard.getId());
+        ItemCard itemCard = itemCardRepository.findByMake(make).orElseThrow();
+        System.out.println(itemCard.getId());
+        Employee employee= employeeRepository.findById(request.getEmployeeID()).orElseThrow();
 
         EmployeeLoan loan = EmployeeLoan.builder()
             .issueDate(new Date(System.currentTimeMillis()))
+            .status(LoanStatusEnum.STARTED)
             .loan(loanCard)
             .item(itemCard)
             .employee(employee)
@@ -64,10 +68,11 @@ public class EmployeeLoanService {
             .build();
     }
 
-    public void setCompleted(UUID employeeLoanID) {
+    public String setCompleted(UUID employeeLoanID) {
         EmployeeLoan loan = employeeLoanRepository.findById(employeeLoanID).orElseThrow();
-        // loan.setStatus(LoanStatusEnum.COMPLETED);
+        loan.setStatus(LoanStatusEnum.COMPLETED);
         employeeLoanRepository.save(loan);
+        return "Updated successfully";
     }
 
 }

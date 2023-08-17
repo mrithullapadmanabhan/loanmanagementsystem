@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -52,11 +53,12 @@ public class Employee {
 	@JsonFormat(pattern = "dd-mm-yyyy")
 	private Date doj;
 	
-	@OneToOne(mappedBy = "employee", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "employee", fetch = FetchType.EAGER)
+	@JsonManagedReference
 	private User user;
 
-	
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonBackReference
 	private List<EmployeeLoan> loans;
 	
 }
