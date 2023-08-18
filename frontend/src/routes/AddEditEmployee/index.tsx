@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Form } from "components";
 import { employeeRegister } from "service/auth";
 
-function AddEmployee() {
+function AddEditEmployee({type="add"}) {
   const navigate = useNavigate();
   const formFields = [
     {
@@ -83,19 +83,25 @@ function AddEmployee() {
     }
   ];
 
-  const handleSubmit = async (data: any) => {
-    // const res = await employeeRegister(data);
-    // if (res) {
-    //   navigate("/login");
-    // } else {
-    //   alert("Invalid Credentials");
-    // }
-    alert("submitted")
-    console.log(data)
+  const addHandleSubmit = async (data: any) => {
+    const res = await employeeRegister(data);
+    if (res) {
+      alert("Employee added")
+    } else {
+      alert("Invalid Credentials");
+    }
   };
 
+  const editHandleSubmit = async (data: any) => {
+    const res = await employeeRegister(data);
+    if (res) {
+      alert("Employee added")
+    } else {
+      alert("Invalid Credentials");
+    }
+  };
   const submitButton = {
-    text: "Register",
+    text: type=="add"?"Add Employee":"Edit Employee",
     color: "#4338CA",
   };
 
@@ -104,11 +110,11 @@ function AddEmployee() {
       <div className="px-5 md:px-0 md:w-[25%] mt-12">
         <div className="space-y-2">
           <h2 className="text-xl md:text-3xl font-bold text-center">
-            Create an Employee
+            {type=="add"?"Create":"Edit"} an Employee
           </h2>
         </div>
         <Form
-          onSubmit={handleSubmit}
+          onSubmit={type=="add"?addHandleSubmit:editHandleSubmit}
           formFields={formFields}
           submitButton={submitButton}
         />
@@ -117,4 +123,4 @@ function AddEmployee() {
   );
 }
 
-export default AddEmployee;
+export default AddEditEmployee;
