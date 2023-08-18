@@ -11,7 +11,8 @@ import {
   AllEmployees,
   AllItems,
   AllLoans,
-  AddEmployee
+  AddEmployee,
+  AddItem
 } from "routes";
 
 
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "admin/addemployee",
         element: <AddEmployee />
+      },
+      {
+        path: "admin/item/add",
+        element: <AddItem />
       }
     ],
   },
