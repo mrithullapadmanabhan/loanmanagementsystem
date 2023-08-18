@@ -3,12 +3,14 @@ import { useState } from "react";
 type FormType = {
   onSubmit: (data: unknown) => unknown;
   formFields: {
+    fieldType: string;
     name: string;
-    type: string;
+    type?: null | string;
     label: string;
     placeholder: string;
     regex?: string;
     errorMessage?: string;
+    options?: null | {label: string,value: string}[];
     initialData: string | number | readonly string[];
   }[];
   submitButton: {
@@ -72,15 +74,21 @@ const Form = ({ onSubmit, formFields, submitButton }: FormType) => {
             <label htmlFor="username" className="input-label">
               {field.label}
             </label>
-            <input
-              type={field.type}
+            {field.fieldType=='input' && <input
+              type={field.type!}
               id={field.name}
               name={field.name}
               value={formData[field.name]}
               onChange={handleChange}
               placeholder={field.placeholder}
               className="input"
-            />
+            />}
+            {field.fieldType=="dropdown" && (
+               <select name={field.name} id={field.name} value={formData[field.name]} onChange={handleChange} className='input'>
+               <option value={""} disabled hidden>Select {field.name}</option>
+               {field.options?.map((option)=>(<option value={option.value} key={option.value}>{option.label}</option>))}
+              </select>
+            )}
             {formError[field.name] !== "" && (
               <span className="text-sm text-red-600">
                 {formError[field.name]}

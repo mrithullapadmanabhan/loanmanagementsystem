@@ -7,7 +7,9 @@ import {
   Login,
   Register,
   ViewLoans,
-  ViewEmployeeItems
+  ViewEmployeeItems,
+  AllEmployees,
+  AllItems
 } from "routes";
 
 
@@ -36,6 +38,14 @@ const router = createBrowserRouter([
       {
         path: "employee/items",
         element: <ViewEmployeeItems />
+      },
+      {
+        path: "admin/employee/all",
+        element: <AllEmployees />
+      },
+      {
+        path: "admin/item/all",
+        element: <AllItems />
       }
     ],
   },

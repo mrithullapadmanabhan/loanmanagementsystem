@@ -9,6 +9,7 @@ const Login = () => {
 
   const formFields = [
     {
+      fieldType: "input",
       name: "email",
       type: "text",
       label: "Email",
@@ -19,6 +20,7 @@ const Login = () => {
       initialData: "",
     },
     {
+      fieldType: "input",
       name: "password",
       type: "password",
       label: "Password",

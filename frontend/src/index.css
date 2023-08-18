@@ -23,6 +23,11 @@
   .long-button {
     @apply w-full rounded-md text-white py-2 text-center font-semibold my-5;
   }
+
+  .normal-button {
+    @apply rounded-md px-5 text-white py-2 text-center font-semibold;
+  }
+
   .heading{
     @apply font-500 text-3xl
   }

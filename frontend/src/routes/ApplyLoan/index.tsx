@@ -74,7 +74,7 @@ function ApplyLoan() {
                 </div>
 
                 <div className="flex flex-wrap justify-start gap-6 md:gap-7">
-                    <div className="w-full md:w-48">
+                    <div className="w-full">
                         <p className="font-medium text-sm sm:text-base mb-2">
                             Employee Id: {employeeId}
                         </p>
@@ -124,8 +124,8 @@ function ApplyLoan() {
                         </p>
                         <input 
                             type="text" 
+                            disabled
                             className="w-full h-12 px-4 py-2 text-sm border border-gray-900 rounded focus:ring focus:ring-gray-300" 
-                            placeholder="Description" 
                             value={description} 
                             onChange={(e) => setDescription(e.target.value)}
                         />

@@ -7,6 +7,7 @@ function SignUp() {
   const navigate = useNavigate();
   const formFields = [
     {
+      fieldType: "input",
       name: "email",
       type: "text",
       label: "Email",
@@ -17,6 +18,7 @@ function SignUp() {
       initialData: "",
     },
     {
+      fieldType: "input",
       name: "password",
       type: "password",
       label: "Password",
@@ -28,6 +30,7 @@ function SignUp() {
       initialData: "",
     },
     {
+      fieldType: "input",
       name: "name",
       type: "text",
       label: "Name",
@@ -35,6 +38,7 @@ function SignUp() {
       initialData: "",
     },
     {
+      fieldType: "input",
       name: "designation",
       type: "text",
       label: "Designation",
@@ -42,6 +46,7 @@ function SignUp() {
       initialData: "",
     },
     {
+      fieldType: "input",
       name: "department",
       type: "text",
       label: "Department",
@@ -49,13 +54,19 @@ function SignUp() {
       initialData: "",
     },
     {
+      fieldType: "dropdown",
       name: "gender",
-      type: "text",
+      options: [
+        {value: "male", label: "Male"},
+        {value: "female", label: "Female"},
+        {value: "other", label: "Other"}
+      ],
       label: "Gender",
       placeholder: "Male",
       initialData: "",
     },
     {
+      fieldType: "input",
       name: "dob",
       type: "date",
       label: "Date of Birth",
@@ -63,6 +74,7 @@ function SignUp() {
       initialData: "",
     },
     {
+      fieldType: "input",
       name: "doj",
       type: "date",
       label: "Date of Joining",
