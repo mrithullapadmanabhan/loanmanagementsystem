@@ -17,7 +17,17 @@ export const getItemsApi = async () => {
     return res.data;
   } catch {
     return [];
-  }
+  } 
 };
 
+
+export const addItemApi = async(data: any) => {
+  try{
+      const res=await api.post(`loan/create`,data);
+      console.log(res.data)
+      return true
+  } catch {
+      return false
+  }
+}
 
