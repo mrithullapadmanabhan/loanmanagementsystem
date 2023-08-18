@@ -3,14 +3,11 @@ import { useNavigate } from "react-router-dom";
 import {getItemsCategories, getItemsMake } from "service/loan";
 import {addItemApi} from 'service/admin'
 
-function AddItem() {
+function AddEditLoanCard({type="add"}) {
   const navigate = useNavigate();
 
   const [loanTypeData, setLoanTypeData] = useState<any[]>([]);
-  const [itemMakeData, setItemMakeData] = useState<any[]>([]);
-  const [itemValue, setItemValue] = useState(0);
-  const [description, setDescription] = useState("");
-  const [selectItemMake, setSelectItemMake] = useState("");
+  const [duration, setDuration] = useState(0);
   const [selectItemCategory, setSelectItemCategory] = useState("");
 
 
@@ -24,13 +21,24 @@ function AddItem() {
     setLoanTypeData(res)
   }
 
-  async function submitButton() {
+  async function addSubmitButton() {
     const data={
 
     }
     const resp=await addItemApi(data)
     if(resp){
-      alert("loan created successfully")
+      alert("Loan Card created successfully")
+      navigate('/admin/item/all')
+    }
+  }
+
+  async function editSubmitButton() {
+    const data={
+
+    }
+    const resp=await addItemApi(data)
+    if(resp){
+      alert("Loan Card edited successfully")
       navigate('/admin/item/all')
     }
   }
@@ -39,14 +47,9 @@ function AddItem() {
     target: { value: React.SetStateAction<string> };
   }) => {
     setSelectItemCategory(e.target.value);
-    const res: any= await getItemsMake(e.target.value)
-    setItemMakeData(res);
   };
 
-  const handleMakeChange= async(e: any)=>{
-    setSelectItemMake(e.target.value)
-    console.log(e.target.value)
-  }
+
 
   return (
     <>
@@ -56,7 +59,7 @@ function AddItem() {
                 <div className="flex flex-col gap-4">
                     <div className="flex items-center">
                         <p className="font-bold text-base sm:text-lg">
-                            Add an Item:
+                            {type=="add"?"Add":"Edit"} an Loan card:
                         </p>
                     </div>
                 </div>
@@ -78,46 +81,18 @@ function AddItem() {
                             ))}
                         </select>
                     </div>
-                    <div className="w-full md:w-48">
-                        <p className="font-medium text-sm sm:text-base mb-2">
-                            Select Item Make
-                        </p>
-                        <select 
-                            className="w-full h-12 px-4 py-2 text-sm border border-gray-900 rounded appearance-none focus:ring focus:ring-gray-300 bg-white" 
-                            value={selectItemMake} 
-                            onChange={handleMakeChange}
-                        >
-                            <option value="">Select Item</option>
-                            {itemMakeData.map((itemMake, index) => (
-                                <option key={index} value={itemMake.id}>
-                                    {itemMake.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
                 </div>
 
                 <div className="flex flex-wrap justify-start gap-6 md:gap-7">
                     <div className="w-full md:w-48">
                         <p className="font-medium text-sm sm:text-base mb-2">
-                            Item Description
-                        </p>
-                        <input 
-                            type="text" 
-                            className="w-full h-12 px-4 py-2 text-sm border border-gray-900 rounded focus:ring focus:ring-gray-300" 
-                            value={description} 
-                            onChange={(e) => setDescription(e.target.value)}
-                        />
-                    </div>
-                    <div className="w-full md:w-48">
-                        <p className="font-medium text-sm sm:text-base mb-2">
-                            Item Value
+                            Duration (In Months)
                         </p>
                         <input 
                             type="number" 
                             className="w-full h-12 px-4 py-2 text-sm border border-gray-900 rounded focus:ring focus:ring-gray-300" 
-                            value={itemValue}                           
-                            onChange={(e) => setItemValue(parseFloat(e.target.value))}
+                            value={duration}                           
+                            onChange={(e) => setDuration(parseInt(e.target.value))}
                         />
                     </div>
                 </div>
@@ -126,8 +101,8 @@ function AddItem() {
                     <div className="w-full md:w-48">
                         <button
                             className="w-full h-12 text-center font-medium text-xs sm:text-sm py-2 px-8 rounded bg-[#00A141] text-white"
-                            onClick={submitButton}>
-                            Add Item
+                            onClick={type=="add"?addSubmitButton:editSubmitButton}>
+                            {type=="add"?"Add Loan card":"Edit Loan card"}
                         </button>
                     </div>
                 </div>
@@ -138,4 +113,4 @@ function AddItem() {
   );
 }
 
-export default AddItem;
+export default AddEditLoanCard;

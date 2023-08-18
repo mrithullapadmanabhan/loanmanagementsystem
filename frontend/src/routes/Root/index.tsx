@@ -11,10 +11,16 @@ import { isLoggedIn } from 'service/auth';
 import { useEffect } from 'react';
 
 
-const options = [
+const employeeOptions = [
   { label: "View Loans", Icon: faHome, route: "/loans" },
   { label: "View Items Purchased", Icon: faCog, route: "/employee/items" },
   { label: "Apply for loan", Icon: faMoneyBillWave, route: "/loan/apply" },
+];
+
+const adminOptions = [
+  { label: "View Loan cards", Icon: faHome, route: "/admin/loan-card/all" },
+  { label: "View Employees", Icon: faCog, route: "admin/employee/all" },
+  { label: "View Items", Icon: faMoneyBillWave, route: "admin/item/all" },
 ];
 
 const Root = () => {
@@ -31,7 +37,7 @@ const Root = () => {
   return (
     <>
       <div className={ loggedIn ? 'overflow-hidden ml-0 sm:ml-[240px]' : 'overflow-hidden ml-0' }>
-        { loggedIn && <Sidebar options = {options} /> }
+        { loggedIn && <Sidebar options = {employeeOptions} /> }
         <Outlet />
       </div>
     </>
