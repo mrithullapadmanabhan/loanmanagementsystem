@@ -1,6 +1,9 @@
+import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Sidebar from 'components/Sidebar'
 import Table from 'components/Table'
 import React, { useRef, useContext, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { getLoansApi } from 'service/admin'
 
 
@@ -32,12 +35,16 @@ function AllLoans() {
   ]
   const actions: any=[
     {
-      label: "Edit",
-      onClick: ()=>{},
+      label: <FontAwesomeIcon icon={faPenToSquare} />,
+      onClick: (id: any)=>{
+        console.log(id)
+      },
     },
     {
-      label: "Delete",
-      onClick: ()=>{}
+      label: <FontAwesomeIcon icon={faTrash} />,
+      onClick: (id: any)=>{
+        console.log(id)
+      },
     }
   ]
 
@@ -58,7 +65,7 @@ function AllLoans() {
     
           <div className='flex gap-10 mb-5 justify-between'>
             <h1 className=" text-xl font-semibold">All Loans</h1>
-            <button className={`bg-[#4338CA] normal-button`}>Add Loan</button>
+            <Link to='/admin/loan-card/add'><button className={`bg-[#4338CA] normal-button`}>Add Loan</button></Link>
           </div>
           <Table fields={fields} data={data} actions={actions}/>
         </div>

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenGenerator {
 
-    @Value("${luma.app.jwtSecret}}")
+    @Value("${luma.app.jwt-secret}}")
     private String secretKey;
 
     public String generateToken(String subject) {
