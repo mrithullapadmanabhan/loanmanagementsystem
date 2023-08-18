@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+
+const baseURL= "http://localhost:8080/api"
 const api = axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL: baseURL,
 });
 
 api.interceptors.request.use(
@@ -26,7 +28,7 @@ api.interceptors.response.use(
 
       try {
         const refreshToken = localStorage.getItem("refreshToken");
-        const res = await axios.post("/auth/refresh", { refreshToken });
+        const res = await axios.post(`${baseURL}/auth/refresh`, { refreshToken });
 
         const { accessToken } = res.data.accessToken;
         localStorage.setItem("accessToken", accessToken);

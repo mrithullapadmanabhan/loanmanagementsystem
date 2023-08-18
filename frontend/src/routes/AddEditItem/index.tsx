@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {getItemsCategories, getItemsMake } from "service/loan";
-import {addItemApi} from 'service/admin'
+import {addItemApi,editItemApi} from 'service/admin'
 
 function AddEditItem({type="add"}) {
   const navigate = useNavigate();
@@ -12,6 +12,7 @@ function AddEditItem({type="add"}) {
   const [description, setDescription] = useState("");
   const [selectItemMake, setSelectItemMake] = useState("");
   const [selectItemCategory, setSelectItemCategory] = useState("");
+  const {id}=useParams()
 
 
   useEffect(() => {
@@ -26,7 +27,9 @@ function AddEditItem({type="add"}) {
 
   async function addSubmitButton() {
     const data={
-
+        description: description,
+        value: itemValue,
+        makeID: selectItemMake
     }
     const resp=await addItemApi(data)
     if(resp){
@@ -37,9 +40,11 @@ function AddEditItem({type="add"}) {
 
   async function editSubmitButton() {
     const data={
-
+        description: description,
+        value: itemValue,
+        makeID: selectItemMake
     }
-    const resp=await addItemApi(data)
+    const resp=await editItemApi(id,data)
     if(resp){
       alert("Item edited successfully")
       navigate('/admin/item/all')

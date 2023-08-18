@@ -33,7 +33,7 @@ export const getItemsApi = async () => {
 
 export const addItemApi = async(data: any) => {
   try{
-      const res=await api.post(`loan/create`,data);
+      const res=await api.post(`itemcard/create`,data);
       console.log(res.data)
       return true
   } catch {
@@ -41,3 +41,34 @@ export const addItemApi = async(data: any) => {
   }
 }
 
+export const editItemApi = async(id: any,data: any) => {
+  try{
+      const res=await api.put(`itemcard/update/${id}`,data);
+      console.log(res.data)
+      return true
+  } catch {
+      return false
+  }
+}
+
+export const addLoanCardApi = async(data: any) => {
+  try{
+      const res=await api.post(`loancard/create`,data);
+      console.log(res.data)
+      return true
+  } catch {
+      return false
+  }
+}
+
+
+
+export const editLoanCardApi = async(id:any,data: any) => {
+  try{
+      const res=await api.put(`loancard/update/${id}`,data);
+      console.log(res.data)
+      return true
+  } catch {
+      return false
+  }
+}

@@ -65,6 +65,7 @@ public class JWTAuthFilter extends OncePerRequestFilter{
             response.getWriter().write("Token has expired");
 
         }catch(Exception e){
+            System.out.println(e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("Internal Server Error");
         }
