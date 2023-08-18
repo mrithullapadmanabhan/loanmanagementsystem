@@ -1,6 +1,9 @@
+import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Sidebar from 'components/Sidebar'
 import Table from 'components/Table'
 import React, { useRef, useContext, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { getItemsApi } from 'service/admin'
 
 
@@ -39,12 +42,16 @@ function AllItems() {
   ]
   const actions: any=[
     {
-      label: "Edit",
-      onClick: ()=>{},
+      label: <FontAwesomeIcon icon={faPenToSquare} />,
+      onClick: (id: any)=>{
+        console.log(id)
+      },
     },
     {
-      label: "Delete",
-      onClick: ()=>{}
+      label: <FontAwesomeIcon icon={faTrash} />,
+      onClick: (id: any)=>{
+        console.log(id)
+      },
     }
   ]
 
@@ -70,7 +77,7 @@ function AllItems() {
     
           <div className='flex gap-10 mb-5 justify-between'>
             <h1 className=" text-xl font-semibold">All Items</h1>
-            <button className={`bg-[#4338CA] normal-button`}>Add Item</button>
+            <Link to="/admin/item/add"><button className={`bg-[#4338CA] normal-button`}>Add Item</button></Link>
           </div>
           <Table fields={fields} data={data} actions={actions}/>
         </div>

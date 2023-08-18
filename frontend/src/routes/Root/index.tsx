@@ -3,28 +3,30 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import {
   faHome,
   faMoneyBillWave,
-  faCog,
+  faChair,
+  faUser
 } from "@fortawesome/free-solid-svg-icons";
 
 import Sidebar from 'components/Sidebar';
-import { isLoggedIn } from 'service/auth';
+import { isLoggedIn,isAdmin } from 'service/auth';
 import { useEffect } from 'react';
 
 
 const employeeOptions = [
-  { label: "View Loans", Icon: faHome, route: "/loans" },
-  { label: "View Items Purchased", Icon: faCog, route: "/employee/items" },
+  { label: "View Loans", Icon: faMoneyBillWave, route: "/loans" },
+  { label: "View Items Purchased", Icon: faChair, route: "/employee/items" },
   { label: "Apply for loan", Icon: faMoneyBillWave, route: "/loan/apply" },
 ];
 
 const adminOptions = [
-  { label: "View Loan cards", Icon: faHome, route: "/admin/loan-card/all" },
-  { label: "View Employees", Icon: faCog, route: "admin/employee/all" },
-  { label: "View Items", Icon: faMoneyBillWave, route: "admin/item/all" },
+  { label: "View Loan cards", Icon: faMoneyBillWave, route: "/admin/loan-card/all" },
+  { label: "View Employees", Icon: faUser, route: "admin/employee/all" },
+  { label: "View Items", Icon: faChair, route: "admin/item/all" },
 ];
 
 const Root = () => {
   const loggedIn = isLoggedIn();
+  const admin=isAdmin();
   const navigate=useNavigate()
 
   useEffect(()=>{
@@ -37,7 +39,7 @@ const Root = () => {
   return (
     <>
       <div className={ loggedIn ? 'overflow-hidden ml-0 sm:ml-[240px]' : 'overflow-hidden ml-0' }>
-        { loggedIn && <Sidebar options = {employeeOptions} /> }
+        { loggedIn && <Sidebar options = {admin?adminOptions:employeeOptions} /> }
         <Outlet />
       </div>
     </>

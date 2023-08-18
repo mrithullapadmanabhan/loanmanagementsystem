@@ -35,6 +35,12 @@ export const apiLogin = async (data: loginData) => {
   }
 };
 
+export const isAdmin= ()=>{
+  const roles = localStorage.getItem("roles");
+  const roleArray = roles?.split(",");
+  return roleArray?.includes("ADMIN")
+}
+
 export const employeeRegister = async (data: loginData) => {
   try {
     await api.post("/employee/register", data);
