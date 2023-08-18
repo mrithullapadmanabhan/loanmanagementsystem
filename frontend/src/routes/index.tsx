@@ -9,3 +9,4 @@ export { default as AllEmployees} from './AllEmployees';
 export { default as AllItems} from './AllItems';
 export { default as AllLoans} from './AllLoans';
 export { default as AddEmployee} from './AddEmployee';
+export { default as AddItem} from './AddItem'
