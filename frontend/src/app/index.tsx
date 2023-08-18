@@ -50,7 +50,7 @@ const router = createBrowserRouter([
         element: <AllItems />
       },
       {
-        path: "admin/loan/all",
+        path: "admin/loan-card/all",
         element: <AllLoans />
       },
       {
