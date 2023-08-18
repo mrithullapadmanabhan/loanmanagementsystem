@@ -4,8 +4,10 @@ export { default as Login } from "./Login";
 export { default as Register } from "./Register";
 export { default as ApplyLoan } from "./ApplyLoan";
 export { default as ViewLoans } from "./ViewLoans";
-export { default as ViewEmployeeItems} from './ViewEmployeeItems'
-export { default as AllEmployees} from './AllEmployees'
-export { default as AllItems} from './AllItems'
+export { default as ViewEmployeeItems} from './ViewEmployeeItems';
+export { default as AllEmployees} from './AllEmployees';
+export { default as AllItems} from './AllItems';
+export { default as AllLoans} from './AllLoans';
+export { default as AddEmployee} from './AddEmployee';
 export { default as AddEditItem} from './AddEditItem'
 export { default as AddEditLoanCard} from './AddEditLoanCard'
