@@ -1,20 +1,18 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { applyLoanApi, getItemsCategories, getItemsFromMake, getItemsMake } from "service/loan";
+import {getItemsCategories, getItemsMake } from "service/loan";
+import {addItemApi} from 'service/admin'
 
-function ApplyLoan() {
+function AddItem() {
   const navigate = useNavigate();
 
   const [loanTypeData, setLoanTypeData] = useState<any[]>([]);
   const [itemMakeData, setItemMakeData] = useState<any[]>([]);
-  const [itemValue, setItemValue] = useState("");
-  const employeeId=localStorage.getItem("employeeID");
-
+  const [itemValue, setItemValue] = useState(0);
   const [description, setDescription] = useState("");
   const [selectItemMake, setSelectItemMake] = useState("");
   const [selectItemCategory, setSelectItemCategory] = useState("");
 
-  const [items, setItems] = useState<any[]>([]);
 
   useEffect(() => {
     getCategories();
@@ -24,22 +22,16 @@ function ApplyLoan() {
     const res: any=await getItemsCategories()
     console.log(res)
     setLoanTypeData(res)
-    // if(res.success){
-    //   setItems(res.data)
-    //   setLoanTypeData(res.data.map((item: { category: any; })=> item.category).filter((value: any,index: any,self: { indexOf: (arg0: any) => any; })=>self.indexOf(value)==index))
-    //   setItemMakeData(res.data.map((item: { make: any; })=> item.make).filter((value: any,index: any,self: { indexOf: (arg0: any) => any; })=>self.indexOf(value)==index))
-    // }
   }
 
   async function submitButton() {
     const data={
-      'makeID': selectItemMake,
-      'employeeID': employeeId
+
     }
-    const resp=await applyLoanApi(data)
+    const resp=await addItemApi(data)
     if(resp){
       alert("loan created successfully")
-      navigate('/loans')
+      navigate('/admin/item/all')
     }
   }
 
@@ -54,10 +46,6 @@ function ApplyLoan() {
   const handleMakeChange= async(e: any)=>{
     setSelectItemMake(e.target.value)
     console.log(e.target.value)
-    const res: any=await getItemsFromMake(e.target.value)
-    console.log(res)
-    setDescription(res?.description)
-    setItemValue(res?.value)
   }
 
   return (
@@ -68,15 +56,7 @@ function ApplyLoan() {
                 <div className="flex flex-col gap-4">
                     <div className="flex items-center">
                         <p className="font-bold text-base sm:text-lg">
-                            Apply for loan:
-                        </p>
-                    </div>
-                </div>
-
-                <div className="flex flex-wrap justify-start gap-6 md:gap-7">
-                    <div className="w-full">
-                        <p className="font-medium text-sm sm:text-base mb-2">
-                            Employee Id: {employeeId}
+                            Add an Item:
                         </p>
                     </div>
                 </div>
@@ -124,7 +104,6 @@ function ApplyLoan() {
                         </p>
                         <input 
                             type="text" 
-                            disabled
                             className="w-full h-12 px-4 py-2 text-sm border border-gray-900 rounded focus:ring focus:ring-gray-300" 
                             value={description} 
                             onChange={(e) => setDescription(e.target.value)}
@@ -135,10 +114,10 @@ function ApplyLoan() {
                             Item Value
                         </p>
                         <input 
-                            type="text" 
+                            type="number" 
                             className="w-full h-12 px-4 py-2 text-sm border border-gray-900 rounded focus:ring focus:ring-gray-300" 
-                            value={itemValue} 
-                            disabled
+                            value={itemValue}                           
+                            onChange={(e) => setItemValue(parseFloat(e.target.value))}
                         />
                     </div>
                 </div>
@@ -148,7 +127,7 @@ function ApplyLoan() {
                         <button
                             className="w-full h-12 text-center font-medium text-xs sm:text-sm py-2 px-8 rounded bg-[#00A141] text-white"
                             onClick={submitButton}>
-                            Apply Loan
+                            Add Item
                         </button>
                     </div>
                 </div>
@@ -159,4 +138,4 @@ function ApplyLoan() {
   );
 }
 
-export default ApplyLoan;
+export default AddItem;
