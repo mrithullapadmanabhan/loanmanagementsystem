@@ -9,11 +9,7 @@ import { getLoansApi } from 'service/admin'
 
 function AllLoans() {
   const [data, setTableData] = useState<any[]>([
-    {
-      id: "1223445",
-      category: "Furniture",
-      duration:"5"
-    }
+    
   ])
   const fields: any=[
     {
