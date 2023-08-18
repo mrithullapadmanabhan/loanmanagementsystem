@@ -10,18 +10,18 @@ import { getLoansApi } from 'service/admin'
 function AllLoans() {
   const [data, setTableData] = useState<any[]>([
     {
-      loanId: "1223445",
-      loanType: "Furniture",
+      id: "1223445",
+      category: "Furniture",
       duration:"5"
     }
   ])
   const fields: any=[
     {
-      key: "loanId",
+      key: "id",
       label: "loanId"
     },
     {
-      key:"loanType",
+      key:"category",
       label: "loanType"
     },
     {
@@ -55,7 +55,11 @@ function AllLoans() {
 
   async function getLoans(){
     const resp=await getLoansApi()
-    // setTableData(resp)
+    const data=resp.map((loancard: any) => ({
+      ...loancard,
+      category: loancard.category.name
+    }));
+    setTableData(data);
   }
 
   return (

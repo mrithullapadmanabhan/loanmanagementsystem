@@ -1,6 +1,6 @@
 import Sidebar from 'components/Sidebar'
 import React, { useRef, useContext, useEffect, useState } from 'react'
-import { getLoansApi } from 'service/loan'
+import { getEmployeeLoansApi } from 'service/loan'
 
 
 function ViewLoans() {
@@ -12,7 +12,7 @@ function ViewLoans() {
   },[])
 
   async function getLoans(){
-    const resp=await getLoansApi()
+    const resp=await getEmployeeLoansApi()
     setTableData(resp)
   }
 
