@@ -9,6 +9,16 @@ export const getEmployeesApi = async () => {
     return [];
   }
 };
+//returns all the loans details including loanid,loantype,duration
+export const getLoansApi = async () => {
+  try {
+    const res=await api.get("/loans/");
+    console.log(res.data)
+    return res.data;
+  } catch {
+    return [];
+  }
+};
 
 export const getItemsApi = async () => {
   try {

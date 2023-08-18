@@ -9,7 +9,8 @@ import {
   ViewLoans,
   ViewEmployeeItems,
   AllEmployees,
-  AllItems
+  AllItems,
+  AllLoans
 } from "routes";
 
 
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: "admin/item/all",
         element: <AllItems />
+      },
+      {
+        path: "admin/loan/all",
+        element: <AllLoans />
       }
     ],
   },
