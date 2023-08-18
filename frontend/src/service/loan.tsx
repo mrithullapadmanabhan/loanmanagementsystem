@@ -32,7 +32,7 @@ export const getItemsFromMake = async(make: any) => {
 }
 
 
-export const getLoansApi = async() => {
+export const getEmployeeLoansApi = async() => {
     try{
         const employee=localStorage.getItem('employeeID')
         const res=await api.get(`loan/employee/${employee}`);

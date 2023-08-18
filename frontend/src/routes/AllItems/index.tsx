@@ -13,12 +13,24 @@ function AllItems() {
   ])
   const fields: any=[
     {
-      key: "itemId",
+      key: "id",
       label: "Item Id"
     },
     {
-      key:"name",
-      label: "Name"
+      key: "description",
+      label: "description"
+    },
+    {
+      key: "value",
+      label: "value"
+    },
+    {
+      key:"make",
+      label: "make"
+    },
+    {
+      key: "category",
+      label: "category"
     },
     {
       key: "actions",
@@ -43,7 +55,12 @@ function AllItems() {
 
   async function getItems(){
     const resp=await getItemsApi()
-    // setTableData(resp)
+    const data=resp.map((itemcard: any) => ({
+      ...itemcard,
+      category: itemcard.make.category.name,
+      make: itemcard.make.name
+    }));
+    setTableData(data);
   }
 
   return (
