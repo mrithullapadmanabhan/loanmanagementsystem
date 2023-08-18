@@ -76,8 +76,8 @@ function AllItems() {
         <div className="w-full  flex flex-col justify-center gap-4 mb-6 lg:mb-0">
     
           <div className='flex gap-10 mb-5 justify-between'>
-            <h1 className=" text-xl font-semibold">All Items</h1>
-            <Link to="/admin/item/add"><button className={`bg-[#4338CA] normal-button`}>Add Item</button></Link>
+            <h1 className=" text-xl font-semibold">All Itemcards</h1>
+            <Link to="/admin/item/add"><Link to="/admin/item/add"><button className={`bg-[#4338CA] normal-button`}>Add ItemCard</button></Link></Link>
           </div>
           <Table fields={fields} data={data} actions={actions}/>
         </div>

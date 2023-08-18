@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.app.backend.communication.request.EmployeeRegisterRequest;
 import com.app.backend.communication.response.EmployeeRegisterResponse;
 import com.app.backend.model.Employee;
+import com.app.backend.model.LoanCard;
 import com.app.backend.model.RoleEnum;
 import com.app.backend.model.User;
 import com.app.backend.repository.EmployeeRepository;
@@ -26,6 +27,9 @@ public class EmployeeService {
 	private final RoleRepository roleRepository;
 	private final PasswordEncoder passwordEncoder;
 
+    public List<Employee> get() {
+		return employeeRepository.findAll();
+	}
     
 	public EmployeeRegisterResponse register(EmployeeRegisterRequest request) {
         Employee employee = Employee.builder()

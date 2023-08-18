@@ -2,7 +2,7 @@ import api from "./api";
 
 export const getEmployeesApi = async () => {
   try {
-    const res=await api.get("/category/");
+    const res=await api.get("/employee/");
     console.log(res.data)
     return res.data;
   } catch {

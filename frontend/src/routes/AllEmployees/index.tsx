@@ -16,12 +16,20 @@ function AllEmployees() {
   ])
   const fields: any=[
     {
-      key: "employeeId",
+      key: "id",
       label: "Employee Id"
     },
     {
       key:"name",
       label: "Name"
+    },
+    {
+      key: "designation",
+      label: "designation"
+    },
+    {
+      key: "department",
+      label: "department"
     },
     {
       key: "actions",
@@ -50,7 +58,7 @@ function AllEmployees() {
 
   async function getEmployees(){
     const resp=await getEmployeesApi()
-    // setTableData(resp)
+    setTableData(resp)
   }
 
   return (
