@@ -12,7 +12,7 @@ export const getEmployeesApi = async () => {
 //returns all the loans details including loanid,loantype,duration
 export const getLoansApi = async () => {
   try {
-    const res=await api.get("/loans/");
+    const res=await api.get("/loancard/");
     console.log(res.data)
     return res.data;
   } catch {
@@ -22,7 +22,7 @@ export const getLoansApi = async () => {
 
 export const getItemsApi = async () => {
   try {
-    const res=await api.get("/category/");
+    const res=await api.get("/itemcard/");
     console.log(res.data)
     return res.data;
   } catch {
