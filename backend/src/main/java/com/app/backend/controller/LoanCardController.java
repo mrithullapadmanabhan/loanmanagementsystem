@@ -7,15 +7,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.backend.communication.request.LoanCardCreationRequest;
-import com.app.backend.communication.response.LoanCardCreationResponse;
+import com.app.backend.communication.request.LoanCardCreateUpdateRequest;
 import com.app.backend.model.LoanCard;
 import com.app.backend.service.LoanCardService;
 
@@ -28,23 +29,38 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LoanCardController {
 
-	private final LoanCardService loanCardService;
+	private final LoanCardService service;
 
-	@GetMapping("/")
-	public List<LoanCard> get(){
-		return loanCardService.get();
+	@GetMapping("")
+	public ResponseEntity<List<LoanCard>> get() {
+		return ResponseEntity.ok(service.get());
 	}
 
-	@GetMapping("/{loanID}")
-	public LoanCard get(@PathVariable("loanID") UUID loanCardID){
-		return loanCardService.get(loanCardID);
+	@GetMapping("/{id}")
+	public ResponseEntity<LoanCard> get(@PathVariable("id") UUID id) {
+		return ResponseEntity.ok(service.get(id));
 	}
 
-	@PostMapping("/create")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public ResponseEntity<LoanCardCreationResponse> create(@Valid @RequestBody LoanCardCreationRequest request)
-	{
-		return ResponseEntity.status(HttpStatus.CREATED).body((loanCardService.create(request)));
+	@PostMapping("/create")
+	public ResponseEntity<LoanCard> create(@Valid @RequestBody LoanCardCreateUpdateRequest request) {
+		return ResponseEntity.status(HttpStatus.CREATED).body((service.create(request)));
+	}
+
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@PutMapping("/{id}")
+	public ResponseEntity<LoanCard> update(
+			@PathVariable("id") UUID id,
+			@Valid @RequestBody LoanCardCreateUpdateRequest request) {
+		return ResponseEntity.ok(service.update(id, request));
+	}
+
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> delete(
+			@PathVariable("id") UUID id) {
+		service.delete(id);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
 	}
 
 }

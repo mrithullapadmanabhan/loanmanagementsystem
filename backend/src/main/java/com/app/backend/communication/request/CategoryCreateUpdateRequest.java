@@ -1,6 +1,4 @@
-package com.app.backend.communication.response;
-
-import java.util.UUID;
+package com.app.backend.communication.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoanCardCreationResponse {
+public class CategoryCreateUpdateRequest {
 
-    private UUID loanCardID;
+    private String name;
 
 }

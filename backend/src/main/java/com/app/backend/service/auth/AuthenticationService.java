@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.app.backend.communication.request.JWTLoginRequest;
 import com.app.backend.communication.request.JWTRefreshRequest;
 import com.app.backend.communication.response.JWTResponse;
+import com.app.backend.exception.ResourceNotFoundException;
 import com.app.backend.model.User;
 import com.app.backend.repository.UserRepository;
 
@@ -23,14 +24,13 @@ public class AuthenticationService {
 
     public JWTResponse login(JWTLoginRequest request) {
         authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                request.getEmail(),
-                request.getPassword()
-            )
-        );
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()));
 
-        User user = repository.findByEmail(request.getEmail()).orElseThrow();
-        
+        User user = repository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User does not exist"));
+
         return authResponse(user);
     }
 
@@ -39,7 +39,8 @@ public class AuthenticationService {
         String userEmail = jwtService.extractUsername(refreshToken);
 
         if (userEmail != null) {
-            User user = repository.findByEmail(userEmail).orElseThrow();
+            User user = repository.findByEmail(userEmail)
+                    .orElseThrow(() -> new ResourceNotFoundException("User does not exist"));
 
             if (jwtService.isTokenValid(refreshToken, user)) {
                 return authRefreshResponse(user, refreshToken);
@@ -59,11 +60,11 @@ public class AuthenticationService {
         String jwtToken = jwtService.generateToken(user);
 
         return JWTResponse.builder()
-            .accessToken(jwtToken)
-            .refreshToken(refreshToken)
-            .userRoles(user.getRoles())
-            .employeeID(user.getEmployee() != null ? user.getEmployee().getId() : null)
-            .build();
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
+                .userRoles(user.getRoles())
+                .employeeID(user.getEmployee() != null ? user.getEmployee().getId() : null)
+                .build();
     }
 
 }
