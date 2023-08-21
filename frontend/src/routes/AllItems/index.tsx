@@ -83,7 +83,7 @@ function AllItems() {
   async function deleteItem(){
     const resp=await deleteItemById(selectedId)
     if(resp==true){
-      alert("Employee Deleted sucessfully")
+      alert("Item Deleted sucessfully")
       window.location.reload()
     }
     else{

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.backend.communication.request.ItemCardCreateUpdateRequest;
+import com.app.backend.model.Employee;
 import com.app.backend.model.ItemCard;
 import com.app.backend.service.ItemCardService;
 
@@ -34,6 +35,11 @@ public class ItemCardController {
 	@GetMapping("")
 	public ResponseEntity<List<ItemCard>> get() {
 		return ResponseEntity.ok(service.get());
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<ItemCard> get(@PathVariable("id") UUID id) {
+		return ResponseEntity.ok(service.get(id));
 	}
 
 	@GetMapping("/make/{makeID}")

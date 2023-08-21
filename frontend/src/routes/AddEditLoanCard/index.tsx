@@ -24,7 +24,9 @@ function AddEditLoanCard({type="add"}) {
   }, [id]);
 
   async function getLoanCardData(){
-    const res=getLoanCardById(id)
+    const res=await getLoanCardById(id)
+    setDuration(res.duration)
+    setSelectItemCategory(res.category.id)
 
   }
 

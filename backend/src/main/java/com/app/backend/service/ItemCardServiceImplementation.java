@@ -33,6 +33,12 @@ public class ItemCardServiceImplementation implements ItemCardService {
 	}
 
 	@Override
+	public ItemCard get(UUID itemCardID) {
+		return itemCardRepository.findById(itemCardID)
+				.orElseThrow(() -> new ResourceNotFoundException("Item card with this ID does not exist"));
+	}
+
+	@Override
 	public ItemCard getByMake(UUID makeID) {
 		Make make = makeRepository.findById(makeID)
 				.orElseThrow(() -> new ResourceNotFoundException("Make with this ID does not exist"));

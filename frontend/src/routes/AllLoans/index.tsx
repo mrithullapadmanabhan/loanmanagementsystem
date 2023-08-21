@@ -57,7 +57,7 @@ function AllLoans() {
   async function deleteLoanCard(){
     const resp=await deleteLoanCardById(selectedId)
     if(resp==true){
-      alert("Employee Deleted sucessfully")
+      alert("Loan card Deleted sucessfully")
       window.location.reload()
     }
     else{

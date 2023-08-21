@@ -28,7 +28,13 @@ function AddEditItem({type="add"}) {
   }, [id]);
 
   async function getItemData(){
-    const res=getItemById(id)
+    const res=await getItemById(id)
+    setDescription(res.description)
+    setItemValue(res.value)
+    setSelectItemCategory(res.make.category.id)
+    const res1: any= await getItemsMake(res.make.category.id)
+    setItemMakeData(res1);
+    setSelectItemMake(res.make.id)
 
   }
 
@@ -70,6 +76,8 @@ function AddEditItem({type="add"}) {
     setSelectItemCategory(e.target.value);
     const res: any= await getItemsMake(e.target.value)
     setItemMakeData(res);
+    setSelectItemMake("")
+   
   };
 
   const handleMakeChange= async(e: any)=>{
