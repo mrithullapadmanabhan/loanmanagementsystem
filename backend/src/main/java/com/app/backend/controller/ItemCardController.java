@@ -55,7 +55,7 @@ public class ItemCardController {
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@PostMapping("/create")
+	@PostMapping("")
 	public ResponseEntity<ItemCard> saveItem(@Valid @RequestBody ItemCardCreateUpdateRequest item) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.create(item));
 	}

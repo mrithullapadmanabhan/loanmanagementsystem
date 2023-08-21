@@ -42,7 +42,7 @@ public class MakeController {
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@PostMapping("/create")
+	@PostMapping("")
 	public ResponseEntity<Make> create(
 			@Valid @RequestBody MakeCreateUpdateRequest request) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.create(request));

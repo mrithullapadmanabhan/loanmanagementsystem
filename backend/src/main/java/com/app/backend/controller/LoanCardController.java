@@ -42,7 +42,7 @@ public class LoanCardController {
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@PostMapping("/create")
+	@PostMapping("")
 	public ResponseEntity<LoanCard> create(@Valid @RequestBody LoanCardCreateUpdateRequest request) {
 		return ResponseEntity.status(HttpStatus.CREATED).body((service.create(request)));
 	}

@@ -40,7 +40,7 @@ public class EmployeeLoanController {
         return ResponseEntity.ok(service.get(employeeID));
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<EmployeeLoan> create(@Valid @RequestBody LoanCreateRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(request));
     }

@@ -12,6 +12,7 @@ import com.app.backend.model.LoanCard;
 import com.app.backend.repository.CategoryRepository;
 import com.app.backend.repository.LoanCardRepository;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +35,7 @@ public class LoanCardServiceImplementation implements LoanCardService {
 				.orElseThrow(() -> new ResourceNotFoundException("LoanCard with this ID does not exist"));
 	}
 
+	@Transactional
 	@Override
 	public LoanCard create(LoanCardCreateUpdateRequest request) {
 		Category category = categoryRepository.findById(request.getCategoryID())
@@ -47,6 +49,7 @@ public class LoanCardServiceImplementation implements LoanCardService {
 		return loanCardRepository.save(loanCard);
 	}
 
+	@Transactional
 	@Override
 	public LoanCard update(UUID id, @Valid LoanCardCreateUpdateRequest request) {
 		LoanCard loanCard = loanCardRepository.findById(id)

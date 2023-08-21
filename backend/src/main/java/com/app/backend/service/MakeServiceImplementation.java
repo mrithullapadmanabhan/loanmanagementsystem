@@ -12,6 +12,7 @@ import com.app.backend.model.Make;
 import com.app.backend.repository.CategoryRepository;
 import com.app.backend.repository.MakeRepository;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +36,7 @@ public class MakeServiceImplementation implements MakeService {
         return category.getMakes();
     }
 
+    @Transactional
     @Override
     public Make create(MakeCreateUpdateRequest request) {
         Category category = categoryRepository.findById(request.getCategoryID())
@@ -48,6 +50,7 @@ public class MakeServiceImplementation implements MakeService {
         return makeRepository.save(make);
     }
 
+    @Transactional
     @Override
     public Make update(UUID id, @Valid MakeCreateUpdateRequest request) {
         Make make = makeRepository.findById(id)
