@@ -167,6 +167,8 @@ function AddEditEmployee({type="add"}) {
     const res = await employeeRegister(data);
     if (res) {
       alert("Employee added")
+      
+      navigate("/admin/employee/all")
     } else {
       alert("Invalid Credentials");
     }
@@ -176,6 +178,7 @@ function AddEditEmployee({type="add"}) {
     const res = await updateEmployeeById(id,data);
     if (res) {
       alert("Employee updated")
+      navigate("/admin/employee/all")
     } else {
       alert("Invalid Credentials");
     }

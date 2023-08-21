@@ -33,7 +33,7 @@ export const getItemsApi = async () => {
 
 export const addItemApi = async(data: any) => {
   try{
-      const res=await api.post(`/itemcard/create`,data);
+      const res=await api.post(`/itemcard`,data);
       console.log(res.data)
       return true
   } catch {
@@ -44,7 +44,7 @@ export const addItemApi = async(data: any) => {
 
 export const addLoanCardApi = async(data: any) => {
   try{
-      const res=await api.post(`/loancard/create`,data);
+      const res=await api.post(`/loancard`,data);
       console.log(res.data)
       return true
   } catch {

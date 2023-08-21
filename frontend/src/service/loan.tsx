@@ -46,7 +46,7 @@ export const getEmployeeLoansApi = async() => {
 
 export const applyLoanApi = async(data: any) => {
     try{
-        const res=await api.post(`loan/create`,data);
+        const res=await api.post(`loan`,data);
         console.log(res.data)
         return true
     } catch {

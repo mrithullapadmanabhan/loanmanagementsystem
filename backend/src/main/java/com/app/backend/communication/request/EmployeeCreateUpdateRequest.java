@@ -41,10 +41,10 @@ public class EmployeeCreateUpdateRequest {
 	@NotBlank(message = "Gender cannot be blank")
 	private String gender;
 
-	@JsonFormat(pattern = "dd-mm-yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date dob;
 
-	@JsonFormat(pattern = "dd-mm-yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date doj;
 
 }

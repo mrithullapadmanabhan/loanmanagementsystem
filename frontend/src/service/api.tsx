@@ -30,7 +30,7 @@ api.interceptors.response.use(
         const refreshToken = localStorage.getItem("refreshToken");
         const res = await axios.post(`${baseURL}/auth/refresh`, { refreshToken });
 
-        const { accessToken } = res.data.accessToken;
+        const { accessToken } = res.data;
         localStorage.setItem("accessToken", accessToken);
 
         const roles = res.data.userRoles

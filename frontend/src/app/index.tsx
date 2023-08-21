@@ -13,7 +13,8 @@ import {
   AllLoans,
   AddEditEmployee,
   AddEditItem,
-  AddEditLoanCard
+  AddEditLoanCard,
+  Admin
 } from "routes";
 
 
@@ -44,41 +45,48 @@ const router = createBrowserRouter([
         element: <ViewEmployeeItems />
       },
       {
-        path: "admin/employee/all",
-        element: <AllEmployees />
+        path: "admin/",
+        element: <Admin />,
+        children: [
+          {
+            path: "employee/all",
+            element: <AllEmployees />
+          },
+          {
+            path: "item/all",
+            element: <AllItems />
+          },
+          {
+            path: "loan-card/all",
+            element: <AllLoans />
+          },
+          {
+            path: "employee/edit/:id",
+            element: <AddEditEmployee type="edit" />
+          },
+          {
+            path: "employee/add",
+            element: <AddEditEmployee />
+          },
+          {
+            path: "item/add",
+            element: <AddEditItem />
+          },
+          {
+            path: "item/edit/:id",
+            element: <AddEditItem type="edit"/>
+          },
+          {
+            path: "loan-card/add",
+            element: <AddEditLoanCard />
+          },
+          {
+            path: "loan-card/edit/:id",
+            element: <AddEditLoanCard type="edit"/>
+          }
+
+        ]
       },
-      {
-        path: "admin/item/all",
-        element: <AllItems />
-      },
-      {
-        path: "admin/loan-card/all",
-        element: <AllLoans />
-      },
-      {
-        path: "admin/employee/edit/:id",
-        element: <AddEditEmployee type="edit" />
-      },
-      {
-        path: "admin/employee/add",
-        element: <AddEditEmployee />
-      },
-      {
-        path: "admin/item/add",
-        element: <AddEditItem />
-      },
-      {
-        path: "admin/item/edit/:id",
-        element: <AddEditItem type="edit"/>
-      },
-      {
-        path: "admin/loan-card/add",
-        element: <AddEditLoanCard />
-      },
-      {
-        path: "admin/loan-card/edit/:id",
-        element: <AddEditLoanCard type="edit"/>
-      }
     ],
   },
 ]);
