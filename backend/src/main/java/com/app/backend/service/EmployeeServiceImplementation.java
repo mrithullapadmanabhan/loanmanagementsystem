@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.app.backend.communication.request.EmployeeCreateUpdateRequest;
 import com.app.backend.exception.ResourceNotFoundException;
 import com.app.backend.model.Employee;
-import com.app.backend.model.LoanCard;
 import com.app.backend.model.RoleEnum;
 import com.app.backend.model.User;
 import com.app.backend.repository.EmployeeRepository;
