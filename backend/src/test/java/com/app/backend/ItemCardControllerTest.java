@@ -18,8 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import com.app.backend.communication.request.ItemCardCreationRequest;
-import com.app.backend.communication.response.ItemCardCreationResponse;
+import com.app.backend.communication.request.ItemCardCreateUpdateRequest;
 import com.app.backend.model.Category;
 import com.app.backend.model.ItemCard;
 import com.app.backend.model.Make;
@@ -32,7 +31,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -100,12 +98,24 @@ public class ItemCardControllerTest {
     @Test
     public void createTest() throws Exception{
 
-        ItemCardCreationRequest itemCardRequest = new ItemCardCreationRequest();
-        ItemCardCreationResponse itemCardResponse = new ItemCardCreationResponse();
+        ItemCardCreateUpdateRequest itemCardRequest = new ItemCardCreateUpdateRequest();
+        ItemCard itemCardResponse = new ItemCard();
+        Category category = new Category();
+        Make make = new Make();
+
         itemCardRequest.setMakeID(UUID.fromString("addd070d-8c4c-4f0d-9d8a-162843c10333"));
         itemCardRequest.setDescription("Wardrobe");
         itemCardRequest.setValue(1000.00);
-        itemCardResponse.setItemCardID(UUID.fromString("acdd070d-8c4c-4f0d-9d8a-162843c10333"));
+
+        itemCardResponse.setId(UUID.fromString("acdd070d-8c4c-4f0d-9d8a-162843c10333"));
+        itemCardResponse.setDescription("Wardrobe");
+        itemCardResponse.setValue(1000.00);
+        category.setId(UUID.fromString("f47ac10b-58cc-4372-a567-0e02a2c3d479"));
+        category.setName("Furniture");
+        make.setId(UUID.fromString("addd070d-8c4c-4f0d-9d8a-162843c10333"));
+        make.setName("Wood");
+        make.setCategory(category);
+        itemCardResponse.setMake(make);
 
         Mockito.when(itemCardService.create(ArgumentMatchers.any())).thenReturn(itemCardResponse);
 
@@ -155,7 +165,7 @@ public class ItemCardControllerTest {
 
         Mockito.when(itemCardService.get()).thenReturn(itemCardList);
         
-        mvc.perform(get("/api/itemcard/")
+        mvc.perform(get("/api/itemcard")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].id",Matchers.equalTo(itemCardList.get(0).getId().toString())))
@@ -165,7 +175,7 @@ public class ItemCardControllerTest {
     }
 
     @Test
-    public void getByEmployeeIDTest() throws Exception{
+    public void getByEmployeeTest() throws Exception{
 
         List<ItemCard> itemCardList = new ArrayList<ItemCard>();
         ItemCard itemCard = new ItemCard();
@@ -196,7 +206,7 @@ public class ItemCardControllerTest {
         itemCard.setMake(make);
         itemCardList.add(itemCard);
 
-        Mockito.when(itemCardService.getByEmployeeID(ArgumentMatchers.any())).thenReturn(itemCardList);
+        Mockito.when(itemCardService.getByEmployee(ArgumentMatchers.any())).thenReturn(itemCardList);
         
         mvc.perform(get("/api/itemcard/employee/{employeeID}", employeeID)
             .contentType(MediaType.APPLICATION_JSON))
@@ -208,15 +218,15 @@ public class ItemCardControllerTest {
     }
 
     @Test
-    public void getByMakeIDTest() throws Exception{
+    public void getByMakeTest() throws Exception{
 
         ItemCard itemCard = new ItemCard();
         Make make = new Make();
         Category category = new Category();
 
-        UUID makeID = UUID.fromString("f47ac10b-58cc-4372-a567-0e02a2c3d479");
+        UUID makeID = UUID.fromString("f47ac10b-58cc-4372-a567-0a02a2c3d479");
 
-        category.setId(UUID.fromString("f47ac10b-58cc-4372-a567-0e02a2c3d479"));
+        category.setId(UUID.fromString("f47aa10b-58cc-4372-a567-0e02a2c3d479"));
         category.setName("Furniture");
         make.setId(UUID.fromString("f47ac10b-58cc-4372-a567-0a02a2c3d479"));
         make.setName("Wood");
@@ -227,15 +237,13 @@ public class ItemCardControllerTest {
         itemCard.setDescription("Wardrobe");
         itemCard.setValue(1000.00);
 
-        Optional<ItemCard> itemCardList = Optional.of(itemCard);
-
-        Mockito.when(itemCardService.getByMakeID(ArgumentMatchers.any())).thenReturn(itemCardList);
+        Mockito.when(itemCardService.getByMake(ArgumentMatchers.any())).thenReturn(itemCard);
         
         mvc.perform(get("/api/itemcard/make/{makeID}", makeID)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id",Matchers.equalTo(itemCardList.get().getId().toString())))
-            .andExpect(jsonPath("$.make.id",Matchers.equalTo(itemCardList.get().getMake().getId().toString())));
+            .andExpect(jsonPath("$.id",Matchers.equalTo(itemCard.getId().toString())))
+            .andExpect(jsonPath("$.make.id",Matchers.equalTo(itemCard.getMake().getId().toString())));
     }
 
 }
