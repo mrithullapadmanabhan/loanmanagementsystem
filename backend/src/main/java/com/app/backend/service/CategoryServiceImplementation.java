@@ -25,6 +25,12 @@ public class CategoryServiceImplementation implements CategoryService {
         return categoryRepository.findAll();
     }
 
+    @Override
+    public Category get(UUID categoryID) {
+        return categoryRepository.findById(categoryID)
+				.orElseThrow(() -> new ResourceNotFoundException("Item card with this ID does not exist"));
+    }
+
     @Transactional
     @Override
     public Category create(CategoryCreateUpdateRequest request) {

@@ -12,6 +12,8 @@ public interface CategoryService {
 
     public abstract List<Category> get();
 
+    public abstract Category get(UUID id);
+
     public abstract Category create(@Valid CategoryCreateUpdateRequest request);
 
     public abstract Category update(UUID id, @Valid CategoryCreateUpdateRequest request);
