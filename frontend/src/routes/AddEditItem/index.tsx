@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {getItemsCategories, getItemsMake } from "service/loan";
-import {addItemApi,editItemApi} from 'service/admin'
+import {addItemApi,getItemById, updateItemById} from 'service/admin'
 
 function AddEditItem({type="add"}) {
   const navigate = useNavigate();
@@ -18,6 +18,19 @@ function AddEditItem({type="add"}) {
   useEffect(() => {
     getCategories();
   }, []);
+
+
+  useEffect(() => {
+    if(id=="" || id==undefined){
+        return
+    }
+    getItemData();
+  }, [id]);
+
+  async function getItemData(){
+    const res=getItemById(id)
+
+  }
 
   async function getCategories() {
     const res: any=await getItemsCategories()
@@ -44,7 +57,7 @@ function AddEditItem({type="add"}) {
         value: itemValue,
         makeID: selectItemMake
     }
-    const resp=await editItemApi(id,data)
+    const resp=await updateItemById(id,data)
     if(resp){
       alert("Item edited successfully")
       navigate('/admin/item/all')

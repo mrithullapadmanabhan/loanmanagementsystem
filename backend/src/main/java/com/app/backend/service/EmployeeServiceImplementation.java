@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.app.backend.communication.request.EmployeeCreateUpdateRequest;
 import com.app.backend.exception.ResourceNotFoundException;
 import com.app.backend.model.Employee;
+import com.app.backend.model.LoanCard;
 import com.app.backend.model.RoleEnum;
 import com.app.backend.model.User;
 import com.app.backend.repository.EmployeeRepository;
@@ -32,6 +33,12 @@ public class EmployeeServiceImplementation implements EmployeeService {
     public List<Employee> get() {
         return employeeRepository.findAll();
     }
+
+    @Override
+	public Employee get(UUID employeeID) {
+		return employeeRepository.findById(employeeID)
+				.orElseThrow(() -> new ResourceNotFoundException("Employee with this ID does not exist"));
+	}
 
     @Override
     public Employee create(@Valid EmployeeCreateUpdateRequest request) {
@@ -71,11 +78,15 @@ public class EmployeeServiceImplementation implements EmployeeService {
         employee.setDoj(request.getDoj());
         employee.setGender(request.getGender());
 
-        User user = employee.getUser();
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        if(request.getEmail()!=null){
+    
+            User user = employee.getUser();
+            user.setEmail(request.getEmail());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        userRepository.save(user);
+            userRepository.save(user);
+        }
+
 
         return employeeRepository.save(employee);
     }

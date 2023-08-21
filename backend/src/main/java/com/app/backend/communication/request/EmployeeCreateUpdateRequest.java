@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class EmployeeCreateUpdateRequest {
 
 	@Email(message = "Email is invalid")
-	@NotNull(message = "Email must not be Null")
+	// @NotNull(message = "Email must not be Null")
 	private String email;
 
 	// one number, one lowercase character, one uppercase character, one symbol, and

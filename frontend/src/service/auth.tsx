@@ -43,7 +43,7 @@ export const isAdmin= ()=>{
 
 export const employeeRegister = async (data: loginData) => {
   try {
-    await api.post("/employee/register", data);
+    await api.post("/employee/create", data);
     return true;
   } catch {
     return false;

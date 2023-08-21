@@ -2,11 +2,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { Form } from "components";
 import { employeeRegister } from "service/auth";
+import {getEmployeeById, updateEmployeeById} from 'service/admin'
+import { useEffect, useState } from "react";
 
 function AddEditEmployee({type="add"}) {
   const navigate = useNavigate();
   const {id}= useParams()
-  const formFields = [
+  const [formFields,setFormFields] = useState([
     {
       fieldType: "input",
       name: "email",
@@ -82,7 +84,84 @@ function AddEditEmployee({type="add"}) {
       placeholder: "dd-mm-yyyy",
       initialData: "",
     }
-  ];
+  ]);
+
+  useEffect(()=>{
+    if(id=="" || id==undefined){
+      return
+    }
+    getEmployeeData()
+    
+  },[id])
+
+  const getEmployeeData= async()=>{
+    const res=await getEmployeeById(id)
+    setFormFields([
+      // {
+      //   fieldType: "input",
+      //   name: "email",
+      //   type: "text",
+      //   label: "Email",
+      //   placeholder: "test@test.com",
+      //   errorMessage: "Invalid Email",
+      //   regex:
+      //     "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])",
+      //   initialData: "",
+      // },
+      {
+        fieldType: "input",
+        name: "name",
+        type: "text",
+        label: "Name",
+        placeholder: "John doe",
+        initialData: res.name,
+      },
+      {
+        fieldType: "input",
+        name: "designation",
+        type: "text",
+        label: "Designation",
+        placeholder: "Manager",
+        initialData: res.designation,
+      },
+      {
+        fieldType: "input",
+        name: "department",
+        type: "text",
+        label: "Department",
+        placeholder: "Technology",
+        initialData: res.department,
+      },
+      {
+        fieldType: "dropdown",
+        name: "gender",
+        options: [
+          {value: "Male", label: "Male"},
+          {value: "Female", label: "Female"},
+          {value: "Other", label: "Other"}
+        ],
+        label: "Gender",
+        placeholder: "Male",
+        initialData: res.gender,
+      },
+      {
+        fieldType: "input",
+        name: "dob",
+        type: "date",
+        label: "Date of Birth",
+        placeholder: "dd-mm-yyyy",
+        initialData: res.dob,
+      },
+      {
+        fieldType: "input",
+        name: "doj",
+        type: "date",
+        label: "Date of Joining",
+        placeholder: "dd-mm-yyyy",
+        initialData: res.doj,
+      }
+    ])
+  }
 
   const addHandleSubmit = async (data: any) => {
     const res = await employeeRegister(data);
@@ -94,9 +173,9 @@ function AddEditEmployee({type="add"}) {
   };
 
   const editHandleSubmit = async (data: any) => {
-    const res = await employeeRegister(data);
+    const res = await updateEmployeeById(id,data);
     if (res) {
-      alert("Employee added")
+      alert("Employee updated")
     } else {
       alert("Invalid Credentials");
     }
