@@ -15,6 +15,7 @@ import com.app.backend.repository.EmployeeRepository;
 import com.app.backend.repository.RoleRepository;
 import com.app.backend.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -39,6 +40,7 @@ public class EmployeeServiceImplementation implements EmployeeService {
 				.orElseThrow(() -> new ResourceNotFoundException("Employee with this ID does not exist"));
 	}
 
+    @Transactional
     @Override
     public Employee create(@Valid EmployeeCreateUpdateRequest request) {
         Employee employee = Employee.builder()
@@ -49,8 +51,6 @@ public class EmployeeServiceImplementation implements EmployeeService {
                 .dob(request.getDob())
                 .doj(request.getDoj())
                 .build();
-
-        employeeRepository.save(employee);
 
         User user = User.builder()
                 .email(request.getEmail())
@@ -65,6 +65,7 @@ public class EmployeeServiceImplementation implements EmployeeService {
         return employee;
     }
 
+    @Transactional
     @Override
     public Employee update(UUID id, @Valid EmployeeCreateUpdateRequest request) {
         Employee employee = employeeRepository.findById(id)
@@ -84,6 +85,7 @@ public class EmployeeServiceImplementation implements EmployeeService {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
 
             userRepository.save(user);
+
         }
 
 

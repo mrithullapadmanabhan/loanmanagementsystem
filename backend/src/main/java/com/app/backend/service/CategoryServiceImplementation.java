@@ -10,6 +10,7 @@ import com.app.backend.exception.ResourceNotFoundException;
 import com.app.backend.model.Category;
 import com.app.backend.repository.CategoryRepository;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +25,7 @@ public class CategoryServiceImplementation implements CategoryService {
         return categoryRepository.findAll();
     }
 
+    @Transactional
     @Override
     public Category create(CategoryCreateUpdateRequest request) {
         Category category = Category.builder()
@@ -33,6 +35,7 @@ public class CategoryServiceImplementation implements CategoryService {
         return categoryRepository.save(category);
     }
 
+    @Transactional
     @Override
     public Category update(UUID id, @Valid CategoryCreateUpdateRequest request) {
         Category category = categoryRepository.findById(id)

@@ -20,6 +20,7 @@ import com.app.backend.repository.ItemCardRepository;
 import com.app.backend.repository.LoanCardRepository;
 import com.app.backend.repository.MakeRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -33,10 +34,12 @@ public class EmployeeLoanServiceImplementation implements EmployeeLoanService {
 	private final MakeRepository makeRepository;
 	private final ItemCardRepository itemCardRepository;
 
+	@Override
 	public List<EmployeeLoan> get() {
 		return employeeLoanRepository.findAll();
 	}
 
+	@Override
 	public List<EmployeeLoan> get(UUID employeeID) {
 		Employee employee = employeeRepository.findById(employeeID)
 				.orElseThrow(() -> new ResourceNotFoundException(
@@ -44,6 +47,8 @@ public class EmployeeLoanServiceImplementation implements EmployeeLoanService {
 		return employee.getLoans();
 	}
 
+	@Transactional
+	@Override
 	public EmployeeLoan create(LoanCreateRequest request) {
 		Make make = makeRepository.findById(request.getMakeID())
 				.orElseThrow(() -> new ResourceNotFoundException("Make with this ID does not exist"));
@@ -68,6 +73,7 @@ public class EmployeeLoanServiceImplementation implements EmployeeLoanService {
 		return employeeLoanRepository.save(loan);
 	}
 
+	@Override
 	public EmployeeLoan setCompleted(UUID employeeLoanID) {
 		EmployeeLoan loan = employeeLoanRepository.findById(employeeLoanID)
 				.orElseThrow(() -> new ResourceNotFoundException(

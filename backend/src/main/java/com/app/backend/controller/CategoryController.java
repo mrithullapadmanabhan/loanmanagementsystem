@@ -37,7 +37,7 @@ public class CategoryController {
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@PostMapping("/create")
+	@PostMapping("")
 	public ResponseEntity<Category> create(
 			@Valid @RequestBody CategoryCreateUpdateRequest request) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.create(request));
