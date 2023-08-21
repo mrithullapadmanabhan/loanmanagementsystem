@@ -1,21 +1,13 @@
-package com.app.backend.model;
+package com.app.backend.communication.request;
 
 import java.sql.Date;
-import java.util.List;
-import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,12 +18,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class Employee {
+public class EmployeeCreateUpdateRequest {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
+	@Email(message = "Email is invalid")
+	@NotNull(message = "Email must not be Null")
+	private String email;
+
+	// one number, one lowercase character, one uppercase character, one symbol, and
+	// minlength 8
+	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,}$", message = "Password must have atleast one lowercase character, one uppercase character, one number, one symbol and minimum length of 8")
+	private String password;
 
 	@NotBlank(message = "Name cannot be blank")
 	@Size(min = 5, max = 28, message = "Name can only be from 5 to 15 characters")
@@ -51,13 +47,5 @@ public class Employee {
 
 	@JsonFormat(pattern = "dd-mm-yyyy")
 	private Date doj;
-
-	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JsonBackReference
-	private User user;
-
-	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JsonBackReference
-	private List<EmployeeLoan> loans;
 
 }

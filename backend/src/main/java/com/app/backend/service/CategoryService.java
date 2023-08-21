@@ -1,36 +1,21 @@
 package com.app.backend.service;
 
 import java.util.List;
+import java.util.UUID;
 
-import org.springframework.stereotype.Service;
-
-import com.app.backend.communication.request.CategoryCreationRequest;
-import com.app.backend.communication.response.CategoryCreationResponse;
+import com.app.backend.communication.request.CategoryCreateUpdateRequest;
 import com.app.backend.model.Category;
-import com.app.backend.repository.CategoryRepository;
 
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 
-@Service
-@RequiredArgsConstructor
-public class CategoryService {
-    
-    private final CategoryRepository categoryRepository;
+public interface CategoryService {
 
-    public List<Category> get() {
-        return categoryRepository.findAll();
-    }
+    public abstract List<Category> get();
 
-    public CategoryCreationResponse create(CategoryCreationRequest request) {
-        Category category = Category.builder()
-            .name(request.getName())
-            .build();
+    public abstract Category create(@Valid CategoryCreateUpdateRequest request);
 
-        categoryRepository.save(category);
+    public abstract Category update(UUID id, @Valid CategoryCreateUpdateRequest request);
 
-        return CategoryCreationResponse.builder()
-            .categoryID(category.getId())
-            .build();
-    }
-    
+    public abstract void delete(UUID id);
+
 }

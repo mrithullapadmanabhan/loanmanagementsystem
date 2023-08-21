@@ -1,59 +1,21 @@
 package com.app.backend.service;
 
 import java.util.List;
+import java.util.UUID;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import com.app.backend.communication.request.EmployeeRegisterRequest;
-import com.app.backend.communication.response.EmployeeRegisterResponse;
+import com.app.backend.communication.request.EmployeeCreateUpdateRequest;
 import com.app.backend.model.Employee;
-import com.app.backend.model.LoanCard;
-import com.app.backend.model.RoleEnum;
-import com.app.backend.model.User;
-import com.app.backend.repository.EmployeeRepository;
-import com.app.backend.repository.RoleRepository;
-import com.app.backend.repository.UserRepository;
 
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 
-@Service
-@RequiredArgsConstructor
-public class EmployeeService {
+public interface EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
-    
-	private final UserRepository userRepository;
-	private final RoleRepository roleRepository;
-	private final PasswordEncoder passwordEncoder;
+    public abstract List<Employee> get();
 
-    public List<Employee> get() {
-		return employeeRepository.findAll();
-	}
-    
-	public EmployeeRegisterResponse register(EmployeeRegisterRequest request) {
-        Employee employee = Employee.builder()
-            .name(request.getName())
-            .designation(request.getDesignation())
-            .department(request.getDepartment())
-            .gender(request.getGender())
-            .dob(request.getDob())
-            .doj(request.getDoj())
-            .build();
+    public abstract Employee create(@Valid EmployeeCreateUpdateRequest request);
 
-        employeeRepository.save(employee);
+    public abstract Employee update(UUID id, @Valid EmployeeCreateUpdateRequest request);
 
-        User user = User.builder()
-            .email(request.getEmail())
-            .password(passwordEncoder.encode(request.getPassword()))
-            .roles(List.of(roleRepository.findByName(RoleEnum.USER).orElseThrow()))
-            .employee(employee)
-            .build();
+    public abstract void delete(UUID id);
 
-        userRepository.save(user);
-
-        return EmployeeRegisterResponse.builder()
-            .employeeID(employee.getId())
-            .build();
-    }
 }

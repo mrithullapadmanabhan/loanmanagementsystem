@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoanCardCreationRequest {
+public class LoanCreateRequest {
 
     @NotNull
-    private UUID categoryID;
+    private UUID employeeID;
 
     @NotNull
-    private int duration;
+    private UUID makeID;
 
 }

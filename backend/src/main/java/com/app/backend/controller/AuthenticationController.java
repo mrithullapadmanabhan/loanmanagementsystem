@@ -25,16 +25,14 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<JWTResponse> login(
-        @Valid @RequestBody JWTLoginRequest request
-    ) {
+            @Valid @RequestBody JWTLoginRequest request) {
         return ResponseEntity.ok(service.login(request));
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<JWTResponse> refresh(
-        @Valid @RequestBody JWTRefreshRequest request
-    ) {
+            @Valid @RequestBody JWTRefreshRequest request) {
         return ResponseEntity.ok(service.refresh(request));
     }
-    
+
 }

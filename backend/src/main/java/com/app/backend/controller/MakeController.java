@@ -7,15 +7,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.backend.communication.request.MakeCreationRequest;
-import com.app.backend.communication.response.MakeCreationResponse;
+import com.app.backend.communication.request.MakeCreateUpdateRequest;
 import com.app.backend.model.Make;
 import com.app.backend.service.MakeService;
 
@@ -27,23 +28,40 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin
 @RequiredArgsConstructor
 public class MakeController {
-    
-    private final MakeService makeService;
 
-    @GetMapping("/")
-	public List<Make> get(){
-		return makeService.get();
+	private final MakeService service;
+
+	@GetMapping("")
+	public ResponseEntity<List<Make>> get() {
+		return ResponseEntity.ok(service.get());
 	}
 
-    @GetMapping("/category/{categoryID}")
-	public List<Make> get(@PathVariable("categoryID") UUID categoryID){
-		return makeService.get(categoryID);
+	@GetMapping("/category/{categoryID}")
+	public ResponseEntity<List<Make>> get(@PathVariable("categoryID") UUID categoryID) {
+		return ResponseEntity.ok(service.getByCategory(categoryID));
 	}
 
-	@PostMapping("/create")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public ResponseEntity<MakeCreationResponse> create(@Valid @RequestBody MakeCreationRequest request) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(makeService.create(request));
+	@PostMapping("/create")
+	public ResponseEntity<Make> create(
+			@Valid @RequestBody MakeCreateUpdateRequest request) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.create(request));
+	}
+
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@PutMapping("/{id}")
+	public ResponseEntity<Make> update(
+			@PathVariable("id") UUID id,
+			@Valid @RequestBody MakeCreateUpdateRequest request) {
+		return ResponseEntity.ok(service.update(id, request));
+	}
+
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> delete(
+			@PathVariable("id") UUID id) {
+		service.delete(id);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
 	}
 
 }
