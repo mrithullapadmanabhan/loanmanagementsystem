@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type FormType = {
   onSubmit: (data: unknown) => unknown;
@@ -20,11 +20,25 @@ type FormType = {
 };
 
 const Form = ({ onSubmit, formFields, submitButton }: FormType) => {
+
+  useEffect(()=>{
+
+  },formFields)
+  
   const [formData, setFormData] = useState(
     Object.fromEntries(
       formFields.map((field) => [field.name, field.initialData])
     )
   );
+
+  useEffect(()=>{
+    setFormData(Object.fromEntries(
+      formFields.map((field) => [field.name, field.initialData])
+    ))
+  },formFields)
+
+  console.log(formFields)
+  console.log(formData)
   const [formError, setFormError] = useState(
     Object.fromEntries(formFields.map((field) => [field.name, ""]))
   );

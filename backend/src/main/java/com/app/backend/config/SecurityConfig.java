@@ -37,7 +37,7 @@ public class SecurityConfig {
                                                 .requestMatchers("/error/**").permitAll()
                                                 .requestMatchers("/api/auth/login").permitAll()
                                                 .requestMatchers("/api/auth/refresh").permitAll()
-                                                .requestMatchers("/api/employee/register").permitAll()
+                                                .requestMatchers("/api/employee/create").permitAll()
                                                 .anyRequest().authenticated())
                                 .sessionManagement(sess -> sess
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

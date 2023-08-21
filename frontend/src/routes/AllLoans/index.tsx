@@ -1,16 +1,21 @@
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { DeletePopup } from 'components'
 import Sidebar from 'components/Sidebar'
 import Table from 'components/Table'
 import React, { useRef, useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { getLoansApi } from 'service/admin'
+import { Link, useNavigate } from 'react-router-dom'
+import { deleteLoanCardById, getLoansApi } from 'service/admin'
 
 
 function AllLoans() {
-  const [data, setTableData] = useState<any[]>([
-    
-  ])
+  const [data, setTableData] = useState<any[]>([])
+  const [popupOpen,setPopupOpen] = useState(false)
+  const [selectedId,setSelectedId]=useState("")
+
+  function closePopup(){
+    setPopupOpen(false)
+  }
   const fields: any=[
     {
       key: "id",
@@ -29,20 +34,37 @@ function AllLoans() {
       label: "Actions"
     }
   ]
+  const navigate=useNavigate()
   const actions: any=[
     {
       label: <FontAwesomeIcon icon={faPenToSquare} />,
       onClick: (id: any)=>{
         console.log(id)
+        navigate(`/admin/loan-card/edit/${data[id].id}`)
+        
       },
     },
     {
       label: <FontAwesomeIcon icon={faTrash} />,
       onClick: (id: any)=>{
         console.log(id)
+        setSelectedId(data[id].id)
+        setPopupOpen(true)
       },
     }
   ]
+
+  async function deleteLoanCard(){
+    const resp=await deleteLoanCardById(selectedId)
+    if(resp==true){
+      alert("Employee Deleted sucessfully")
+      window.location.reload()
+    }
+    else{
+      alert("Some error occured")
+    }
+  }
+
 
 
   useEffect(()=>{
@@ -60,6 +82,8 @@ function AllLoans() {
 
   return (
     <div>
+      {popupOpen && <DeletePopup closePopup={closePopup} onSubmit={deleteLoanCard}/>}
+
       <div className="p-4 sm:p-8 md:p-11 flex flex-col gap-12">
         <div className="w-full  flex flex-col justify-center gap-4 mb-6 lg:mb-0">
     
