@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import com.app.backend.communication.request.EmployeeCreateUpdateRequest;
 import com.app.backend.model.Employee;
-import com.app.backend.model.LoanCard;
 
 import jakarta.validation.Valid;
 
