@@ -34,6 +34,12 @@ public class EmployeeServiceImplementation implements EmployeeService {
     }
 
     @Override
+	public Employee get(UUID employeeID) {
+		return employeeRepository.findById(employeeID)
+				.orElseThrow(() -> new ResourceNotFoundException("Employee with this ID does not exist"));
+	}
+
+    @Override
     public Employee create(@Valid EmployeeCreateUpdateRequest request) {
         Employee employee = Employee.builder()
                 .name(request.getName())
@@ -71,11 +77,15 @@ public class EmployeeServiceImplementation implements EmployeeService {
         employee.setDoj(request.getDoj());
         employee.setGender(request.getGender());
 
-        User user = employee.getUser();
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        if(request.getEmail()!=null){
+    
+            User user = employee.getUser();
+            user.setEmail(request.getEmail());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        userRepository.save(user);
+            userRepository.save(user);
+        }
+
 
         return employeeRepository.save(employee);
     }

@@ -12,6 +12,8 @@ public interface EmployeeService {
 
     public abstract List<Employee> get();
 
+    public abstract Employee get(UUID id);
+
     public abstract Employee create(@Valid EmployeeCreateUpdateRequest request);
 
     public abstract Employee update(UUID id, @Valid EmployeeCreateUpdateRequest request);

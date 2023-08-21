@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {getItemsCategories, getItemsMake } from "service/loan";
-import {addLoanCardApi,editLoanCardApi} from 'service/admin'
+import {addLoanCardApi,getLoanCardById,updateLoanCardById} from 'service/admin'
 
 function AddEditLoanCard({type="add"}) {
   const navigate = useNavigate();
@@ -15,6 +15,20 @@ function AddEditLoanCard({type="add"}) {
   useEffect(() => {
     getCategories();
   }, []);
+
+  useEffect(() => {
+    if(id=="" || id==undefined){
+        return
+    }
+    getLoanCardData();
+  }, [id]);
+
+  async function getLoanCardData(){
+    const res=await getLoanCardById(id)
+    setDuration(res.duration)
+    setSelectItemCategory(res.category.id)
+
+  }
 
   async function getCategories() {
     const res: any=await getItemsCategories()
@@ -39,7 +53,7 @@ function AddEditLoanCard({type="add"}) {
       duration: duration,
       categoryID: selectItemCategory
     }
-    const resp=await editLoanCardApi(id,data)
+    const resp=await updateLoanCardById(id,data)
     if(resp){
       alert("Loan Card edited successfully")
       navigate('/admin/loan-card/all')

@@ -1,73 +1,55 @@
 package com.app.backend;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import org.springframework.http.MediaType;
-import org.junit.Test;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-// import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import com.app.backend.communication.request.EmployeeRegisterRequest;
-import com.app.backend.communication.response.EmployeeRegisterResponse;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
+import com.app.backend.communication.request.EmployeeCreateUpdateRequest;
 import com.app.backend.model.Employee;
-import com.app.backend.model.EmployeeLoan;
-import com.app.backend.repository.CategoryRepository;
-import com.app.backend.repository.EmployeeLoanRepository;
-import com.app.backend.repository.EmployeeRepository;
-import com.app.backend.repository.ItemCardRepository;
-import com.app.backend.repository.LoanCardRepository;
-import com.app.backend.repository.MakeRepository;
-import com.app.backend.repository.RoleRepository;
-import com.app.backend.repository.UserRepository;
-import com.app.backend.service.CategoryService;
-import com.app.backend.service.EmployeeLoanService;
-import com.app.backend.service.EmployeeService;
-import com.app.backend.service.ItemCardService;
-import com.app.backend.service.LoanCardService;
-import com.app.backend.service.MakeService;
-import com.app.backend.service.auth.AuthenticationService;
-import com.app.backend.service.auth.JWTService;
+import com.app.backend.repository.*;
+import com.app.backend.service.*;
+import com.app.backend.service.auth.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
+import java.util.UUID;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
 @AutoConfigureMockMvc(addFilters=false)
 public class EmployeeControllerTest {
+
     @Autowired
     private MockMvc mvc;
-
-    @MockBean
-    private JwtTokenGenerator jwtTokenGenerator;
-
-    @MockBean
-    private EmployeeService employeeService;
 
     @MockBean
     private CategoryService categoryService;
 
     @MockBean
     private EmployeeLoanService employeeLoanService;
+
+    @MockBean
+    private EmployeeService employeeService;
 
     @MockBean
     private ItemCardService itemCardService;
@@ -79,16 +61,16 @@ public class EmployeeControllerTest {
     private MakeService makeService;
 
     @MockBean
-    private EmployeeRepository employeeRepository;
-
-    @MockBean
     private AuthenticationService authenticationService;
 
     @MockBean
     private JWTService jwtService;
-
+    
     @MockBean
     private CategoryRepository categoryRepository;
+
+    @MockBean
+    private EmployeeRepository employeeRepository;
 
     @MockBean
     private EmployeeLoanRepository employeeLoanRepository;
@@ -108,76 +90,73 @@ public class EmployeeControllerTest {
     @MockBean
     private UserRepository userRepository;
 
-    @MockBean
-    JdbcTemplate jdbcTemplate;
-
-
-
-    ObjectMapper mapper = new ObjectMapper().findAndRegisterModules().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-    /**
-     * @return
-     * @throws Exception
-     */
+    ObjectMapper mapper = new ObjectMapper()
+                        .findAndRegisterModules()
+                        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+ 
     @Test
-    public void register() throws Exception{
-        EmployeeRegisterRequest employee = new EmployeeRegisterRequest();
-        EmployeeRegisterResponse emplresponse = new EmployeeRegisterResponse();
+    public void createTest() throws Exception{
+
+        EmployeeCreateUpdateRequest employeeRequest = new EmployeeCreateUpdateRequest();
+        Employee employeeResponse = new Employee();
+        
         UUID num = UUID.fromString("acde070d-8c4c-4f0d-9d8a-162843c10333");
         Date date = new Date(0);
         
-        emplresponse.setEmployeeID(num);
-        employee.setEmail("myEmail@gmail.com");
+        employeeRequest.setEmail("myEmail@gmail.com");
+        employeeRequest.setGender("myGender");
+        employeeRequest.setDepartment("myDepartment");
+        employeeRequest.setDesignation("myDesignation");
+        employeeRequest.setName("myName");
+        employeeRequest.setPassword("myPassword@123");
+        employeeRequest.setDob(date);
+        employeeRequest.setDoj(date);
+
+        employeeResponse.setId(num);
+        employeeResponse.setGender("myGender");
+        employeeResponse.setDepartment("myDepartment");
+        employeeResponse.setDesignation("myDesignation");
+        employeeResponse.setName("myName");
+        employeeResponse.setDob(date);
+        employeeResponse.setDoj(date);
+
+        Mockito.when(employeeService.create(ArgumentMatchers.any())).thenReturn(employeeResponse);
+
+        String employeeRequestString = mapper.writeValueAsString(employeeRequest);
+        String employeeResponseString = mapper.writeValueAsString(employeeResponse);
+        
+        MvcResult requestResult = mvc.perform(post("/api/employee/create")
+        .contentType(MediaType.APPLICATION_JSON)
+        .characterEncoding("utf-8")
+        .content(employeeRequestString))
+        .andExpect(status().isCreated())
+        .andReturn();
+
+        String employeeRequestResult = requestResult.getResponse().getContentAsString();
+        assertEquals(employeeResponseString, employeeRequestResult);
+    }
+
+    @Test
+    public void getTest() throws Exception{
+
+        List<Employee> employeeList = new ArrayList<Employee>();
+        Employee employee = new Employee();
+        employee.setId(UUID.fromString("acde070d-8c4c-4f0d-9d8a-162843c10333"));
         employee.setGender("myGender");
         employee.setDepartment("myDepartment");
         employee.setDesignation("myDesignation");
         employee.setName("myName");
-        employee.setDepartment("myPassword@123");
-        employee.setDob(date);
-        employee.setDoj(date);
+        employee.setDob(new Date(0));
+        employee.setDoj(new Date(0));
 
-        // employee.setDob(Date.now());
-        // employee.setName("Myname");
-        // employee.setDepartment("MyDpt");
-        // employee.setDesignation("MyDesignation");
+        employeeList.add(employee);
 
-        Mockito.when(employeeService.register(ArgumentMatchers.any())).thenReturn(emplresponse);
-        String json = mapper.writeValueAsString(employee);
-        String resp = mapper.writeValueAsString(emplresponse);
-        MvcResult requestResult = mvc.perform(post("/api/employee/register")
-        .contentType(MediaType.APPLICATION_JSON)
-        .characterEncoding("utf-8")
-        .content(json))
-        .andExpect(status().isCreated())
-        .andReturn();
-
-        String result = requestResult.getResponse().getContentAsString();
-        System.out.print(result);
-        assertEquals(resp, result);
-
-    }
-
-    @Test
-    public void get() throws Exception {
-        Employee employee = new Employee();
-        UUID num = UUID.fromString("acde070d-8c4c-4f0d-9d8a-162843c10333");
-        Date date = new Date(0);
-
-        employee.setId(num);
-        // employee.setLoans(null);
-        employee.setDepartment(null);
-        employee.setName("name");
-        employee.setDesignation("designation");
-        employee.setDob(date);
-        employee.setDoj(date);
-        employee.setGender("female");
-
-        List<Employee> list = new ArrayList<>();
-        list.add(employee);
-        Mockito.when(employeeService.get()).thenReturn(list);
-      //   String string = "Updated Successfully";
+        Mockito.when(employeeService.get()).thenReturn(employeeList);
+        
         mvc.perform(get("/api/employee")
-        .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isAccepted());
-            // .andExpect(content().string(id));
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].id",Matchers.equalTo(employeeList.get(0).getId().toString())));
     }
+
 }

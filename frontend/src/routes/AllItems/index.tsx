@@ -1,19 +1,21 @@
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { DeletePopup } from 'components'
 import Sidebar from 'components/Sidebar'
 import Table from 'components/Table'
 import React, { useRef, useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { getItemsApi } from 'service/admin'
+import { Link, useNavigate } from 'react-router-dom'
+import { deleteItemById, getItemsApi } from 'service/admin'
 
 
 function AllItems() {
-  const [data, setTableData] = useState<any[]>([
-    {
-      itemId: "1223445",
-      name: "Table"
-    }
-  ])
+  const [data, setTableData] = useState<any[]>([])
+  const [popupOpen,setPopupOpen] = useState(false)
+  const [selectedId,setSelectedId]=useState("")
+
+  function closePopup(){
+    setPopupOpen(false)
+  }
   const fields: any=[
     {
       key: "id",
@@ -40,20 +42,28 @@ function AllItems() {
       label: "Actions"
     }
   ]
+
+  
+  const navigate=useNavigate()
   const actions: any=[
     {
       label: <FontAwesomeIcon icon={faPenToSquare} />,
       onClick: (id: any)=>{
         console.log(id)
+        navigate(`/admin/item/edit/${data[id].id}`)
+        
       },
     },
     {
       label: <FontAwesomeIcon icon={faTrash} />,
       onClick: (id: any)=>{
         console.log(id)
+        setSelectedId(data[id].id)
+        setPopupOpen(true)
       },
     }
   ]
+
 
 
   useEffect(()=>{
@@ -70,8 +80,20 @@ function AllItems() {
     setTableData(data);
   }
 
+  async function deleteItem(){
+    const resp=await deleteItemById(selectedId)
+    if(resp==true){
+      alert("Item Deleted sucessfully")
+      window.location.reload()
+    }
+    else{
+      alert("Some error occured")
+    }
+  }
+
   return (
     <div>
+      {popupOpen && <DeletePopup closePopup={closePopup} onSubmit={deleteItem}/>}
       <div className="p-4 sm:p-8 md:p-11 flex flex-col gap-12">
         <div className="w-full  flex flex-col justify-center gap-4 mb-6 lg:mb-0">
     

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -21,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class EmployeeCreateUpdateRequest {
 
 	@Email(message = "Email is invalid")
-	@NotNull(message = "Email must not be Null")
+	// @NotNull(message = "Email must not be Null")
 	private String email;
 
 	// one number, one lowercase character, one uppercase character, one symbol, and
