@@ -18,8 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import com.app.backend.communication.request.MakeCreationRequest;
-import com.app.backend.communication.response.MakeCreationResponse;
+import com.app.backend.communication.request.MakeCreateUpdateRequest;
 import com.app.backend.model.Category;
 import com.app.backend.model.Make;
 import com.app.backend.repository.*;
@@ -98,11 +97,16 @@ public class MakeControllerTest {
     @Test
     public void createTest() throws Exception{
 
-        MakeCreationRequest makeRequest = new MakeCreationRequest();
-        MakeCreationResponse makeResponse = new MakeCreationResponse();
+        MakeCreateUpdateRequest makeRequest = new MakeCreateUpdateRequest();
+        Make makeResponse = new Make();
+        Category category = new Category();
+        category.setId(UUID.fromString("addd070d-8c4c-4f0d-9d8a-162843c10333"));
+        category.setName("Furniture");
         makeRequest.setCategoryID(UUID.fromString("addd070d-8c4c-4f0d-9d8a-162843c10333"));
         makeRequest.setName("Wood");
-        makeResponse.setMakeID(UUID.fromString("acdd070d-8c4c-4f0d-9d8a-162843c10333"));
+        makeResponse.setId(UUID.fromString("acdd070d-8c4c-4f0d-9d8a-162843c10333"));
+        makeResponse.setName("Wood");
+        makeResponse.setCategory(category);
 
         Mockito.when(makeService.create(ArgumentMatchers.any())).thenReturn(makeResponse);
 
@@ -143,7 +147,7 @@ public class MakeControllerTest {
 
         Mockito.when(makeService.get()).thenReturn(makeList);
         
-        mvc.perform(get("/api/make/")
+        mvc.perform(get("/api/make")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].id",Matchers.equalTo(makeList.get(0).getId().toString())))
@@ -153,7 +157,7 @@ public class MakeControllerTest {
     }
 
     @Test
-    public void getMakesTest() throws Exception{
+    public void getByCategoryTest() throws Exception{
 
         List<Make> makeList = new ArrayList<Make>();
         Make make = new Make();
@@ -174,7 +178,7 @@ public class MakeControllerTest {
 
         UUID categoryID = UUID.fromString("f47ac10b-58cc-4372-a567-0e02a2c3d479");
 
-        Mockito.when(makeService.get(ArgumentMatchers.any())).thenReturn(makeList);
+        Mockito.when(makeService.getByCategory(ArgumentMatchers.any())).thenReturn(makeList);
         
         mvc.perform(get("/api/make/category/{categoryID}", categoryID)
             .contentType(MediaType.APPLICATION_JSON))

@@ -18,8 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import com.app.backend.communication.request.LoanCardCreationRequest;
-import com.app.backend.communication.response.LoanCardCreationResponse;
+import com.app.backend.communication.request.LoanCardCreateUpdateRequest;
 import com.app.backend.model.Category;
 import com.app.backend.model.LoanCard;
 import com.app.backend.repository.*;
@@ -98,11 +97,16 @@ public class LoanCardControllerTest {
     @Test
     public void createTest() throws Exception{
 
-        LoanCardCreationRequest loanCardRequest = new LoanCardCreationRequest();
-        LoanCardCreationResponse loanCardResponse = new LoanCardCreationResponse();
+        LoanCardCreateUpdateRequest loanCardRequest = new LoanCardCreateUpdateRequest();
+        LoanCard loanCardResponse = new LoanCard();
+        Category category = new Category();
+        category.setId(UUID.fromString("addd070d-8c4c-4f0d-9d8a-162843c10333"));
+        category.setName("Furniture");
         loanCardRequest.setCategoryID(UUID.fromString("addd070d-8c4c-4f0d-9d8a-162843c10333"));
         loanCardRequest.setDuration(9);
-        loanCardResponse.setLoanCardID(UUID.fromString("acdd070d-8c4c-4f0d-9d8a-162843c10333"));
+        loanCardResponse.setId(UUID.fromString("acdd070d-8c4c-4f0d-9d8a-162843c10333"));
+        loanCardResponse.setDuration(9);
+        loanCardResponse.setCategory(category);
 
         Mockito.when(loanCardService.create(ArgumentMatchers.any())).thenReturn(loanCardResponse);
 
@@ -145,7 +149,7 @@ public class LoanCardControllerTest {
 
         Mockito.when(loanCardService.get()).thenReturn(loanCardList);
         
-        mvc.perform(get("/api/loancard/")
+        mvc.perform(get("/api/loancard")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].id",Matchers.equalTo(loanCardList.get(0).getId().toString())))
@@ -160,9 +164,9 @@ public class LoanCardControllerTest {
         LoanCard loanCard = new LoanCard();
         Category category = new Category();
 
-        UUID loanCardID = UUID.fromString("f47ac10b-58cc-4372-a567-0e02a2c3d479");
+        UUID ID = UUID.fromString("f47ac10b-58cc-4372-a567-0e02a2c3d479");
 
-        loanCard.setId(loanCardID);
+        loanCard.setId(ID);
         loanCard.setDuration(10);
         category.setId(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479"));
         category.setName("Furniture");
@@ -170,7 +174,7 @@ public class LoanCardControllerTest {
 
         Mockito.when(loanCardService.get(ArgumentMatchers.any())).thenReturn(loanCard);
         
-        mvc.perform(get("/api/loancard/{loanCardID}", loanCardID)
+        mvc.perform(get("/api/loancard/{ID}", ID)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id",Matchers.equalTo(loanCard.getId().toString())))

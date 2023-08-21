@@ -18,8 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import com.app.backend.communication.request.CategoryCreationRequest;
-import com.app.backend.communication.response.CategoryCreationResponse;
+import com.app.backend.communication.request.CategoryCreateUpdateRequest;
 import com.app.backend.model.Category;
 import com.app.backend.repository.*;
 import com.app.backend.service.*;
@@ -97,10 +96,11 @@ public class CategoryControllerTest {
     @Test
     public void createTest() throws Exception{
 
-        CategoryCreationRequest categoryRequest = new CategoryCreationRequest();
-        CategoryCreationResponse categoryResponse = new CategoryCreationResponse();
+        CategoryCreateUpdateRequest categoryRequest = new CategoryCreateUpdateRequest();
+        Category categoryResponse = new Category();
         categoryRequest.setName("Vehicle");
-        categoryResponse.setCategoryID(UUID.fromString("acdd070d-8c4c-4f0d-9d8a-162843c10333"));
+        categoryResponse.setId(UUID.fromString("acdd070d-8c4c-4f0d-9d8a-162843c10333"));
+        categoryResponse.setName("Vehicle");
 
         Mockito.when(categoryService.create(ArgumentMatchers.any())).thenReturn(categoryResponse);
 
@@ -132,7 +132,7 @@ public class CategoryControllerTest {
 
         Mockito.when(categoryService.get()).thenReturn(categoryList);
         
-        mvc.perform(get("/api/category/")
+        mvc.perform(get("/api/category")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].id",Matchers.equalTo(categoryList.get(0).getId().toString())))
