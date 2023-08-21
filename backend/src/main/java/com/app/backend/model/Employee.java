@@ -46,10 +46,10 @@ public class Employee {
 	@NotBlank(message = "Gender cannot be blank")
 	private String gender;
 
-	@JsonFormat(pattern = "dd-mm-yyyy")
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date dob;
 
-	@JsonFormat(pattern = "dd-mm-yyyy")
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date doj;
 
 	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
