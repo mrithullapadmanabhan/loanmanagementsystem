@@ -30,6 +30,12 @@ public class MakeServiceImplementation implements MakeService {
     }
 
     @Override
+    public Make get(UUID makeID) {
+        return makeRepository.findById(makeID)
+                .orElseThrow(() -> new ResourceNotFoundException("Make with this ID does not exist"));
+    }
+
+    @Override
     public List<Make> getByCategory(UUID categoryID) {
         Category category = categoryRepository.findById(categoryID)
                 .orElseThrow(() -> new ResourceNotFoundException("Category with this ID does not exist"));

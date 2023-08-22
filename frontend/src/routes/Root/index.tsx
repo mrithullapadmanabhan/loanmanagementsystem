@@ -23,6 +23,7 @@ const adminOptions = [
   { label: "View Loan cards", Icon: faMoneyBillWave, route: "/admin/loan-card/all" },
   { label: "View Employees", Icon: faUser, route: "admin/employee/all" },
   { label: "View Items", Icon: faChair, route: "admin/item/all" },
+  { label: "View Makes", Icon: faChair, route: "admin/make/all" },
   { label: "View Categories", Icon: faChair, route: "admin/category/all" },
   { label: "Logout", Icon: faRightFromBracket, route: "login" }
 ];

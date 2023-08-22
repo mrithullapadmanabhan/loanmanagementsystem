@@ -12,6 +12,8 @@ public interface MakeService {
 
     public abstract List<Make> get();
 
+    public abstract Make get(UUID id);
+
     public abstract List<Make> getByCategory(UUID categoryID);
 
     public abstract Make create(@Valid MakeCreateUpdateRequest request);

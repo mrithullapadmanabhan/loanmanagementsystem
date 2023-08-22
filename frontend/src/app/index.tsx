@@ -1,22 +1,24 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import {
-  Root,
-  NotFound,
-  ApplyLoan,
-  Login,
-  Register,
-  ViewLoans,
-  ViewEmployeeItems,
-  AllEmployees,
-  AllItems,
-  AllLoans,
+  AddEditCategory,
   AddEditEmployee,
   AddEditItem,
   AddEditLoanCard,
+  AddEditMake,
   Admin,
-  AddEditCategory,
-  AllCategories
+  AllCategories,
+  AllEmployees,
+  AllItems,
+  AllLoans,
+  AllMakes,
+  ApplyLoan,
+  Login,
+  NotFound,
+  Register,
+  Root,
+  ViewEmployeeItems,
+  ViewLoans
 } from "routes";
 
 
@@ -59,6 +61,10 @@ const router = createBrowserRouter([
             element: <AllItems />
           },
           {
+            path: "make/all",
+            element: <AllMakes />
+          },
+          {
             path: "loan-card/all",
             element: <AllLoans />
           },
@@ -76,27 +82,35 @@ const router = createBrowserRouter([
           },
           {
             path: "item/edit/:id",
-            element: <AddEditItem type="edit"/>
+            element: <AddEditItem type="edit" />
           },
           {
             path: "loan-card/add",
             element: <AddEditLoanCard />
           },
           {
+            path: "make/add",
+            element: <AddEditMake />
+          },
+          {
             path: "loan-card/edit/:id",
-            element: <AddEditLoanCard type="edit"/>
+            element: <AddEditLoanCard type="edit" />
+          },
+          {
+            path: "make/edit/:id",
+            element: <AddEditMake type="edit" />
           },
           {
             path: "category/add",
-            element: <AddEditCategory type="add"/>
+            element: <AddEditCategory type="add" />
           },
           {
             path: "category/all",
-            element: <AllCategories/>
+            element: <AllCategories />
           },
           {
             path: "category/edit/:id",
-            element: <AddEditCategory type="edit"/>
+            element: <AddEditCategory type="edit" />
           }
         ]
       },

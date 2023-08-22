@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { addLoanCardApi, getLoanCardById, updateLoanCardById } from 'service/admin';
+import { addMakeApi, getMakeById, updateMakeById } from 'service/admin';
 import { getItemsCategories } from "service/loan";
 
-function AddEditLoanCard({ type = "add" }) {
+function AddEditMake({ type = "add" }) {
   const navigate = useNavigate();
 
-  const [loanTypeData, setLoanTypeData] = useState<any[]>([]);
-  const [duration, setDuration] = useState(0);
-  const [selectItemCategory, setSelectItemCategory] = useState("");
+  const [categories, setCategories] = useState<any[]>([]);
+  const [makeName, setMakeName] = useState("");
+  const [selectMakeCategory, setSelectMakeCategory] = useState("");
   const { id } = useParams()
 
 
@@ -20,50 +20,51 @@ function AddEditLoanCard({ type = "add" }) {
     if (id == "" || id == undefined) {
       return
     }
-    getLoanCardData();
+    getMakeData();
   }, [id]);
 
-  async function getLoanCardData() {
-    const res = await getLoanCardById(id)
-    setDuration(res.duration)
-    setSelectItemCategory(res.category.id)
-
+  async function getMakeData() {
+    const res: any = await getMakeById(id)
+    setMakeName(res.name)
   }
 
   async function getCategories() {
     const res: any = await getItemsCategories()
     console.log(res)
-    setLoanTypeData(res)
+    setCategories(res)
   }
 
   async function addSubmitButton() {
     const data = {
-      duration: duration,
-      categoryID: selectItemCategory
+      name: makeName,
+      categoryID: selectMakeCategory
     }
-    const resp = await addLoanCardApi(data)
+    const resp = await addMakeApi(data)
     if (resp) {
-      alert("Loan Card created successfully")
-      navigate('/admin/loan-card/all')
+      alert("Make created successfully")
+      navigate('/admin/make/all')
     }
   }
 
   async function editSubmitButton() {
     const data = {
-      duration: duration,
-      categoryID: selectItemCategory
+      name: makeName,
+      categoryID: selectMakeCategory
     }
-    const resp = await updateLoanCardById(id, data)
+    const resp = await updateMakeById(id, data)
     if (resp) {
-      alert("Loan Card edited successfully")
-      navigate('/admin/loan-card/all')
+      alert("Make edited successfully")
+      navigate('/admin/make/all')
+    }
+    else {
+      alert("error")
     }
   }
 
-  const handleItemCategoryChange = async (e: {
+  const handleMakeCategoryChange = async (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
-    setSelectItemCategory(e.target.value);
+    setSelectMakeCategory(e.target.value);
   };
 
 
@@ -76,24 +77,26 @@ function AddEditLoanCard({ type = "add" }) {
             <div className="flex flex-col gap-4">
               <div className="flex items-center">
                 <p className="font-bold text-base sm:text-lg">
-                  {type == "add" ? "Add" : "Edit"} an Loan card:
+                  {type == "add" ? "Add" : "Edit"} a make:
                 </p>
               </div>
             </div>
 
-            <div className="flex flex-wrap justify-start gap-6 md:gap-7">
+            <div
+              className="flex flex-wrap justify-start gap-6 md:gap-7">
               <div className="w-full md:w-48">
-                <p className="font-medium text-sm sm:text-base mb-2">
-                  Select Item Category
+                <p hidden={type == "add" ? false : true}
+                  className="font-medium text-sm sm:text-base mb-2">
+                  Select Make Category
                 </p>
-                <select
+                <select hidden={type == "add" ? false : true}
                   className="w-full h-12 px-4 py-2 text-sm border border-gray-900 rounded appearance-none focus:ring focus:ring-gray-300 bg-white"
-                  value={selectItemCategory}
-                  onChange={handleItemCategoryChange}>
+                  value={selectMakeCategory}
+                  onChange={handleMakeCategoryChange}>
                   <option value="">Select Type</option>
-                  {loanTypeData.map((loantype, index) => (
-                    <option key={index} value={loantype.id}>
-                      {loantype.name}
+                  {categories.map((category, index) => (
+                    <option key={index} value={category.id}>
+                      {category.name}
                     </option>
                   ))}
                 </select>
@@ -103,13 +106,13 @@ function AddEditLoanCard({ type = "add" }) {
             <div className="flex flex-wrap justify-start gap-6 md:gap-7">
               <div className="w-full md:w-48">
                 <p className="font-medium text-sm sm:text-base mb-2">
-                  Duration (In Months)
+                  Make Name
                 </p>
                 <input
-                  type="number"
+                  type="text"
                   className="w-full h-12 px-4 py-2 text-sm border border-gray-900 rounded focus:ring focus:ring-gray-300"
-                  value={duration}
-                  onChange={(e) => setDuration(parseInt(e.target.value))}
+                  value={makeName}
+                  onChange={(e) => setMakeName(e.target.value)}
                 />
               </div>
             </div>
@@ -119,7 +122,7 @@ function AddEditLoanCard({ type = "add" }) {
                 <button
                   className="w-full h-12 text-center font-medium text-xs sm:text-sm py-2 px-8 rounded bg-[#00A141] text-white"
                   onClick={type == "add" ? addSubmitButton : editSubmitButton}>
-                  {type == "add" ? "Add Loan card" : "Edit Loan card"}
+                  {type == "add" ? "Add Make" : "Edit Make"}
                 </button>
               </div>
             </div>
@@ -130,4 +133,4 @@ function AddEditLoanCard({ type = "add" }) {
   );
 }
 
-export default AddEditLoanCard;
+export default AddEditMake;
