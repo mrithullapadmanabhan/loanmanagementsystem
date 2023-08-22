@@ -77,10 +77,35 @@ const Form = ({ onSubmit, formFields, submitButton }: FormType) => {
     });
   };
 
-  const handleSubmit = async (event: { preventDefault: () => void }) => {
+  // const handleSubmit = async (event: { preventDefault: () => void }) => {
+  //   event.preventDefault();
+  //   onSubmit(formData);
+  // };
+
+
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    onSubmit(formData);
+
+    // Check for form-level validation before submitting
+    let hasErrors = false;
+    for (const field of formFields) {
+      if (fieldValidationDetails[field.name]?.regex) {
+        const regExp = new RegExp(fieldValidationDetails[field.name].regex!);
+        if (!regExp.test(field.name)) {
+          setFormError({
+            ...formError,
+            [field.name]: fieldValidationDetails[field.name].message!,
+          });
+          hasErrors = true;
+        }
+      }
+    }
+
+    if (!hasErrors) {
+      onSubmit(formData);
+    }
   };
+
 
   return (
     <>
