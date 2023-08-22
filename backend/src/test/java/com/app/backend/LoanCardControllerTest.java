@@ -29,8 +29,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.app.backend.communication.request.LoanCardCreateUpdateRequest;
+import com.app.backend.communication.response.LoanCardResponse;
 import com.app.backend.model.Category;
-import com.app.backend.model.LoanCard;
 import com.app.backend.repository.CategoryRepository;
 import com.app.backend.repository.EmployeeLoanRepository;
 import com.app.backend.repository.EmployeeRepository;
@@ -55,198 +55,202 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @AutoConfigureMockMvc(addFilters = false)
 public class LoanCardControllerTest {
 
-    @Autowired
-    private MockMvc mvc;
+        @Autowired
+        private MockMvc mvc;
 
-    @MockBean
-    private CategoryService categoryService;
+        @MockBean
+        private CategoryService categoryService;
 
-    @MockBean
-    private EmployeeLoanService employeeLoanService;
+        @MockBean
+        private EmployeeLoanService employeeLoanService;
 
-    @MockBean
-    private EmployeeService employeeService;
+        @MockBean
+        private EmployeeService employeeService;
 
-    @MockBean
-    private ItemCardService itemCardService;
+        @MockBean
+        private ItemCardService itemCardService;
 
-    @MockBean
-    private LoanCardService loanCardService;
+        @MockBean
+        private LoanCardService loanCardService;
 
-    @MockBean
-    private MakeService makeService;
+        @MockBean
+        private MakeService makeService;
 
-    @MockBean
-    private AuthenticationService authenticationService;
+        @MockBean
+        private AuthenticationService authenticationService;
 
-    @MockBean
-    private JWTService jwtService;
+        @MockBean
+        private JWTService jwtService;
 
-    @MockBean
-    private CategoryRepository categoryRepository;
+        @MockBean
+        private CategoryRepository categoryRepository;
 
-    @MockBean
-    private EmployeeRepository employeeRepository;
+        @MockBean
+        private EmployeeRepository employeeRepository;
 
-    @MockBean
-    private EmployeeLoanRepository employeeLoanRepository;
+        @MockBean
+        private EmployeeLoanRepository employeeLoanRepository;
 
-    @MockBean
-    private ItemCardRepository itemCardRepository;
+        @MockBean
+        private ItemCardRepository itemCardRepository;
 
-    @MockBean
-    private LoanCardRepository loanCardRepository;
+        @MockBean
+        private LoanCardRepository loanCardRepository;
 
-    @MockBean
-    private MakeRepository makeRepository;
+        @MockBean
+        private MakeRepository makeRepository;
 
-    @MockBean
-    private RoleRepository roleRepository;
+        @MockBean
+        private RoleRepository roleRepository;
 
-    @MockBean
-    private UserRepository userRepository;
+        @MockBean
+        private UserRepository userRepository;
 
-    ObjectMapper mapper = new ObjectMapper()
-            .findAndRegisterModules()
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        ObjectMapper mapper = new ObjectMapper()
+                        .findAndRegisterModules()
+                        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-    @Test
-    public void createTest() throws Exception {
+        @Test
+        public void createTest() throws Exception {
 
-        LoanCardCreateUpdateRequest loanCardRequest = new LoanCardCreateUpdateRequest();
-        LoanCard loanCardResponse = new LoanCard();
-        Category category = new Category();
-        UUID categoryID = UUID.randomUUID();
-        category.setId(categoryID);
-        category.setName("Furniture");
-        loanCardRequest.setCategoryID(categoryID);
-        loanCardRequest.setDuration(9);
-        loanCardResponse.setId(UUID.randomUUID());
-        loanCardResponse.setDuration(9);
-        loanCardResponse.setCategory(category);
+                LoanCardCreateUpdateRequest loanCardRequest = new LoanCardCreateUpdateRequest();
+                LoanCardResponse loanCardResponse = new LoanCardResponse();
+                Category category = new Category();
+                UUID categoryID = UUID.randomUUID();
+                category.setId(categoryID);
+                category.setName("Furniture");
+                loanCardRequest.setCategoryID(categoryID);
+                loanCardRequest.setDuration(9);
+                loanCardResponse.setId(UUID.randomUUID());
+                loanCardResponse.setDuration(9);
+                loanCardResponse.setCategory(category.getId());
 
-        Mockito.when(loanCardService.create(ArgumentMatchers.any())).thenReturn(loanCardResponse);
+                Mockito.when(loanCardService.create(ArgumentMatchers.any())).thenReturn(loanCardResponse);
 
-        String loanCardRequestString = mapper.writeValueAsString(loanCardRequest);
-        String loanCardResponseString = mapper.writeValueAsString(loanCardResponse);
+                String loanCardRequestString = mapper.writeValueAsString(loanCardRequest);
+                String loanCardResponseString = mapper.writeValueAsString(loanCardResponse);
 
-        MvcResult requestResult = mvc.perform(post("/api/loancard")
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding("utf-8")
-                .content(loanCardRequestString))
-                .andExpect(status().isCreated())
-                .andReturn();
+                MvcResult requestResult = mvc.perform(post("/api/loancard")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .characterEncoding("utf-8")
+                                .content(loanCardRequestString))
+                                .andExpect(status().isCreated())
+                                .andReturn();
 
-        String loanCardRequestResult = requestResult.getResponse().getContentAsString();
-        assertEquals(loanCardResponseString, loanCardRequestResult);
-    }
+                String loanCardRequestResult = requestResult.getResponse().getContentAsString();
+                assertEquals(loanCardResponseString, loanCardRequestResult);
+        }
 
-    @Test
-    public void getTest() throws Exception {
+        @Test
+        public void getTest() throws Exception {
 
-        List<LoanCard> loanCardList = new ArrayList<LoanCard>();
-        LoanCard loanCard = new LoanCard();
-        Category category = new Category();
+                List<LoanCardResponse> loanCardList = new ArrayList<LoanCardResponse>();
+                LoanCardResponse loanCard = new LoanCardResponse();
+                Category category = new Category();
 
-        category.setId(UUID.randomUUID());
-        category.setName("Jewellery");
+                category.setId(UUID.randomUUID());
+                category.setName("Jewellery");
 
-        loanCard.setId(UUID.randomUUID());
-        loanCard.setDuration(9);
-        loanCard.setCategory(category);
-        loanCardList.add(loanCard);
+                loanCard.setId(UUID.randomUUID());
+                loanCard.setDuration(9);
+                loanCard.setCategory(category.getId());
+                loanCardList.add(loanCard);
 
-        category.setId(UUID.randomUUID());
-        category.setName("Furniture");
+                category.setId(UUID.randomUUID());
+                category.setName("Furniture");
 
-        loanCard.setId(UUID.randomUUID());
-        loanCard.setDuration(5);
-        loanCard.setCategory(category);
-        loanCardList.add(loanCard);
+                loanCard.setId(UUID.randomUUID());
+                loanCard.setDuration(5);
+                loanCard.setCategory(category.getId());
+                loanCardList.add(loanCard);
 
-        Mockito.when(loanCardService.get()).thenReturn(loanCardList);
+                Mockito.when(loanCardService.get()).thenReturn(loanCardList);
 
-        mvc.perform(get("/api/loancard")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id", Matchers.equalTo(loanCardList.get(0).getId().toString())))
-                .andExpect(jsonPath("$[0].category.id",
-                        Matchers.equalTo(loanCardList.get(0).getCategory().getId().toString())))
-                .andExpect(jsonPath("$[1].id", Matchers.equalTo(loanCardList.get(1).getId().toString())))
-                .andExpect(jsonPath("$[1].category.id",
-                        Matchers.equalTo(loanCardList.get(1).getCategory().getId().toString())));
-    }
+                mvc.perform(get("/api/loancard")
+                                .contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$[0].id",
+                                                Matchers.equalTo(loanCardList.get(0).getId().toString())))
+                                .andExpect(jsonPath("$[0].category",
+                                                Matchers.equalTo(loanCardList.get(0).getCategory())))
+                                .andExpect(jsonPath("$[1].id",
+                                                Matchers.equalTo(loanCardList.get(1).getId().toString())))
+                                .andExpect(jsonPath("$[1].category",
+                                                Matchers.equalTo(
+                                                                loanCardList.get(1).getCategory())));
+        }
 
-    @Test
-    public void getLoanCardByIdTest() throws Exception {
+        @Test
+        public void getLoanCardByIdTest() throws Exception {
 
-        LoanCard loanCard = new LoanCard();
-        Category category = new Category();
+                LoanCardResponse loanCard = new LoanCardResponse();
+                Category category = new Category();
 
-        UUID id = UUID.randomUUID();
-        UUID categoryID = UUID.randomUUID();
+                UUID id = UUID.randomUUID();
+                UUID categoryID = UUID.randomUUID();
 
-        loanCard.setId(id);
-        loanCard.setDuration(10);
-        category.setId(categoryID);
-        category.setName("Furniture");
-        loanCard.setCategory(category);
+                loanCard.setId(id);
+                loanCard.setDuration(10);
+                category.setId(categoryID);
+                category.setName("Furniture");
+                loanCard.setCategory(category.getId());
 
-        Mockito.when(loanCardService.get(ArgumentMatchers.any())).thenReturn(loanCard);
+                Mockito.when(loanCardService.get(ArgumentMatchers.any())).thenReturn(loanCard);
 
-        mvc.perform(get("/api/loancard/{id}", id)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", Matchers.equalTo(loanCard.getId().toString())))
-                .andExpect(jsonPath("$.duration", Matchers.equalTo(loanCard.getDuration())))
-                .andExpect(jsonPath("$.category.id", Matchers.equalTo(loanCard.getCategory().getId().toString())));
-    }
+                mvc.perform(get("/api/loancard/{id}", id)
+                                .contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.id", Matchers.equalTo(loanCard.getId().toString())))
+                                .andExpect(jsonPath("$.duration", Matchers.equalTo(loanCard.getDuration())))
+                                .andExpect(jsonPath("$.category",
+                                                Matchers.equalTo(loanCard.getCategory())));
+        }
 
-    @Test
-    public void updateTest() throws Exception {
+        @Test
+        public void updateTest() throws Exception {
 
-        LoanCardCreateUpdateRequest loanCardRequest = new LoanCardCreateUpdateRequest();
-        LoanCard loanCardResponse = new LoanCard();
-        Category category = new Category();
+                LoanCardCreateUpdateRequest loanCardRequest = new LoanCardCreateUpdateRequest();
+                LoanCardResponse loanCardResponse = new LoanCardResponse();
+                Category category = new Category();
 
-        UUID categoryID = UUID.randomUUID();
-        category.setId(categoryID);
-        category.setName("Furniture");
-        loanCardRequest.setCategoryID(categoryID);
-        loanCardRequest.setDuration(9);
+                UUID categoryID = UUID.randomUUID();
+                category.setId(categoryID);
+                category.setName("Furniture");
+                loanCardRequest.setCategoryID(categoryID);
+                loanCardRequest.setDuration(9);
 
-        UUID id = UUID.randomUUID();
-        loanCardResponse.setId(id);
-        loanCardResponse.setDuration(9);
-        loanCardResponse.setCategory(category);
+                UUID id = UUID.randomUUID();
+                loanCardResponse.setId(id);
+                loanCardResponse.setDuration(9);
+                loanCardResponse.setCategory(category.getId());
 
-        Mockito.when(loanCardService.update(ArgumentMatchers.any(), ArgumentMatchers.any()))
-                .thenReturn(loanCardResponse);
+                Mockito.when(loanCardService.update(ArgumentMatchers.any(), ArgumentMatchers.any()))
+                                .thenReturn(loanCardResponse);
 
-        String loanCardRequestString = mapper.writeValueAsString(loanCardRequest);
-        String loanCardResponseString = mapper.writeValueAsString(loanCardResponse);
+                String loanCardRequestString = mapper.writeValueAsString(loanCardRequest);
+                String loanCardResponseString = mapper.writeValueAsString(loanCardResponse);
 
-        MvcResult requestResult = mvc.perform(put("/api/loancard/{id}", id)
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding("utf-8")
-                .content(loanCardRequestString))
-                .andExpect(status().isOk())
-                .andReturn();
+                MvcResult requestResult = mvc.perform(put("/api/loancard/{id}", id)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .characterEncoding("utf-8")
+                                .content(loanCardRequestString))
+                                .andExpect(status().isOk())
+                                .andReturn();
 
-        String loanCardRequestResult = requestResult.getResponse().getContentAsString();
-        assertEquals(loanCardResponseString, loanCardRequestResult);
-    }
+                String loanCardRequestResult = requestResult.getResponse().getContentAsString();
+                assertEquals(loanCardResponseString, loanCardRequestResult);
+        }
 
-    @Test
-    public void deleteTest() throws Exception {
+        @Test
+        public void deleteTest() throws Exception {
 
-        UUID id = UUID.randomUUID();
+                UUID id = UUID.randomUUID();
 
-        mvc.perform(delete("/api/loancard/{id}", id)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+                mvc.perform(delete("/api/loancard/{id}", id)
+                                .contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isNoContent());
 
-        verify(loanCardService, times(1)).delete(id);
-    }
+                verify(loanCardService, times(1)).delete(id);
+        }
 
 }

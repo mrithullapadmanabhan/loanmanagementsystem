@@ -1,24 +1,25 @@
 package com.app.backend;
-import com.app.backend.controller.AuthenticationController;
-import com.app.backend.service.auth.AuthenticationService;
-import com.app.backend.service.auth.JWTService;
-import com.app.backend.communication.request.JWTLoginRequest;
-import com.app.backend.communication.request.JWTRefreshRequest;
-import  com.app.backend.communication.response.JWTResponse;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.http.MediaType;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-import com.fasterxml.jackson.databind.ObjectMapper.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.app.backend.communication.request.JWTLoginRequest;
+import com.app.backend.communication.request.JWTRefreshRequest;
+import com.app.backend.communication.response.JWTResponse;
+import com.app.backend.controller.AuthenticationController;
+import com.app.backend.service.auth.AuthenticationService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class AuthenticationControllerTest {
 
     @Mock
@@ -38,7 +39,7 @@ public class AuthenticationControllerTest {
     @Test
     public void testLogin() throws Exception {
         JWTLoginRequest loginRequest = new JWTLoginRequest("username", "password");
-        JWTResponse jwtResponse = new JWTResponse("token");
+        JWTResponse jwtResponse = new JWTResponse();
 
         when(authService.login(loginRequest)).thenReturn(jwtResponse);
 
@@ -51,7 +52,7 @@ public class AuthenticationControllerTest {
     @Test
     public void testRefresh() throws Exception {
         JWTRefreshRequest refreshRequest = new JWTRefreshRequest("refreshToken");
-        JWTResponse jwtResponse = new JWTResponse("newToken");
+        JWTResponse jwtResponse = new JWTResponse();
 
         when(authService.refresh(refreshRequest)).thenReturn(jwtResponse);
 
@@ -70,4 +71,3 @@ public class AuthenticationControllerTest {
         }
     }
 }
-

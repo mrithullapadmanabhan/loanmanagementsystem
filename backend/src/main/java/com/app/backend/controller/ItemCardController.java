@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.backend.communication.request.ItemCardCreateUpdateRequest;
-import com.app.backend.model.ItemCard;
+import com.app.backend.communication.response.ItemCardResponse;
 import com.app.backend.service.ItemCardService;
 
 import jakarta.validation.Valid;
@@ -32,36 +32,36 @@ public class ItemCardController {
 	private final ItemCardService service;
 
 	@GetMapping("")
-	public ResponseEntity<List<ItemCard>> get() {
+	public ResponseEntity<List<ItemCardResponse>> get() {
 		return ResponseEntity.ok(service.get());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ItemCard> get(@PathVariable("id") UUID id) {
+	public ResponseEntity<ItemCardResponse> get(@PathVariable("id") UUID id) {
 		return ResponseEntity.ok(service.get(id));
 	}
 
 	@GetMapping("/make/{makeID}")
-	public ResponseEntity<ItemCard> getByMake(
+	public ResponseEntity<ItemCardResponse> getByMake(
 			@PathVariable("makeID") UUID makeID) {
 		return ResponseEntity.ok(service.getByMake(makeID));
 	}
 
 	@GetMapping("/employee/{employeeID}")
-	public ResponseEntity<List<ItemCard>> getByEmployee(
+	public ResponseEntity<List<ItemCardResponse>> getByEmployee(
 			@PathVariable("employeeID") UUID employeeID) {
 		return ResponseEntity.ok(service.getByEmployee(employeeID));
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping("")
-	public ResponseEntity<ItemCard> saveItem(@Valid @RequestBody ItemCardCreateUpdateRequest item) {
+	public ResponseEntity<ItemCardResponse> saveItem(@Valid @RequestBody ItemCardCreateUpdateRequest item) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.create(item));
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PutMapping("/{id}")
-	public ResponseEntity<ItemCard> update(
+	public ResponseEntity<ItemCardResponse> update(
 			@PathVariable("id") UUID id,
 			@Valid @RequestBody ItemCardCreateUpdateRequest request) {
 		return ResponseEntity.ok(service.update(id, request));

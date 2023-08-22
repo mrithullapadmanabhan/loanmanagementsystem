@@ -3,9 +3,11 @@ package com.app.backend.service;
 import java.util.List;
 import java.util.UUID;
 
+import org.modelmapper.TypeMap;
 import org.springframework.stereotype.Service;
 
 import com.app.backend.communication.request.MakeCreateUpdateRequest;
+import com.app.backend.communication.response.MakeResponse;
 import com.app.backend.exception.ResourceNotFoundException;
 import com.app.backend.model.Category;
 import com.app.backend.model.Make;
@@ -24,27 +26,29 @@ public class MakeServiceImplementation implements MakeService {
 
     private final CategoryRepository categoryRepository;
 
+    private final TypeMap<Make, MakeResponse> mapper;
+
     @Override
-    public List<Make> get() {
-        return makeRepository.findAll();
+    public List<MakeResponse> get() {
+        return makeRepository.findAll().stream().map((make) -> mapper.map(make)).toList();
     }
 
     @Override
-    public Make get(UUID makeID) {
-        return makeRepository.findById(makeID)
-                .orElseThrow(() -> new ResourceNotFoundException("Make with this ID does not exist"));
+    public MakeResponse get(UUID makeID) {
+        return mapper.map(makeRepository.findById(makeID)
+                .orElseThrow(() -> new ResourceNotFoundException("Make with this ID does not exist")));
     }
 
     @Override
-    public List<Make> getByCategory(UUID categoryID) {
+    public List<MakeResponse> getByCategory(UUID categoryID) {
         Category category = categoryRepository.findById(categoryID)
                 .orElseThrow(() -> new ResourceNotFoundException("Category with this ID does not exist"));
-        return category.getMakes();
+        return category.getMakes().stream().map((make) -> mapper.map(make)).toList();
     }
 
     @Transactional
     @Override
-    public Make create(MakeCreateUpdateRequest request) {
+    public MakeResponse create(MakeCreateUpdateRequest request) {
         Category category = categoryRepository.findById(request.getCategoryID())
                 .orElseThrow(() -> new ResourceNotFoundException("Category with this ID does not exist"));
 
@@ -53,18 +57,18 @@ public class MakeServiceImplementation implements MakeService {
                 .category(category)
                 .build();
 
-        return makeRepository.save(make);
+        return mapper.map(makeRepository.save(make));
     }
 
     @Transactional
     @Override
-    public Make update(UUID id, @Valid MakeCreateUpdateRequest request) {
+    public MakeResponse update(UUID id, @Valid MakeCreateUpdateRequest request) {
         Make make = makeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Make with this ID does not exist"));
 
         make.setName(request.getName());
 
-        return makeRepository.save(make);
+        return mapper.map(makeRepository.save(make));
     }
 
     @Override

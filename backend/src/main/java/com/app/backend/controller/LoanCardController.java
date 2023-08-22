@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.backend.communication.request.LoanCardCreateUpdateRequest;
-import com.app.backend.model.LoanCard;
+import com.app.backend.communication.response.LoanCardResponse;
 import com.app.backend.service.LoanCardService;
 
 import jakarta.validation.Valid;
@@ -32,24 +32,24 @@ public class LoanCardController {
 	private final LoanCardService service;
 
 	@GetMapping("")
-	public ResponseEntity<List<LoanCard>> get() {
+	public ResponseEntity<List<LoanCardResponse>> get() {
 		return ResponseEntity.ok(service.get());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<LoanCard> get(@PathVariable("id") UUID id) {
+	public ResponseEntity<LoanCardResponse> get(@PathVariable("id") UUID id) {
 		return ResponseEntity.ok(service.get(id));
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping("")
-	public ResponseEntity<LoanCard> create(@Valid @RequestBody LoanCardCreateUpdateRequest request) {
+	public ResponseEntity<LoanCardResponse> create(@Valid @RequestBody LoanCardCreateUpdateRequest request) {
 		return ResponseEntity.status(HttpStatus.CREATED).body((service.create(request)));
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PutMapping("/{id}")
-	public ResponseEntity<LoanCard> update(
+	public ResponseEntity<LoanCardResponse> update(
 			@PathVariable("id") UUID id,
 			@Valid @RequestBody LoanCardCreateUpdateRequest request) {
 		return ResponseEntity.ok(service.update(id, request));

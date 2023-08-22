@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.backend.communication.request.EmployeeCreateUpdateRequest;
-import com.app.backend.model.Employee;
+import com.app.backend.communication.response.EmployeeResponse;
 import com.app.backend.service.EmployeeService;
 
 import jakarta.validation.Valid;
@@ -33,24 +33,24 @@ public class EmployeeController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("")
-    public ResponseEntity<List<Employee>> get() {
+    public ResponseEntity<List<EmployeeResponse>> get() {
         return ResponseEntity.ok(service.get());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> get(@PathVariable("id") UUID id) {
+    public ResponseEntity<EmployeeResponse> get(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(service.get(id));
     }
 
     @PostMapping("")
-    public ResponseEntity<Employee> create(
+    public ResponseEntity<EmployeeResponse> create(
             @Valid @RequestBody EmployeeCreateUpdateRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(request));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> update(
+    public ResponseEntity<EmployeeResponse> update(
             @PathVariable("id") UUID id,
             @Valid @RequestBody EmployeeCreateUpdateRequest request) {
         return ResponseEntity.ok(service.update(id, request));

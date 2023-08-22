@@ -4,18 +4,18 @@ import java.util.List;
 import java.util.UUID;
 
 import com.app.backend.communication.request.LoanCreateRequest;
-import com.app.backend.model.EmployeeLoan;
+import com.app.backend.communication.response.EmployeeLoanResponse;
 
 import jakarta.validation.Valid;
 
 public interface EmployeeLoanService {
 
-    public abstract List<EmployeeLoan> get();
+    public abstract List<EmployeeLoanResponse> get();
 
-    public abstract List<EmployeeLoan> get(UUID employeeID);
+    public abstract List<EmployeeLoanResponse> get(UUID employeeID);
 
-    public abstract EmployeeLoan create(@Valid LoanCreateRequest request);
+    public abstract EmployeeLoanResponse create(@Valid LoanCreateRequest request);
 
-    public abstract EmployeeLoan setCompleted(UUID id);
+    public abstract EmployeeLoanResponse setCompleted(UUID id);
 
 }
