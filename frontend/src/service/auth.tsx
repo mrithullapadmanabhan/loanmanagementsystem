@@ -9,6 +9,16 @@ export const isLoggedIn = () => {
   );
 };
 
+export const logout=()=>{
+  
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("employeeID");
+  localStorage.removeItem("roles");
+
+
+}
+
 type loginData = {
   email: string;
   password: string;

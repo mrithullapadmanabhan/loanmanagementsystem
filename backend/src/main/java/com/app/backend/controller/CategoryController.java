@@ -36,6 +36,11 @@ public class CategoryController {
 		return ResponseEntity.ok(service.get());
 	}
 
+	@GetMapping("/{id}")
+	public ResponseEntity<Category> getCategoryByID(@PathVariable("id") UUID id) {
+		return ResponseEntity.ok(service.get(id));
+	}
+
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping("")
 	public ResponseEntity<Category> create(
@@ -53,7 +58,7 @@ public class CategoryController {
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(
+	public ResponseEntity<String> delete(
 			@PathVariable("id") UUID id) {
 		service.delete(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");

@@ -15,8 +15,14 @@ import {
   AddEditEmployee,
   AddEditItem,
   AddEditLoanCard,
+<<<<<<< HEAD
   AddEditMake,
   Admin
+=======
+  Admin,
+  AddEditCategory,
+  AllCategories
+>>>>>>> a24fca614ce7fded3c1b3549d826a1dafaa41a87
 } from "routes";
 
 
@@ -95,10 +101,22 @@ const router = createBrowserRouter([
             element: <AddEditLoanCard type="edit"/>
           },
           {
+<<<<<<< HEAD
             path: "make/edit/:id",
             element: <AddEditMake type="edit"/>
+=======
+            path: "category/add",
+            element: <AddEditCategory type="add"/>
+          },
+          {
+            path: "category/all",
+            element: <AllCategories/>
+          },
+          {
+            path: "category/edit/:id",
+            element: <AddEditCategory type="edit"/>
+>>>>>>> a24fca614ce7fded3c1b3549d826a1dafaa41a87
           }
-
         ]
       },
     ],

@@ -35,7 +35,7 @@ public class EmployeeLoan {
     @NotNull
     private LoanStatusEnum status;
 
-    @JsonFormat(pattern = "dd-mm-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
 	private Date issueDate;
 
     @ManyToOne(fetch = FetchType.EAGER)

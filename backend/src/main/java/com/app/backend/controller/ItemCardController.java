@@ -69,7 +69,7 @@ public class ItemCardController {
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(
+	public ResponseEntity<String> delete(
 			@PathVariable("id") UUID id) {
 		service.delete(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
