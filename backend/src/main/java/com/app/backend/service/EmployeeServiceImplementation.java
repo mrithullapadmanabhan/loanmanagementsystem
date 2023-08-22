@@ -96,10 +96,12 @@ public class EmployeeServiceImplementation implements EmployeeService {
     }
 
     @Override
-    public void delete(UUID id) {
+    public String delete(UUID id) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee with this ID doesn't exist"));
 
         employeeRepository.delete(employee);
+
+        return "Deleted";
     }
 }

@@ -178,7 +178,7 @@ public class EmployeeLoanControllerTest {
             String request = mapper.writeValueAsString(loanRequest);
             String response = mapper.writeValueAsString(loanResponse);
 
-            MvcResult requestResult = mvc.perform(post("/api/loan/create")
+            MvcResult requestResult = mvc.perform(post("/api/loan")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .content(request))

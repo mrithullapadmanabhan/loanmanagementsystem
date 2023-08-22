@@ -25,8 +25,12 @@ function AddEditLoanCard({ type = "add" }) {
 
   async function getLoanCardData() {
     const res = await getLoanCardById(id)
+
     setDuration(res.duration)
     setSelectItemCategory(res.category.id)
+
+
+
 
   }
 
@@ -41,11 +45,18 @@ function AddEditLoanCard({ type = "add" }) {
       duration: duration,
       categoryID: selectItemCategory
     }
-    const resp = await addLoanCardApi(data)
-    if (resp) {
-      alert("Loan Card created successfully")
-      navigate('/admin/loan-card/all')
+    if (data.duration > 0 && data.duration < 48) {
+      const resp = await addLoanCardApi(data)
+      if (resp) {
+        alert("Loan Card created successfully")
+        navigate('/admin/loan-card/all')
+      }
     }
+    else {
+      alert("Duration should be between 1 and 48")
+    }
+
+
   }
 
   async function editSubmitButton() {
@@ -107,6 +118,8 @@ function AddEditLoanCard({ type = "add" }) {
                 </p>
                 <input
                   type="number"
+                  min="1"
+                  max="48"
                   className="w-full h-12 px-4 py-2 text-sm border border-gray-900 rounded focus:ring focus:ring-gray-300"
                   value={duration}
                   onChange={(e) => setDuration(parseInt(e.target.value))}
