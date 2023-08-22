@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.backend.communication.request.LoanCreateRequest;
-import com.app.backend.model.EmployeeLoan;
+import com.app.backend.communication.response.EmployeeLoanResponse;
 import com.app.backend.service.EmployeeLoanService;
 
 import jakarta.validation.Valid;
@@ -31,23 +31,23 @@ public class EmployeeLoanController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("")
-    public ResponseEntity<List<EmployeeLoan>> get() {
+    public ResponseEntity<List<EmployeeLoanResponse>> get() {
         return ResponseEntity.ok(service.get());
     }
 
     @GetMapping("/employee/{employeeID}")
-    public ResponseEntity<List<EmployeeLoan>> get(@PathVariable("employeeID") UUID employeeID) {
+    public ResponseEntity<List<EmployeeLoanResponse>> get(@PathVariable("employeeID") UUID employeeID) {
         return ResponseEntity.ok(service.get(employeeID));
     }
 
     @PostMapping("")
-    public ResponseEntity<EmployeeLoan> create(@Valid @RequestBody LoanCreateRequest request) {
+    public ResponseEntity<EmployeeLoanResponse> create(@Valid @RequestBody LoanCreateRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(request));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id}/status/completed")
-    public ResponseEntity<EmployeeLoan> markCompleted(@PathVariable("id") UUID id) {
+    public ResponseEntity<EmployeeLoanResponse> markCompleted(@PathVariable("id") UUID id) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.setCompleted(id));
     }
 

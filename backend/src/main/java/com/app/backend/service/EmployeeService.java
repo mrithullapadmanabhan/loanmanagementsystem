@@ -4,20 +4,20 @@ import java.util.List;
 import java.util.UUID;
 
 import com.app.backend.communication.request.EmployeeCreateUpdateRequest;
-import com.app.backend.model.Employee;
+import com.app.backend.communication.response.EmployeeResponse;
 
 import jakarta.validation.Valid;
 
 public interface EmployeeService {
 
-    public abstract List<Employee> get();
+    public abstract List<EmployeeResponse> get();
 
-    public abstract Employee get(UUID id);
+    public abstract EmployeeResponse get(UUID id);
 
-    public abstract Employee create(@Valid EmployeeCreateUpdateRequest request);
+    public abstract EmployeeResponse create(@Valid EmployeeCreateUpdateRequest request);
 
-    public abstract Employee update(UUID id, @Valid EmployeeCreateUpdateRequest request);
+    public abstract EmployeeResponse update(UUID id, @Valid EmployeeCreateUpdateRequest request);
 
-    public abstract String delete(UUID id);
+    public abstract void delete(UUID id);
 
 }

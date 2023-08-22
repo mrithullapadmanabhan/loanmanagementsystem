@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.backend.communication.request.CategoryCreateUpdateRequest;
-import com.app.backend.model.Category;
+import com.app.backend.communication.response.CategoryResponse;
 import com.app.backend.service.CategoryService;
 
 import jakarta.validation.Valid;
@@ -32,25 +32,25 @@ public class CategoryController {
 	private final CategoryService service;
 
 	@GetMapping("")
-	public ResponseEntity<List<Category>> getCategories() {
+	public ResponseEntity<List<CategoryResponse>> getCategories() {
 		return ResponseEntity.ok(service.get());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Category> getCategoryByID(@PathVariable("id") UUID id) {
+	public ResponseEntity<CategoryResponse> getCategoryByID(@PathVariable("id") UUID id) {
 		return ResponseEntity.ok(service.get(id));
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping("")
-	public ResponseEntity<Category> create(
+	public ResponseEntity<CategoryResponse> create(
 			@Valid @RequestBody CategoryCreateUpdateRequest request) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.create(request));
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PutMapping("/{id}")
-	public ResponseEntity<Category> update(
+	public ResponseEntity<CategoryResponse> update(
 			@PathVariable("id") UUID id,
 			@Valid @RequestBody CategoryCreateUpdateRequest request) {
 		return ResponseEntity.ok(service.update(id, request));

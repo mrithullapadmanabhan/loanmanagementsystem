@@ -29,8 +29,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.app.backend.communication.request.LoanCardCreateUpdateRequest;
+import com.app.backend.communication.response.LoanCardResponse;
 import com.app.backend.model.Category;
-import com.app.backend.model.LoanCard;
 import com.app.backend.repository.CategoryRepository;
 import com.app.backend.repository.EmployeeLoanRepository;
 import com.app.backend.repository.EmployeeRepository;
@@ -114,7 +114,7 @@ public class LoanCardControllerTest {
         public void createTest() throws Exception {
 
                 LoanCardCreateUpdateRequest loanCardRequest = new LoanCardCreateUpdateRequest();
-                LoanCard loanCardResponse = new LoanCard();
+                LoanCardResponse loanCardResponse = new LoanCardResponse();
                 Category category = new Category();
                 UUID categoryID = UUID.randomUUID();
                 category.setId(categoryID);
@@ -123,7 +123,7 @@ public class LoanCardControllerTest {
                 loanCardRequest.setDuration(9);
                 loanCardResponse.setId(UUID.randomUUID());
                 loanCardResponse.setDuration(9);
-                loanCardResponse.setCategory(category);
+                loanCardResponse.setCategory(category.getId());
 
                 Mockito.when(loanCardService.create(ArgumentMatchers.any())).thenReturn(loanCardResponse);
 
@@ -144,8 +144,8 @@ public class LoanCardControllerTest {
         @Test
         public void getTest() throws Exception {
 
-                List<LoanCard> loanCardList = new ArrayList<LoanCard>();
-                LoanCard loanCard = new LoanCard();
+                List<LoanCardResponse> loanCardList = new ArrayList<LoanCardResponse>();
+                LoanCardResponse loanCard = new LoanCardResponse();
                 Category category = new Category();
 
                 category.setId(UUID.randomUUID());
@@ -153,7 +153,7 @@ public class LoanCardControllerTest {
 
                 loanCard.setId(UUID.randomUUID());
                 loanCard.setDuration(9);
-                loanCard.setCategory(category);
+                loanCard.setCategory(category.getId());
                 loanCardList.add(loanCard);
 
                 category.setId(UUID.randomUUID());
@@ -161,7 +161,7 @@ public class LoanCardControllerTest {
 
                 loanCard.setId(UUID.randomUUID());
                 loanCard.setDuration(5);
-                loanCard.setCategory(category);
+                loanCard.setCategory(category.getId());
                 loanCardList.add(loanCard);
 
                 Mockito.when(loanCardService.get()).thenReturn(loanCardList);
@@ -171,19 +171,19 @@ public class LoanCardControllerTest {
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$[0].id",
                                                 Matchers.equalTo(loanCardList.get(0).getId().toString())))
-                                .andExpect(jsonPath("$[0].category.id",
-                                                Matchers.equalTo(loanCardList.get(0).getCategory().getId().toString())))
+                                .andExpect(jsonPath("$[0].category",
+                                                Matchers.equalTo(loanCardList.get(0).getCategory())))
                                 .andExpect(jsonPath("$[1].id",
                                                 Matchers.equalTo(loanCardList.get(1).getId().toString())))
-                                .andExpect(jsonPath("$[1].category.id",
+                                .andExpect(jsonPath("$[1].category",
                                                 Matchers.equalTo(
-                                                                loanCardList.get(1).getCategory().getId().toString())));
+                                                                loanCardList.get(1).getCategory())));
         }
 
         @Test
         public void getLoanCardByIdTest() throws Exception {
 
-                LoanCard loanCard = new LoanCard();
+                LoanCardResponse loanCard = new LoanCardResponse();
                 Category category = new Category();
 
                 UUID id = UUID.randomUUID();
@@ -193,7 +193,7 @@ public class LoanCardControllerTest {
                 loanCard.setDuration(10);
                 category.setId(categoryID);
                 category.setName("Furniture");
-                loanCard.setCategory(category);
+                loanCard.setCategory(category.getId());
 
                 Mockito.when(loanCardService.get(ArgumentMatchers.any())).thenReturn(loanCard);
 
@@ -202,15 +202,15 @@ public class LoanCardControllerTest {
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$.id", Matchers.equalTo(loanCard.getId().toString())))
                                 .andExpect(jsonPath("$.duration", Matchers.equalTo(loanCard.getDuration())))
-                                .andExpect(jsonPath("$.category.id",
-                                                Matchers.equalTo(loanCard.getCategory().getId().toString())));
+                                .andExpect(jsonPath("$.category",
+                                                Matchers.equalTo(loanCard.getCategory())));
         }
 
         @Test
         public void updateTest() throws Exception {
 
                 LoanCardCreateUpdateRequest loanCardRequest = new LoanCardCreateUpdateRequest();
-                LoanCard loanCardResponse = new LoanCard();
+                LoanCardResponse loanCardResponse = new LoanCardResponse();
                 Category category = new Category();
 
                 UUID categoryID = UUID.randomUUID();
@@ -222,7 +222,7 @@ public class LoanCardControllerTest {
                 UUID id = UUID.randomUUID();
                 loanCardResponse.setId(id);
                 loanCardResponse.setDuration(9);
-                loanCardResponse.setCategory(category);
+                loanCardResponse.setCategory(category.getId());
 
                 Mockito.when(loanCardService.update(ArgumentMatchers.any(), ArgumentMatchers.any()))
                                 .thenReturn(loanCardResponse);

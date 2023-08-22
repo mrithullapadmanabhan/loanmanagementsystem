@@ -4,9 +4,11 @@ import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.app.backend.communication.request.LoanCreateRequest;
+import com.app.backend.communication.response.EmployeeLoanResponse;
 import com.app.backend.exception.ResourceNotFoundException;
 import com.app.backend.model.Employee;
 import com.app.backend.model.EmployeeLoan;
@@ -34,22 +36,25 @@ public class EmployeeLoanServiceImplementation implements EmployeeLoanService {
 	private final MakeRepository makeRepository;
 	private final ItemCardRepository itemCardRepository;
 
+	private final ModelMapper mapper;
+
 	@Override
-	public List<EmployeeLoan> get() {
-		return employeeLoanRepository.findAll();
+	public List<EmployeeLoanResponse> get() {
+		return employeeLoanRepository.findAll().stream().map(loan -> mapper.map(loan, EmployeeLoanResponse.class))
+				.toList();
 	}
 
 	@Override
-	public List<EmployeeLoan> get(UUID employeeID) {
+	public List<EmployeeLoanResponse> get(UUID employeeID) {
 		Employee employee = employeeRepository.findById(employeeID)
 				.orElseThrow(() -> new ResourceNotFoundException(
 						"Employee with this ID does not exist"));
-		return employee.getLoans();
+		return employee.getLoans().stream().map(loan -> mapper.map(loan, EmployeeLoanResponse.class)).toList();
 	}
 
 	@Transactional
 	@Override
-	public EmployeeLoan create(LoanCreateRequest request) {
+	public EmployeeLoanResponse create(LoanCreateRequest request) {
 		Make make = makeRepository.findById(request.getMakeID())
 				.orElseThrow(() -> new ResourceNotFoundException("Make with this ID does not exist"));
 		LoanCard loanCard = loanCardRepository.findByCategory(make.getCategory())
@@ -70,17 +75,17 @@ public class EmployeeLoanServiceImplementation implements EmployeeLoanService {
 				.employee(employee)
 				.build();
 
-		return employeeLoanRepository.save(loan);
+		return mapper.map(employeeLoanRepository.save(loan), EmployeeLoanResponse.class);
 	}
 
 	@Override
-	public EmployeeLoan setCompleted(UUID employeeLoanID) {
+	public EmployeeLoanResponse setCompleted(UUID employeeLoanID) {
 		EmployeeLoan loan = employeeLoanRepository.findById(employeeLoanID)
 				.orElseThrow(() -> new ResourceNotFoundException(
 						"Employee with this ID does not exist"));
 		loan.setStatus(LoanStatusEnum.COMPLETED);
 
-		return employeeLoanRepository.save(loan);
+		return mapper.map(employeeLoanRepository.save(loan), EmployeeLoanResponse.class);
 	}
 
 }

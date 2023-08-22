@@ -3,10 +3,12 @@ package com.app.backend.service;
 import java.util.List;
 import java.util.UUID;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.app.backend.communication.request.EmployeeCreateUpdateRequest;
+import com.app.backend.communication.response.EmployeeResponse;
 import com.app.backend.exception.ResourceNotFoundException;
 import com.app.backend.model.Employee;
 import com.app.backend.model.RoleEnum;
@@ -29,20 +31,24 @@ public class EmployeeServiceImplementation implements EmployeeService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private final ModelMapper mapper;
+
     @Override
-    public List<Employee> get() {
-        return employeeRepository.findAll();
+    public List<EmployeeResponse> get() {
+        return employeeRepository.findAll().stream().map(employee -> mapper.map(employee, EmployeeResponse.class))
+                .toList();
     }
 
     @Override
-    public Employee get(UUID employeeID) {
-        return employeeRepository.findById(employeeID)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee with this ID does not exist"));
+    public EmployeeResponse get(UUID employeeID) {
+        return mapper.map(employeeRepository.findById(employeeID)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee with this ID does not exist")),
+                EmployeeResponse.class);
     }
 
     @Transactional
     @Override
-    public Employee create(@Valid EmployeeCreateUpdateRequest request) {
+    public EmployeeResponse create(@Valid EmployeeCreateUpdateRequest request) {
         Employee employee = Employee.builder()
                 .name(request.getName())
                 .designation(request.getDesignation())
@@ -61,13 +67,14 @@ public class EmployeeServiceImplementation implements EmployeeService {
                 .build();
 
         userRepository.save(user);
+        employee.setUser(user);
 
-        return employee;
+        return mapper.map(employee, EmployeeResponse.class);
     }
 
     @Transactional
     @Override
-    public Employee update(UUID id, @Valid EmployeeCreateUpdateRequest request) {
+    public EmployeeResponse update(UUID id, @Valid EmployeeCreateUpdateRequest request) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee with this ID doesn't exist"));
 
@@ -88,16 +95,14 @@ public class EmployeeServiceImplementation implements EmployeeService {
 
         }
 
-        return employeeRepository.save(employee);
+        return mapper.map(employeeRepository.save(employee), EmployeeResponse.class);
     }
 
     @Override
-    public String delete(UUID id) {
+    public void delete(UUID id) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee with this ID doesn't exist"));
 
         employeeRepository.delete(employee);
-
-        return "Deleted";
     }
 }

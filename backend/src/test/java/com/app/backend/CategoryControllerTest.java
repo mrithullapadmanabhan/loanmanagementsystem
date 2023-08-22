@@ -29,7 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.app.backend.communication.request.CategoryCreateUpdateRequest;
-import com.app.backend.model.Category;
+import com.app.backend.communication.response.CategoryResponse;
 import com.app.backend.repository.CategoryRepository;
 import com.app.backend.repository.EmployeeLoanRepository;
 import com.app.backend.repository.EmployeeRepository;
@@ -113,7 +113,7 @@ public class CategoryControllerTest {
         public void createTest() throws Exception {
 
                 CategoryCreateUpdateRequest categoryRequest = new CategoryCreateUpdateRequest();
-                Category categoryResponse = new Category();
+                CategoryResponse categoryResponse = new CategoryResponse();
                 categoryRequest.setName("Vehicle");
                 categoryResponse.setId(UUID.randomUUID());
                 categoryResponse.setName("Vehicle");
@@ -137,8 +137,8 @@ public class CategoryControllerTest {
         @Test
         public void getTest() throws Exception {
 
-                List<Category> categoryList = new ArrayList<Category>();
-                Category category = new Category();
+                List<CategoryResponse> categoryList = new ArrayList<CategoryResponse>();
+                CategoryResponse category = new CategoryResponse();
                 category.setId(UUID.randomUUID());
                 category.setName("Furniture");
                 categoryList.add(category);
@@ -160,7 +160,7 @@ public class CategoryControllerTest {
         @Test
         public void getCategoryByIDtTest() throws Exception {
 
-                Category category = new Category();
+                CategoryResponse category = new CategoryResponse();
                 UUID id = UUID.randomUUID();
                 category.setId(id);
                 category.setName("Furniture");
@@ -178,7 +178,7 @@ public class CategoryControllerTest {
         public void updateTest() throws Exception {
 
                 CategoryCreateUpdateRequest categoryRequest = new CategoryCreateUpdateRequest();
-                Category categoryResponse = new Category();
+                CategoryResponse categoryResponse = new CategoryResponse();
                 categoryRequest.setName("Vehicle");
                 UUID id = UUID.randomUUID();
                 categoryResponse.setId(id);

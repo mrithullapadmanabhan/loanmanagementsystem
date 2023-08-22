@@ -3,9 +3,11 @@ package com.app.backend.service;
 import java.util.List;
 import java.util.UUID;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.app.backend.communication.request.ItemCardCreateUpdateRequest;
+import com.app.backend.communication.response.ItemCardResponse;
 import com.app.backend.exception.ResourceNotFoundException;
 import com.app.backend.model.Employee;
 import com.app.backend.model.ItemCard;
@@ -27,35 +29,40 @@ public class ItemCardServiceImplementation implements ItemCardService {
 	private final MakeRepository makeRepository;
 	private final EmployeeRepository employeeRepository;
 
+	private final ModelMapper mapper;
+
 	@Override
-	public List<ItemCard> get() {
-		return itemCardRepository.findAll();
+	public List<ItemCardResponse> get() {
+		return itemCardRepository.findAll().stream().map(itemCard -> mapper.map(itemCard, ItemCardResponse.class))
+				.toList();
 	}
 
 	@Override
-	public ItemCard get(UUID itemCardID) {
-		return itemCardRepository.findById(itemCardID)
-				.orElseThrow(() -> new ResourceNotFoundException("Item card with this ID does not exist"));
+	public ItemCardResponse get(UUID itemCardID) {
+		return mapper.map(itemCardRepository.findById(itemCardID)
+				.orElseThrow(() -> new ResourceNotFoundException("Item card with this ID does not exist")),
+				ItemCardResponse.class);
 	}
 
 	@Override
-	public ItemCard getByMake(UUID makeID) {
+	public ItemCardResponse getByMake(UUID makeID) {
 		Make make = makeRepository.findById(makeID)
 				.orElseThrow(() -> new ResourceNotFoundException("Make with this ID does not exist"));
-		return itemCardRepository.findByMake(make)
-				.orElseThrow(() -> new ResourceNotFoundException("ItemCard with this make does not exist"));
+		return mapper.map(itemCardRepository.findByMake(make)
+				.orElseThrow(() -> new ResourceNotFoundException("ItemCard with this make does not exist")),
+				ItemCardResponse.class);
 	}
 
 	@Override
-	public List<ItemCard> getByEmployee(UUID employeeID) {
+	public List<ItemCardResponse> getByEmployee(UUID employeeID) {
 		Employee employee = employeeRepository.findById(employeeID)
 				.orElseThrow(() -> new ResourceNotFoundException("Employee with this ID does not exist"));
-		return employee.getLoans().stream().map(loan -> loan.getItem()).toList();
+		return employee.getLoans().stream().map(loan -> mapper.map(loan.getItem(), ItemCardResponse.class)).toList();
 	}
 
 	@Transactional
 	@Override
-	public ItemCard create(ItemCardCreateUpdateRequest request) {
+	public ItemCardResponse create(ItemCardCreateUpdateRequest request) {
 		Make make = makeRepository.findById(request.getMakeID())
 				.orElseThrow(() -> new ResourceNotFoundException("Make with this ID does not exist"));
 
@@ -65,28 +72,27 @@ public class ItemCardServiceImplementation implements ItemCardService {
 				.make(make)
 				.build();
 
-		return itemCardRepository.save(itemCard);
+		return mapper.map(itemCardRepository.save(itemCard), ItemCardResponse.class);
 	}
 
 	@Transactional
 	@Override
-	public ItemCard update(UUID id, @Valid ItemCardCreateUpdateRequest request) {
+	public ItemCardResponse update(UUID id, @Valid ItemCardCreateUpdateRequest request) {
 		ItemCard itemCard = itemCardRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("ItemCard with this ID does not exist"));
 
 		itemCard.setDescription(request.getDescription());
 		itemCard.setValue(request.getValue());
 
-		return itemCardRepository.save(itemCard);
+		return mapper.map(itemCardRepository.save(itemCard), ItemCardResponse.class);
 	}
 
 	@Override
-	public String delete(UUID id) {
+	public void delete(UUID id) {
 		ItemCard itemCard = itemCardRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("ItemCard with this ID does not exist"));
 
 		itemCardRepository.delete(itemCard);
-		return "Deleted";
 	}
 
 }
