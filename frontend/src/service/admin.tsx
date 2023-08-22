@@ -142,4 +142,53 @@ export const deleteItemById = async (id: any) => {
   } catch {
     return false;
   }
+}
+
+export const addCategoryApi = async(data: any) => {
+  try{
+      const res=await api.post(`/category`,data);
+      console.log(res.data)
+      return true
+  } catch {
+      return false
+  }
+}
+
+export const getCategoriesApi = async () => {
+  try {
+    const res=await api.get("/category");
+    console.log(res.data)
+    return res.data;
+  } catch {
+    return [];
+  } 
+};
+
+export const deleteCategoryById = async (id: any) => {
+  try {
+    const res=await api.delete(`/category/${id}`);
+    console.log(res.data)
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export const updateCategoryById = async(id:any,data: any) => {
+  try{
+      const res=await api.put(`/category/${id}`,data);
+      console.log(res.data)
+      return true
+  } catch {
+      return false
+  }
+}
+export const getCategoryById= async(id: any)=>{
+  try {
+    const res=await api.get(`/category/${id}`);
+    console.log(res.data)
+    return res.data;
+  } catch {
+    return {};
+  }
 };

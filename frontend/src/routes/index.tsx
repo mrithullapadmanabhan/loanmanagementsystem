@@ -11,4 +11,6 @@ export { default as AllLoans} from './AllLoans';
 export { default as AddEditEmployee} from './AddEditEmployee';
 export { default as AddEditItem} from './AddEditItem';
 export { default as AddEditLoanCard} from './AddEditLoanCard';
-export { default as Admin } from './Admin'
+export { default as Admin } from './Admin';
+export { default as AddEditCategory } from './AddEditCategory';
+export { default as AllCategories} from './AllCategories';
