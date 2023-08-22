@@ -107,7 +107,7 @@ public class CategoryControllerTest {
         String categoryRequestString = mapper.writeValueAsString(categoryRequest);
         String categoryResponseString = mapper.writeValueAsString(categoryResponse);
         
-        MvcResult requestResult = mvc.perform(post("/api/category/create")
+        MvcResult requestResult = mvc.perform(post("/api/category")
         .contentType(MediaType.APPLICATION_JSON)
         .characterEncoding("utf-8")
         .content(categoryRequestString))

@@ -81,11 +81,12 @@ public class ItemCardServiceImplementation implements ItemCardService {
 	}
 
 	@Override
-	public void delete(UUID id) {
+	public String delete(UUID id) {
 		ItemCard itemCard = itemCardRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("ItemCard with this ID does not exist"));
 
 		itemCardRepository.delete(itemCard);
+		return "Deleted";
 	}
 
 }

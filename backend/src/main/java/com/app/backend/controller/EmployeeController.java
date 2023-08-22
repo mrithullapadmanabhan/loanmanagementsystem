@@ -38,9 +38,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-	public ResponseEntity<Employee> get(@PathVariable("id") UUID id) {
-		return ResponseEntity.ok(service.get(id));
-	}
+    public ResponseEntity<Employee> get(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(service.get(id));
+    }
 
     @PostMapping("")
     public ResponseEntity<Employee> create(
@@ -58,7 +58,7 @@ public class EmployeeController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(
+    public ResponseEntity<String> delete(
             @PathVariable("id") UUID id) {
         service.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");

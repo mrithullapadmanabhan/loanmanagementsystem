@@ -113,7 +113,7 @@ public class LoanCardControllerTest {
         String loanCardRequestString = mapper.writeValueAsString(loanCardRequest);
         String loanCardResponseString = mapper.writeValueAsString(loanCardResponse);
         
-        MvcResult requestResult = mvc.perform(post("/api/loancard/create")
+        MvcResult requestResult = mvc.perform(post("/api/loancard")
         .contentType(MediaType.APPLICATION_JSON)
         .characterEncoding("utf-8")
         .content(loanCardRequestString))

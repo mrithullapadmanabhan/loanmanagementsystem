@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.backend.communication.request.ItemCardCreateUpdateRequest;
-import com.app.backend.model.Employee;
 import com.app.backend.model.ItemCard;
 import com.app.backend.service.ItemCardService;
 
@@ -70,7 +69,7 @@ public class ItemCardController {
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(
+	public ResponseEntity<String> delete(
 			@PathVariable("id") UUID id) {
 		service.delete(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");

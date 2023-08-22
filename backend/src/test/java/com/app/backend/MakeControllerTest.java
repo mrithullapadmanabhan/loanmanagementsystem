@@ -113,7 +113,7 @@ public class MakeControllerTest {
         String makeRequestString = mapper.writeValueAsString(makeRequest);
         String makeResponseString = mapper.writeValueAsString(makeResponse);
         
-        MvcResult requestResult = mvc.perform(post("/api/make/create")
+        MvcResult requestResult = mvc.perform(post("/api/make")
         .contentType(MediaType.APPLICATION_JSON)
         .characterEncoding("utf-8")
         .content(makeRequestString))

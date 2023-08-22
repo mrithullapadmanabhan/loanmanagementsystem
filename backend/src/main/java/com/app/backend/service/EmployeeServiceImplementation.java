@@ -35,10 +35,10 @@ public class EmployeeServiceImplementation implements EmployeeService {
     }
 
     @Override
-	public Employee get(UUID employeeID) {
-		return employeeRepository.findById(employeeID)
-				.orElseThrow(() -> new ResourceNotFoundException("Employee with this ID does not exist"));
-	}
+    public Employee get(UUID employeeID) {
+        return employeeRepository.findById(employeeID)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee with this ID does not exist"));
+    }
 
     @Transactional
     @Override
@@ -78,8 +78,8 @@ public class EmployeeServiceImplementation implements EmployeeService {
         employee.setDoj(request.getDoj());
         employee.setGender(request.getGender());
 
-        if(request.getEmail()!=null){
-    
+        if (request.getEmail() != null) {
+
             User user = employee.getUser();
             user.setEmail(request.getEmail());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -88,15 +88,16 @@ public class EmployeeServiceImplementation implements EmployeeService {
 
         }
 
-
         return employeeRepository.save(employee);
     }
 
     @Override
-    public void delete(UUID id) {
+    public String delete(UUID id) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee with this ID doesn't exist"));
 
         employeeRepository.delete(employee);
+
+        return "Deleted";
     }
 }

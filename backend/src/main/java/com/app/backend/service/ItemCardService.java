@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 
 import com.app.backend.communication.request.ItemCardCreateUpdateRequest;
-import com.app.backend.model.Employee;
 import com.app.backend.model.ItemCard;
 
 import jakarta.validation.Valid;
@@ -12,9 +11,8 @@ import jakarta.validation.Valid;
 public interface ItemCardService {
 
     public abstract List<ItemCard> get();
-    
-    public abstract ItemCard get(UUID id);
 
+    public abstract ItemCard get(UUID id);
 
     public abstract ItemCard getByMake(UUID makeID);
 
@@ -24,6 +22,6 @@ public interface ItemCardService {
 
     public abstract ItemCard update(UUID id, @Valid ItemCardCreateUpdateRequest request);
 
-    public abstract void delete(UUID id);
+    public abstract String delete(UUID id);
 
 }
