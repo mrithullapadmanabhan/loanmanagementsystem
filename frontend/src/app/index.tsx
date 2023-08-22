@@ -1,28 +1,24 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import {
-  Root,
-  NotFound,
-  ApplyLoan,
-  Login,
-  Register,
-  ViewLoans,
-  ViewEmployeeItems,
+  AddEditCategory,
+  AddEditEmployee,
+  AddEditItem,
+  AddEditLoanCard,
+  AddEditMake,
+  Admin,
+  AllCategories,
   AllEmployees,
   AllItems,
   AllLoans,
   AllMakes,
-  AddEditEmployee,
-  AddEditItem,
-  AddEditLoanCard,
-<<<<<<< HEAD
-  AddEditMake,
-  Admin
-=======
-  Admin,
-  AddEditCategory,
-  AllCategories
->>>>>>> a24fca614ce7fded3c1b3549d826a1dafaa41a87
+  ApplyLoan,
+  Login,
+  NotFound,
+  Register,
+  Root,
+  ViewEmployeeItems,
+  ViewLoans
 } from "routes";
 
 
@@ -86,7 +82,7 @@ const router = createBrowserRouter([
           },
           {
             path: "item/edit/:id",
-            element: <AddEditItem type="edit"/>
+            element: <AddEditItem type="edit" />
           },
           {
             path: "loan-card/add",
@@ -98,24 +94,23 @@ const router = createBrowserRouter([
           },
           {
             path: "loan-card/edit/:id",
-            element: <AddEditLoanCard type="edit"/>
+            element: <AddEditLoanCard type="edit" />
           },
           {
-<<<<<<< HEAD
             path: "make/edit/:id",
-            element: <AddEditMake type="edit"/>
-=======
+            element: <AddEditMake type="edit" />
+          },
+          {
             path: "category/add",
-            element: <AddEditCategory type="add"/>
+            element: <AddEditCategory type="add" />
           },
           {
             path: "category/all",
-            element: <AllCategories/>
+            element: <AllCategories />
           },
           {
             path: "category/edit/:id",
-            element: <AddEditCategory type="edit"/>
->>>>>>> a24fca614ce7fded3c1b3549d826a1dafaa41a87
+            element: <AddEditCategory type="edit" />
           }
         ]
       },
