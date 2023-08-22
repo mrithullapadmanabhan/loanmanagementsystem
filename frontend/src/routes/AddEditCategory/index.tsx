@@ -32,14 +32,21 @@ function AddEditCategory({ type = "add" }) {
     const data = {
       name: categoryname
     }
-    const resp = await addCategoryApi(data)
-    if (resp) {
-      alert("Category created successfully")
-      navigate('/admin/category/all')
+    const regexPattern = /^[a-zA-Z]+$/;
+    if (regexPattern.test(data.name)) {
+      const resp = await addCategoryApi(data)
+      if (resp) {
+        alert("Category created successfully")
+        navigate('/admin/category/all')
+      }
+      else {
+        alert("Invalid Credentials")
+      }
     }
     else {
-      alert("Invalid Credentials")
+      alert("The category name can have only alphabets")
     }
+
   }
 
   async function editSubmitButton() {
