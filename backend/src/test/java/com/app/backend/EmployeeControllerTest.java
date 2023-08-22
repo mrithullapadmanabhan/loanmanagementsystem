@@ -214,10 +214,18 @@ public class EmployeeControllerTest {
 
         Mockito.when(employeeService.update(num, employeeRequest)).thenReturn(employeeResponse);
 
-        mvc.perform(put("/api/employee/{num}", num)
-                .contentType(MediaType.APPLICATION_JSON))
+        String employeeRequestString = mapper.writeValueAsString(employeeRequest);
+        String employeeResponseString = mapper.writeValueAsString(employeeResponse);
+
+        MvcResult requestResult = mvc.perform(put("/api/employee/{num}", num)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8")
+                .content(employeeRequestString))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", Matchers.equalTo(employeeResponse.getId().toString())));
+                .andReturn();
+
+        String employeeRequestResult = requestResult.getResponse().getContentAsString();
+        assertEquals(employeeResponseString, employeeRequestResult);
 
     }
 
