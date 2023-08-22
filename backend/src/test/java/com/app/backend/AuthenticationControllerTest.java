@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-import com.fasterxml.jackson.databind.ObjectMapper.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 public class AuthenticationControllerTest {
 
     @Mock
@@ -38,7 +38,7 @@ public class AuthenticationControllerTest {
     @Test
     public void testLogin() throws Exception {
         JWTLoginRequest loginRequest = new JWTLoginRequest("username", "password");
-        JWTResponse jwtResponse = new JWTResponse("token");
+        JWTResponse jwtResponse = new JWTResponse();
 
         when(authService.login(loginRequest)).thenReturn(jwtResponse);
 
@@ -51,7 +51,7 @@ public class AuthenticationControllerTest {
     @Test
     public void testRefresh() throws Exception {
         JWTRefreshRequest refreshRequest = new JWTRefreshRequest("refreshToken");
-        JWTResponse jwtResponse = new JWTResponse("newToken");
+        JWTResponse jwtResponse = new JWTResponse();
 
         when(authService.refresh(refreshRequest)).thenReturn(jwtResponse);
 
