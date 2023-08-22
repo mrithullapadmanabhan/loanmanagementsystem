@@ -28,7 +28,7 @@ public class CategoryServiceImplementation implements CategoryService {
     @Override
     public Category get(UUID categoryID) {
         return categoryRepository.findById(categoryID)
-				.orElseThrow(() -> new ResourceNotFoundException("Item card with this ID does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Item card with this ID does not exist"));
     }
 
     @Transactional
