@@ -36,8 +36,13 @@ public class MakeController {
 		return ResponseEntity.ok(service.get());
 	}
 
+	@GetMapping("/{id}")
+	public ResponseEntity<Make> get(@PathVariable("id") UUID id) {
+		return ResponseEntity.ok(service.get(id));
+	}
+
 	@GetMapping("/category/{categoryID}")
-	public ResponseEntity<List<Make>> get(@PathVariable("categoryID") UUID categoryID) {
+	public ResponseEntity<List<Make>> getByCategory(@PathVariable("categoryID") UUID categoryID) {
 		return ResponseEntity.ok(service.getByCategory(categoryID));
 	}
 

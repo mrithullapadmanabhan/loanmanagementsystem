@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.backend.communication.request.ItemCardCreateUpdateRequest;
-import com.app.backend.model.Employee;
 import com.app.backend.model.ItemCard;
 import com.app.backend.service.ItemCardService;
 

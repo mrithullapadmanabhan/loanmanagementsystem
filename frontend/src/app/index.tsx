@@ -11,9 +11,11 @@ import {
   AllEmployees,
   AllItems,
   AllLoans,
+  AllMakes,
   AddEditEmployee,
   AddEditItem,
   AddEditLoanCard,
+  AddEditMake,
   Admin
 } from "routes";
 
@@ -57,6 +59,10 @@ const router = createBrowserRouter([
             element: <AllItems />
           },
           {
+            path: "make/all",
+            element: <AllMakes />
+          },
+          {
             path: "loan-card/all",
             element: <AllLoans />
           },
@@ -81,8 +87,16 @@ const router = createBrowserRouter([
             element: <AddEditLoanCard />
           },
           {
+            path: "make/add",
+            element: <AddEditMake />
+          },
+          {
             path: "loan-card/edit/:id",
             element: <AddEditLoanCard type="edit"/>
+          },
+          {
+            path: "make/edit/:id",
+            element: <AddEditMake type="edit"/>
           }
 
         ]
