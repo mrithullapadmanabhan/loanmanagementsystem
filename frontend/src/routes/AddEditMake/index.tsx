@@ -44,6 +44,9 @@ function AddEditMake({ type = "add" }) {
       alert("Make created successfully")
       navigate('/admin/make/all')
     }
+    else {
+      alert("Invalid Credentials")
+    }
   }
 
   async function editSubmitButton() {

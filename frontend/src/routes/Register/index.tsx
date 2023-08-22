@@ -57,9 +57,9 @@ function SignUp() {
       fieldType: "dropdown",
       name: "gender",
       options: [
-        {value: "male", label: "Male"},
-        {value: "female", label: "Female"},
-        {value: "other", label: "Other"}
+        { value: "male", label: "Male" },
+        { value: "female", label: "Female" },
+        { value: "other", label: "Other" }
       ],
       label: "Gender",
       placeholder: "Male",
@@ -69,6 +69,7 @@ function SignUp() {
       fieldType: "input",
       name: "dob",
       type: "date",
+      max: "2005-12-31",
       label: "Date of Birth",
       placeholder: "dd-mm-yyyy",
       initialData: "",
@@ -77,6 +78,7 @@ function SignUp() {
       fieldType: "input",
       name: "doj",
       type: "date",
+      min: "1990-01-01",
       label: "Date of Joining",
       placeholder: "dd-mm-yyyy",
       initialData: "",

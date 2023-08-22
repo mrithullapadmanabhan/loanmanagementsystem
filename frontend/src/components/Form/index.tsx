@@ -10,8 +10,10 @@ type FormType = {
     placeholder: string;
     regex?: string;
     errorMessage?: string;
-    options?: null | {label: string,value: string}[];
+    options?: null | { label: string, value: string }[];
     initialData: string | number | readonly string[];
+    max?: string;
+    min?: string;
   }[];
   submitButton: {
     text: string;
@@ -21,21 +23,21 @@ type FormType = {
 
 const Form = ({ onSubmit, formFields, submitButton }: FormType) => {
 
-  useEffect(()=>{
+  useEffect(() => {
 
-  },formFields)
-  
+  }, formFields)
+
   const [formData, setFormData] = useState(
     Object.fromEntries(
       formFields.map((field) => [field.name, field.initialData])
     )
   );
 
-  useEffect(()=>{
+  useEffect(() => {
     setFormData(Object.fromEntries(
       formFields.map((field) => [field.name, field.initialData])
     ))
-  },formFields)
+  }, formFields)
 
   console.log(formFields)
   console.log(formData)
@@ -88,7 +90,7 @@ const Form = ({ onSubmit, formFields, submitButton }: FormType) => {
             <label htmlFor="username" className="input-label">
               {field.label}
             </label>
-            {field.fieldType=='input' && <input
+            {field.fieldType == 'input' && <input
               type={field.type!}
               id={field.name}
               name={field.name}
@@ -96,11 +98,13 @@ const Form = ({ onSubmit, formFields, submitButton }: FormType) => {
               onChange={handleChange}
               placeholder={field.placeholder}
               className="input"
+              max={field.max}
+              min={field.min}
             />}
-            {field.fieldType=="dropdown" && (
-               <select name={field.name} id={field.name} value={formData[field.name]} onChange={handleChange} className='input'>
-               <option value={""} disabled hidden>Select {field.name}</option>
-               {field.options?.map((option)=>(<option value={option.value} key={option.value}>{option.label}</option>))}
+            {field.fieldType == "dropdown" && (
+              <select name={field.name} id={field.name} value={formData[field.name]} onChange={handleChange} className='input'>
+                <option value={""} disabled hidden>Select {field.name}</option>
+                {field.options?.map((option) => (<option value={option.value} key={option.value}>{option.label}</option>))}
               </select>
             )}
             {formError[field.name] !== "" && (
