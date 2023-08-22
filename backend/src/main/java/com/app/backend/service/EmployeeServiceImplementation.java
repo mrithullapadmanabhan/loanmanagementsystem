@@ -3,7 +3,7 @@ package com.app.backend.service;
 import java.util.List;
 import java.util.UUID;
 
-import org.modelmapper.TypeMap;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,17 +31,19 @@ public class EmployeeServiceImplementation implements EmployeeService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private final TypeMap<Employee, EmployeeResponse> mapper;
+    private final ModelMapper mapper;
 
     @Override
     public List<EmployeeResponse> get() {
-        return employeeRepository.findAll().stream().map(employee -> mapper.map(employee)).toList();
+        return employeeRepository.findAll().stream().map(employee -> mapper.map(employee, EmployeeResponse.class))
+                .toList();
     }
 
     @Override
     public EmployeeResponse get(UUID employeeID) {
         return mapper.map(employeeRepository.findById(employeeID)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee with this ID does not exist")));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee with this ID does not exist")),
+                EmployeeResponse.class);
     }
 
     @Transactional
@@ -65,8 +67,9 @@ public class EmployeeServiceImplementation implements EmployeeService {
                 .build();
 
         userRepository.save(user);
+        employee.setUser(user);
 
-        return mapper.map(employeeRepository.save(employee));
+        return mapper.map(employee, EmployeeResponse.class);
     }
 
     @Transactional
@@ -92,16 +95,14 @@ public class EmployeeServiceImplementation implements EmployeeService {
 
         }
 
-        return mapper.map(employeeRepository.save(employee));
+        return mapper.map(employeeRepository.save(employee), EmployeeResponse.class);
     }
 
     @Override
-    public String delete(UUID id) {
+    public void delete(UUID id) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee with this ID doesn't exist"));
 
         employeeRepository.delete(employee);
-
-        return "Deleted";
     }
 }

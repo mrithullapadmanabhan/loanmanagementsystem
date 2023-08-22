@@ -3,7 +3,7 @@ package com.app.backend.service;
 import java.util.List;
 import java.util.UUID;
 
-import org.modelmapper.TypeMap;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.app.backend.communication.request.ItemCardCreateUpdateRequest;
@@ -29,17 +29,19 @@ public class ItemCardServiceImplementation implements ItemCardService {
 	private final MakeRepository makeRepository;
 	private final EmployeeRepository employeeRepository;
 
-	private final TypeMap<ItemCard, ItemCardResponse> mapper;
+	private final ModelMapper mapper;
 
 	@Override
 	public List<ItemCardResponse> get() {
-		return itemCardRepository.findAll().stream().map(itemCard -> mapper.map(itemCard)).toList();
+		return itemCardRepository.findAll().stream().map(itemCard -> mapper.map(itemCard, ItemCardResponse.class))
+				.toList();
 	}
 
 	@Override
 	public ItemCardResponse get(UUID itemCardID) {
 		return mapper.map(itemCardRepository.findById(itemCardID)
-				.orElseThrow(() -> new ResourceNotFoundException("Item card with this ID does not exist")));
+				.orElseThrow(() -> new ResourceNotFoundException("Item card with this ID does not exist")),
+				ItemCardResponse.class);
 	}
 
 	@Override
@@ -47,14 +49,15 @@ public class ItemCardServiceImplementation implements ItemCardService {
 		Make make = makeRepository.findById(makeID)
 				.orElseThrow(() -> new ResourceNotFoundException("Make with this ID does not exist"));
 		return mapper.map(itemCardRepository.findByMake(make)
-				.orElseThrow(() -> new ResourceNotFoundException("ItemCard with this make does not exist")));
+				.orElseThrow(() -> new ResourceNotFoundException("ItemCard with this make does not exist")),
+				ItemCardResponse.class);
 	}
 
 	@Override
 	public List<ItemCardResponse> getByEmployee(UUID employeeID) {
 		Employee employee = employeeRepository.findById(employeeID)
 				.orElseThrow(() -> new ResourceNotFoundException("Employee with this ID does not exist"));
-		return employee.getLoans().stream().map(loan -> mapper.map(loan.getItem())).toList();
+		return employee.getLoans().stream().map(loan -> mapper.map(loan.getItem(), ItemCardResponse.class)).toList();
 	}
 
 	@Transactional
@@ -69,7 +72,7 @@ public class ItemCardServiceImplementation implements ItemCardService {
 				.make(make)
 				.build();
 
-		return mapper.map(itemCardRepository.save(itemCard));
+		return mapper.map(itemCardRepository.save(itemCard), ItemCardResponse.class);
 	}
 
 	@Transactional
@@ -81,16 +84,15 @@ public class ItemCardServiceImplementation implements ItemCardService {
 		itemCard.setDescription(request.getDescription());
 		itemCard.setValue(request.getValue());
 
-		return mapper.map(itemCardRepository.save(itemCard));
+		return mapper.map(itemCardRepository.save(itemCard), ItemCardResponse.class);
 	}
 
 	@Override
-	public String delete(UUID id) {
+	public void delete(UUID id) {
 		ItemCard itemCard = itemCardRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("ItemCard with this ID does not exist"));
 
 		itemCardRepository.delete(itemCard);
-		return "Deleted";
 	}
 
 }

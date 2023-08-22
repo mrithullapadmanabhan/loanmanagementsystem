@@ -18,6 +18,6 @@ public interface EmployeeService {
 
     public abstract EmployeeResponse update(UUID id, @Valid EmployeeCreateUpdateRequest request);
 
-    public abstract String delete(UUID id);
+    public abstract void delete(UUID id);
 
 }

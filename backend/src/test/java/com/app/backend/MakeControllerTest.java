@@ -29,8 +29,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.app.backend.communication.request.MakeCreateUpdateRequest;
+import com.app.backend.communication.response.MakeResponse;
 import com.app.backend.model.Category;
-import com.app.backend.model.Make;
 import com.app.backend.repository.CategoryRepository;
 import com.app.backend.repository.EmployeeLoanRepository;
 import com.app.backend.repository.EmployeeRepository;
@@ -114,7 +114,7 @@ public class MakeControllerTest {
         public void createTest() throws Exception {
 
                 MakeCreateUpdateRequest makeRequest = new MakeCreateUpdateRequest();
-                Make makeResponse = new Make();
+                MakeResponse makeResponse = new MakeResponse();
                 Category category = new Category();
                 UUID categoryID = UUID.randomUUID();
                 category.setId(categoryID);
@@ -123,7 +123,7 @@ public class MakeControllerTest {
                 makeRequest.setName("Wood");
                 makeResponse.setId(UUID.randomUUID());
                 makeResponse.setName("Wood");
-                makeResponse.setCategory(category);
+                makeResponse.setCategory(category.getId());
 
                 Mockito.when(makeService.create(ArgumentMatchers.any())).thenReturn(makeResponse);
 
@@ -144,22 +144,22 @@ public class MakeControllerTest {
         @Test
         public void getTest() throws Exception {
 
-                List<Make> makeList = new ArrayList<Make>();
-                Make make = new Make();
+                List<MakeResponse> makeList = new ArrayList<MakeResponse>();
+                MakeResponse make = new MakeResponse();
                 Category category = new Category();
 
                 make.setId(UUID.randomUUID());
                 make.setName("Gold");
                 category.setId(UUID.randomUUID());
                 category.setName("Jewellery");
-                make.setCategory(category);
+                make.setCategory(category.getId());
                 makeList.add(make);
 
                 make.setId(UUID.randomUUID());
                 make.setName("Wood");
                 category.setId(UUID.randomUUID());
                 category.setName("Furniture");
-                make.setCategory(category);
+                make.setCategory(category.getId());
                 makeList.add(make);
 
                 Mockito.when(makeService.get()).thenReturn(makeList);
@@ -168,18 +168,18 @@ public class MakeControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$[0].id", Matchers.equalTo(makeList.get(0).getId().toString())))
-                                .andExpect(jsonPath("$[0].category.id",
-                                                Matchers.equalTo(makeList.get(0).getCategory().getId().toString())))
+                                .andExpect(jsonPath("$[0].category",
+                                                Matchers.equalTo(makeList.get(0).getCategory())))
                                 .andExpect(jsonPath("$[1].id", Matchers.equalTo(makeList.get(1).getId().toString())))
-                                .andExpect(jsonPath("$[1].category.id",
-                                                Matchers.equalTo(makeList.get(1).getCategory().getId().toString())));
+                                .andExpect(jsonPath("$[1].category",
+                                                Matchers.equalTo(makeList.get(1).getCategory())));
         }
 
         @Test
         public void getByCategoryTest() throws Exception {
 
-                List<Make> makeList = new ArrayList<Make>();
-                Make make = new Make();
+                List<MakeResponse> makeList = new ArrayList<MakeResponse>();
+                MakeResponse make = new MakeResponse();
                 Category category = new Category();
 
                 UUID categoryID = UUID.randomUUID();
@@ -189,12 +189,12 @@ public class MakeControllerTest {
 
                 make.setId(UUID.randomUUID());
                 make.setName("Gold");
-                make.setCategory(category);
+                make.setCategory(category.getId());
                 makeList.add(make);
 
                 make.setId(UUID.randomUUID());
                 make.setName("Silver");
-                make.setCategory(category);
+                make.setCategory(category.getId());
                 makeList.add(make);
 
                 Mockito.when(makeService.getByCategory(ArgumentMatchers.any())).thenReturn(makeList);
@@ -203,18 +203,18 @@ public class MakeControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$[0].id", Matchers.equalTo(makeList.get(0).getId().toString())))
-                                .andExpect(jsonPath("$[0].category.id",
-                                                Matchers.equalTo(makeList.get(0).getCategory().getId().toString())))
+                                .andExpect(jsonPath("$[0].category",
+                                                Matchers.equalTo(makeList.get(0).getCategory())))
                                 .andExpect(jsonPath("$[1].id", Matchers.equalTo(makeList.get(1).getId().toString())))
-                                .andExpect(jsonPath("$[1].category.id",
-                                                Matchers.equalTo(makeList.get(1).getCategory().getId().toString())));
+                                .andExpect(jsonPath("$[1].category",
+                                                Matchers.equalTo(makeList.get(1).getCategory())));
         }
 
         @Test
         public void updateTest() throws Exception {
 
                 MakeCreateUpdateRequest makeRequest = new MakeCreateUpdateRequest();
-                Make makeResponse = new Make();
+                MakeResponse makeResponse = new MakeResponse();
                 Category category = new Category();
                 UUID categoryID = UUID.randomUUID();
                 category.setId(categoryID);
@@ -225,7 +225,7 @@ public class MakeControllerTest {
                 UUID id = UUID.randomUUID();
                 makeResponse.setId(id);
                 makeResponse.setName("Wood");
-                makeResponse.setCategory(category);
+                makeResponse.setCategory(category.getId());
 
                 Mockito.when(makeService.update(ArgumentMatchers.any(), ArgumentMatchers.any()))
                                 .thenReturn(makeResponse);

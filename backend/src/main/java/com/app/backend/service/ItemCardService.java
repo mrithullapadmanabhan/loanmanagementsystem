@@ -22,6 +22,6 @@ public interface ItemCardService {
 
     public abstract ItemCardResponse update(UUID id, @Valid ItemCardCreateUpdateRequest request);
 
-    public abstract String delete(UUID id);
+    public abstract void delete(UUID id);
 
 }

@@ -3,7 +3,7 @@ package com.app.backend.service;
 import java.util.List;
 import java.util.UUID;
 
-import org.modelmapper.TypeMap;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.app.backend.communication.request.LoanCardCreateUpdateRequest;
@@ -26,17 +26,19 @@ public class LoanCardServiceImplementation implements LoanCardService {
 
 	private final CategoryRepository categoryRepository;
 
-	private final TypeMap<LoanCard, LoanCardResponse> mapper;
+	private final ModelMapper mapper;
 
 	@Override
 	public List<LoanCardResponse> get() {
-		return loanCardRepository.findAll().stream().map((loanCard) -> mapper.map(loanCard)).toList();
+		return loanCardRepository.findAll().stream().map((loanCard) -> mapper.map(loanCard, LoanCardResponse.class))
+				.toList();
 	}
 
 	@Override
 	public LoanCardResponse get(UUID loanCardID) {
 		return mapper.map(loanCardRepository.findById(loanCardID)
-				.orElseThrow(() -> new ResourceNotFoundException("LoanCard with this ID does not exist")));
+				.orElseThrow(() -> new ResourceNotFoundException("LoanCard with this ID does not exist")),
+				LoanCardResponse.class);
 	}
 
 	@Transactional
@@ -50,7 +52,7 @@ public class LoanCardServiceImplementation implements LoanCardService {
 				.category(category)
 				.build();
 
-		return mapper.map(loanCardRepository.save(loanCard));
+		return mapper.map(loanCardRepository.save(loanCard), LoanCardResponse.class);
 	}
 
 	@Transactional
@@ -61,7 +63,7 @@ public class LoanCardServiceImplementation implements LoanCardService {
 
 		loanCard.setDuration(request.getDuration());
 
-		return mapper.map(loanCardRepository.save(loanCard));
+		return mapper.map(loanCardRepository.save(loanCard), LoanCardResponse.class);
 	}
 
 	@Override

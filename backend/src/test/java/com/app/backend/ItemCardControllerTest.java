@@ -26,8 +26,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.app.backend.communication.request.ItemCardCreateUpdateRequest;
+import com.app.backend.communication.response.ItemCardResponse;
 import com.app.backend.model.Category;
-import com.app.backend.model.ItemCard;
 import com.app.backend.model.Make;
 import com.app.backend.repository.CategoryRepository;
 import com.app.backend.repository.EmployeeLoanRepository;
@@ -112,7 +112,7 @@ public class ItemCardControllerTest {
         public void createTest() throws Exception {
 
                 ItemCardCreateUpdateRequest itemCardRequest = new ItemCardCreateUpdateRequest();
-                ItemCard itemCardResponse = new ItemCard();
+                ItemCardResponse itemCardResponse = new ItemCardResponse();
                 Category category = new Category();
                 Make make = new Make();
 
@@ -128,7 +128,7 @@ public class ItemCardControllerTest {
                 make.setId(UUID.fromString("addd070d-8c4c-4f0d-9d8a-162843c10333"));
                 make.setName("Wood");
                 make.setCategory(category);
-                itemCardResponse.setMake(make);
+                itemCardResponse.setMake(make.getId());
 
                 Mockito.when(itemCardService.create(ArgumentMatchers.any())).thenReturn(itemCardResponse);
 
@@ -149,8 +149,8 @@ public class ItemCardControllerTest {
         @Test
         public void getTest() throws Exception {
 
-                List<ItemCard> itemCardList = new ArrayList<ItemCard>();
-                ItemCard itemCard = new ItemCard();
+                List<ItemCardResponse> itemCardList = new ArrayList<ItemCardResponse>();
+                ItemCardResponse itemCard = new ItemCardResponse();
                 Make make = new Make();
                 Category category = new Category();
 
@@ -162,7 +162,7 @@ public class ItemCardControllerTest {
                 make.setId(UUID.fromString("f47ac10b-58cc-4372-a567-0a02a2c3d479"));
                 make.setName("Wood");
                 make.setCategory(category);
-                itemCard.setMake(make);
+                itemCard.setMake(make.getId());
                 itemCardList.add(itemCard);
 
                 itemCard.setId(UUID.fromString("f47aa10b-58cc-4372-a567-0e02b2c3d479"));
@@ -173,7 +173,7 @@ public class ItemCardControllerTest {
                 make.setId(UUID.fromString("f47aa10b-58cc-4372-a567-0e02a2c3d479"));
                 make.setName("Gold");
                 make.setCategory(category);
-                itemCard.setMake(make);
+                itemCard.setMake(make.getId());
                 itemCardList.add(itemCard);
 
                 Mockito.when(itemCardService.get()).thenReturn(itemCardList);
@@ -183,19 +183,19 @@ public class ItemCardControllerTest {
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$[0].id",
                                                 Matchers.equalTo(itemCardList.get(0).getId().toString())))
-                                .andExpect(jsonPath("$[0].make.id",
-                                                Matchers.equalTo(itemCardList.get(0).getMake().getId().toString())))
+                                .andExpect(jsonPath("$[0].make",
+                                                Matchers.equalTo(itemCardList.get(0).getMake())))
                                 .andExpect(jsonPath("$[1].id",
                                                 Matchers.equalTo(itemCardList.get(1).getId().toString())))
-                                .andExpect(jsonPath("$[1].make.id",
-                                                Matchers.equalTo(itemCardList.get(1).getMake().getId().toString())));
+                                .andExpect(jsonPath("$[1].make",
+                                                Matchers.equalTo(itemCardList.get(1).getMake())));
         }
 
         @Test
         public void getByEmployeeTest() throws Exception {
 
-                List<ItemCard> itemCardList = new ArrayList<ItemCard>();
-                ItemCard itemCard = new ItemCard();
+                List<ItemCardResponse> itemCardList = new ArrayList<ItemCardResponse>();
+                ItemCardResponse itemCard = new ItemCardResponse();
                 Make make = new Make();
                 Category category = new Category();
 
@@ -209,7 +209,7 @@ public class ItemCardControllerTest {
                 make.setId(UUID.fromString("f47ac10b-58cc-4372-a567-0a02a2c3d479"));
                 make.setName("Wood");
                 make.setCategory(category);
-                itemCard.setMake(make);
+                itemCard.setMake(make.getId());
                 itemCardList.add(itemCard);
 
                 itemCard.setId(UUID.fromString("f47aa10b-58cc-4372-a567-0e02b2c3d479"));
@@ -220,7 +220,7 @@ public class ItemCardControllerTest {
                 make.setId(UUID.fromString("f47aa10b-58cc-4372-a567-0e02a2c3d479"));
                 make.setName("Gold");
                 make.setCategory(category);
-                itemCard.setMake(make);
+                itemCard.setMake(make.getId());
                 itemCardList.add(itemCard);
 
                 Mockito.when(itemCardService.getByEmployee(ArgumentMatchers.any())).thenReturn(itemCardList);
@@ -230,18 +230,18 @@ public class ItemCardControllerTest {
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$[0].id",
                                                 Matchers.equalTo(itemCardList.get(0).getId().toString())))
-                                .andExpect(jsonPath("$[0].make.id",
-                                                Matchers.equalTo(itemCardList.get(0).getMake().getId().toString())))
+                                .andExpect(jsonPath("$[0].make",
+                                                Matchers.equalTo(itemCardList.get(0).getMake())))
                                 .andExpect(jsonPath("$[1].id",
                                                 Matchers.equalTo(itemCardList.get(1).getId().toString())))
-                                .andExpect(jsonPath("$[1].make.id",
-                                                Matchers.equalTo(itemCardList.get(1).getMake().getId().toString())));
+                                .andExpect(jsonPath("$[1].make",
+                                                Matchers.equalTo(itemCardList.get(1).getMake())));
         }
 
         @Test
         public void getByMakeTest() throws Exception {
 
-                ItemCard itemCard = new ItemCard();
+                ItemCardResponse itemCard = new ItemCardResponse();
                 Make make = new Make();
                 Category category = new Category();
 
@@ -252,7 +252,7 @@ public class ItemCardControllerTest {
                 make.setId(UUID.fromString("f47ac10b-58cc-4372-a567-0a02a2c3d479"));
                 make.setName("Wood");
                 make.setCategory(category);
-                itemCard.setMake(make);
+                itemCard.setMake(make.getId());
 
                 itemCard.setId(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479"));
                 itemCard.setDescription("Wardrobe");
@@ -264,15 +264,14 @@ public class ItemCardControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$.id", Matchers.equalTo(itemCard.getId().toString())))
-                                .andExpect(jsonPath("$.make.id",
-                                                Matchers.equalTo(itemCard.getMake().getId().toString())));
+                                .andExpect(jsonPath("$.make",
+                                                Matchers.equalTo(itemCard.getMake())));
         }
 
         @Test
         public void deleteTest() throws Exception {
                 UUID num = UUID.fromString("acde070d-8c4c-4f0d-9d8a-162843c10333");
-                String string = "string";
-                Mockito.when(itemCardService.delete(num)).thenReturn(string);
+                itemCardService.delete(num);
                 mvc.perform(delete("/api/itemcard/{num}", num)
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNoContent());

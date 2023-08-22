@@ -29,7 +29,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.app.backend.communication.request.EmployeeCreateUpdateRequest;
 import com.app.backend.communication.response.EmployeeResponse;
-import com.app.backend.model.Employee;
 import com.app.backend.repository.CategoryRepository;
 import com.app.backend.repository.EmployeeLoanRepository;
 import com.app.backend.repository.EmployeeRepository;
@@ -178,8 +177,7 @@ public class EmployeeControllerTest {
         @Test
         public void deleteTest() throws Exception {
                 UUID num = UUID.fromString("acde070d-8c4c-4f0d-9d8a-162843c10333");
-                String string = "string";
-                Mockito.when(employeeService.delete(num)).thenReturn(string);
+                employeeService.delete(num);
                 mvc.perform(delete("/api/employee/{num}", num)
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNoContent());
@@ -204,7 +202,7 @@ public class EmployeeControllerTest {
                 employeeRequest.setDob(date);
                 employeeRequest.setDoj(date);
 
-                Employee employeeResponse = new Employee();
+                EmployeeResponse employeeResponse = new EmployeeResponse();
 
                 employeeResponse.setId(num);
                 employeeResponse.setGender("myGender");

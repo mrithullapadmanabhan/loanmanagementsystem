@@ -3,7 +3,7 @@ package com.app.backend.service;
 import java.util.List;
 import java.util.UUID;
 
-import org.modelmapper.TypeMap;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.app.backend.communication.request.MakeCreateUpdateRequest;
@@ -26,24 +26,25 @@ public class MakeServiceImplementation implements MakeService {
 
     private final CategoryRepository categoryRepository;
 
-    private final TypeMap<Make, MakeResponse> mapper;
+    private final ModelMapper mapper;
 
     @Override
     public List<MakeResponse> get() {
-        return makeRepository.findAll().stream().map((make) -> mapper.map(make)).toList();
+        return makeRepository.findAll().stream().map((make) -> mapper.map(make, MakeResponse.class)).toList();
     }
 
     @Override
     public MakeResponse get(UUID makeID) {
         return mapper.map(makeRepository.findById(makeID)
-                .orElseThrow(() -> new ResourceNotFoundException("Make with this ID does not exist")));
+                .orElseThrow(() -> new ResourceNotFoundException("Make with this ID does not exist")),
+                MakeResponse.class);
     }
 
     @Override
     public List<MakeResponse> getByCategory(UUID categoryID) {
         Category category = categoryRepository.findById(categoryID)
                 .orElseThrow(() -> new ResourceNotFoundException("Category with this ID does not exist"));
-        return category.getMakes().stream().map((make) -> mapper.map(make)).toList();
+        return category.getMakes().stream().map((make) -> mapper.map(make, MakeResponse.class)).toList();
     }
 
     @Transactional
@@ -57,7 +58,7 @@ public class MakeServiceImplementation implements MakeService {
                 .category(category)
                 .build();
 
-        return mapper.map(makeRepository.save(make));
+        return mapper.map(makeRepository.save(make), MakeResponse.class);
     }
 
     @Transactional
@@ -68,7 +69,7 @@ public class MakeServiceImplementation implements MakeService {
 
         make.setName(request.getName());
 
-        return mapper.map(makeRepository.save(make));
+        return mapper.map(makeRepository.save(make), MakeResponse.class);
     }
 
     @Override

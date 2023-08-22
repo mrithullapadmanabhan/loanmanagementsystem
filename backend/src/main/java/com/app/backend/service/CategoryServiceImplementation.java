@@ -3,7 +3,7 @@ package com.app.backend.service;
 import java.util.List;
 import java.util.UUID;
 
-import org.modelmapper.TypeMap;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.app.backend.communication.request.CategoryCreateUpdateRequest;
@@ -22,12 +22,12 @@ public class CategoryServiceImplementation implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    private final TypeMap<Category, CategoryResponse> mapper;
+    private final ModelMapper mapper;
 
     @Override
     public List<CategoryResponse> get() {
         return categoryRepository.findAll().stream()
-                .map((category) -> mapper.map(category)).toList();
+                .map((category) -> mapper.map(category, CategoryResponse.class)).toList();
 
     }
 
@@ -35,7 +35,8 @@ public class CategoryServiceImplementation implements CategoryService {
     public CategoryResponse get(UUID categoryID) {
         return mapper.map(
                 categoryRepository.findById(categoryID)
-                        .orElseThrow(() -> new ResourceNotFoundException("Item card with this ID does not exist")));
+                        .orElseThrow(() -> new ResourceNotFoundException("Item card with this ID does not exist")),
+                CategoryResponse.class);
     }
 
     @Transactional
@@ -45,7 +46,7 @@ public class CategoryServiceImplementation implements CategoryService {
                 .name(request.getName())
                 .build();
 
-        return mapper.map(categoryRepository.save(category));
+        return mapper.map(categoryRepository.save(category), CategoryResponse.class);
     }
 
     @Transactional
@@ -56,7 +57,7 @@ public class CategoryServiceImplementation implements CategoryService {
 
         category.setName(request.getName());
 
-        return mapper.map(categoryRepository.save(category));
+        return mapper.map(categoryRepository.save(category), CategoryResponse.class);
     }
 
     @Override

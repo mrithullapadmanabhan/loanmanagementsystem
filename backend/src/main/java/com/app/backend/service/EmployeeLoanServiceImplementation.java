@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
-import org.modelmapper.TypeMap;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.app.backend.communication.request.LoanCreateRequest;
@@ -36,11 +36,12 @@ public class EmployeeLoanServiceImplementation implements EmployeeLoanService {
 	private final MakeRepository makeRepository;
 	private final ItemCardRepository itemCardRepository;
 
-	private final TypeMap<EmployeeLoan, EmployeeLoanResponse> mapper;
+	private final ModelMapper mapper;
 
 	@Override
 	public List<EmployeeLoanResponse> get() {
-		return employeeLoanRepository.findAll().stream().map(loan -> mapper.map(loan)).toList();
+		return employeeLoanRepository.findAll().stream().map(loan -> mapper.map(loan, EmployeeLoanResponse.class))
+				.toList();
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class EmployeeLoanServiceImplementation implements EmployeeLoanService {
 		Employee employee = employeeRepository.findById(employeeID)
 				.orElseThrow(() -> new ResourceNotFoundException(
 						"Employee with this ID does not exist"));
-		return employee.getLoans().stream().map(loan -> mapper.map(loan)).toList();
+		return employee.getLoans().stream().map(loan -> mapper.map(loan, EmployeeLoanResponse.class)).toList();
 	}
 
 	@Transactional
@@ -74,7 +75,7 @@ public class EmployeeLoanServiceImplementation implements EmployeeLoanService {
 				.employee(employee)
 				.build();
 
-		return mapper.map(employeeLoanRepository.save(loan));
+		return mapper.map(employeeLoanRepository.save(loan), EmployeeLoanResponse.class);
 	}
 
 	@Override
@@ -84,7 +85,7 @@ public class EmployeeLoanServiceImplementation implements EmployeeLoanService {
 						"Employee with this ID does not exist"));
 		loan.setStatus(LoanStatusEnum.COMPLETED);
 
-		return mapper.map(employeeLoanRepository.save(loan));
+		return mapper.map(employeeLoanRepository.save(loan), EmployeeLoanResponse.class);
 	}
 
 }
