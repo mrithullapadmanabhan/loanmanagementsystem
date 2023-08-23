@@ -62,7 +62,12 @@ public class CategoryServiceImplementation implements CategoryService {
 
         category.setName(request.getName());
 
-        return mapper.map(categoryRepository.save(category), CategoryResponse.class);
+        try {
+            return mapper.map(categoryRepository.save(category), CategoryResponse.class);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException("Category should be unique");
+        }
+
     }
 
     @Override

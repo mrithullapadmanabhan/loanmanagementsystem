@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
         }
 
         @ExceptionHandler(DataIntegrityViolationException.class)
-        public ResponseEntity<ExceptionResponse> entityNotFound(
+        public ResponseEntity<ExceptionResponse> duplicateEntry(
                         DataIntegrityViolationException exception) {
 
                 ExceptionResponse exceptionResponse = ExceptionResponse.builder()
@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
                                 .build();
 
                 return ResponseEntity
-                                .status(HttpStatus.NOT_FOUND)
+                                .status(HttpStatus.BAD_REQUEST)
                                 .body(exceptionResponse);
         }
 
