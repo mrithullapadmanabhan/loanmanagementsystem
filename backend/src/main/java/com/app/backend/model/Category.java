@@ -18,6 +18,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.Column;
+
 
 @Data
 @Builder
@@ -30,6 +32,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(unique=true)
     @NotBlank(message = "Category name cannot be blank")
     private String name;
 

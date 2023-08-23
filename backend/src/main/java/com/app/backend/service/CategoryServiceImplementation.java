@@ -12,6 +12,7 @@ import com.app.backend.exception.ResourceNotFoundException;
 import com.app.backend.model.Category;
 import com.app.backend.repository.CategoryRepository;
 
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,12 +43,18 @@ public class CategoryServiceImplementation implements CategoryService {
     @Transactional
     @Override
     public CategoryResponse create(CategoryCreateUpdateRequest request) {
+       try {
         Category category = Category.builder()
                 .name(request.getName())
                 .build();
-
-        return mapper.map(categoryRepository.save(category), CategoryResponse.class);
+        
+        return mapper.map(categoryRepository.save(category), CategoryResponse.class);   
+        } catch (Exception e) {
+        
+            System.out.println("Category exception handled");
+            return new CategoryResponse();
     }
+}
 
     @Transactional
     @Override
