@@ -5,12 +5,12 @@ export const isLoggedIn = () => {
   return (
     access != null &&
     (!window.location.href.includes("/login") ||
-    !window.location.href.includes("/register"))
+      !window.location.href.includes("/register"))
   );
 };
 
-export const logout=()=>{
-  
+export const logout = () => {
+
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
   localStorage.removeItem("employeeID");
@@ -45,17 +45,8 @@ export const apiLogin = async (data: loginData) => {
   }
 };
 
-export const isAdmin= ()=>{
+export const isAdmin = () => {
   const roles = localStorage.getItem("roles");
   const roleArray = roles?.split(",");
   return roleArray?.includes("ADMIN")
 }
-
-export const employeeRegister = async (data: loginData) => {
-  try {
-    await api.post("/employee", data);
-    return true;
-  } catch {
-    return false;
-  }
-};
