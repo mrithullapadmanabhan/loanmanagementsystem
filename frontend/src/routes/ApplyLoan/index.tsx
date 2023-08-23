@@ -1,3 +1,4 @@
+import { useSnackbar } from "components/Snackbar";
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { applyLoanApi, getItemsCategories, getItemsFromMake, getItemsMake } from "service/loan";
@@ -24,12 +25,9 @@ function ApplyLoan() {
     const res: any=await getItemsCategories()
     console.log(res)
     setLoanTypeData(res)
-    // if(res.success){
-    //   setItems(res.data)
-    //   setLoanTypeData(res.data.map((item: { category: any; })=> item.category).filter((value: any,index: any,self: { indexOf: (arg0: any) => any; })=>self.indexOf(value)==index))
-    //   setItemMakeData(res.data.map((item: { make: any; })=> item.make).filter((value: any,index: any,self: { indexOf: (arg0: any) => any; })=>self.indexOf(value)==index))
-    // }
   }
+  
+  const showSnackBar=useSnackbar()
 
   async function submitButton() {
     const data={
@@ -38,7 +36,7 @@ function ApplyLoan() {
     }
     const resp=await applyLoanApi(data)
     if(resp){
-      alert("loan created successfully")
+      showSnackBar("Loan created successfully","success")
       navigate('/loans')
     }
   }

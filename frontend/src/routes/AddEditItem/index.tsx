@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {getItemsCategories, getItemsMake } from "service/loan";
 import {addItemApi,getItemById, updateItemById} from 'service/admin'
+import { useSnackbar } from "components/Snackbar";
 
 function AddEditItem({type="add"}) {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ function AddEditItem({type="add"}) {
   const [selectItemMake, setSelectItemMake] = useState("");
   const [selectItemCategory, setSelectItemCategory] = useState("");
   const {id}=useParams()
+  const showSnackBar= useSnackbar()
 
 
   useEffect(() => {
@@ -52,7 +54,7 @@ function AddEditItem({type="add"}) {
     }
     const resp=await addItemApi(data)
     if(resp){
-      alert("Item created successfully")
+      showSnackBar("Item created successfully","success")
       navigate('/admin/item/all')
     }
   }
@@ -65,7 +67,7 @@ function AddEditItem({type="add"}) {
     }
     const resp=await updateItemById(id,data)
     if(resp){
-      alert("Item edited successfully")
+      showSnackBar("Item edited successfully","success")
       navigate('/admin/item/all')
     }
   }

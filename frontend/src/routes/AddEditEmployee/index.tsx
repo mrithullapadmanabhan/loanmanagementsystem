@@ -4,6 +4,7 @@ import { Form } from "components";
 import { employeeRegister } from "service/auth";
 import {getEmployeeById, updateEmployeeById} from 'service/admin'
 import { useEffect, useState } from "react";
+import { useSnackbar } from "components/Snackbar";
 
 function AddEditEmployee({type="add"}) {
   const navigate = useNavigate();
@@ -162,25 +163,26 @@ function AddEditEmployee({type="add"}) {
       }
     ])
   }
+  const showSnackBar= useSnackbar()
 
   const addHandleSubmit = async (data: any) => {
     const res = await employeeRegister(data);
     if (res) {
-      alert("Employee added")
+      showSnackBar("Employee added","success")
       
       navigate("/admin/employee/all")
     } else {
-      alert("Invalid Credentials");
+      showSnackBar("Invalid Credentials","error");
     }
   };
 
   const editHandleSubmit = async (data: any) => {
     const res = await updateEmployeeById(id,data);
     if (res) {
-      alert("Employee updated")
+      showSnackBar("Employee updated","success")
       navigate("/admin/employee/all")
     } else {
-      alert("Invalid Credentials");
+      showSnackBar("Invalid Credentials","error");
     }
   };
   const submitButton = {

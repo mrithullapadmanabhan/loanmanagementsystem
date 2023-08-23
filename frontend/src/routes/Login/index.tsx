@@ -41,7 +41,7 @@ const Login = () => {
       navigate("/");
       showSnackBar("Login successful","success")
     } else {
-      alert("Invalid Credentials");
+      showSnackBar("Invalid Credentials","error");
     }
   };
 

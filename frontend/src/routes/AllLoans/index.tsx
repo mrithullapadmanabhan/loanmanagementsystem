@@ -1,6 +1,7 @@
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { DeletePopup } from 'components'
+import { useSnackbar } from 'components/Snackbar'
 import Table from 'components/Table'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -11,6 +12,7 @@ function AllLoans() {
   const [data, setTableData] = useState<any[]>([])
   const [popupOpen, setPopupOpen] = useState(false)
   const [selectedId, setSelectedId] = useState("")
+  const showSnackBar= useSnackbar()
 
   function closePopup() {
     setPopupOpen(false)
@@ -56,11 +58,11 @@ function AllLoans() {
   async function deleteLoanCard() {
     const resp = await deleteLoanCardById(selectedId)
     if (resp == true) {
-      alert("Loan card Deleted sucessfully")
+      showSnackBar("Loan card Deleted sucessfully","success")
       window.location.reload()
     }
     else {
-      alert("Some error occured")
+      showSnackBar("Some error occured","error")
     }
   }
 

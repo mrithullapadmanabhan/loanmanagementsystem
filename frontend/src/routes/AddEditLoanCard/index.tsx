@@ -1,3 +1,4 @@
+import { useSnackbar } from "components/Snackbar";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { addLoanCardApi, getLoanCardById, updateLoanCardById } from 'service/admin';
@@ -10,6 +11,7 @@ function AddEditLoanCard({ type = "add" }) {
   const [duration, setDuration] = useState(0);
   const [selectItemCategory, setSelectItemCategory] = useState("");
   const { id } = useParams()
+  const showSnackBar= useSnackbar()
 
 
   useEffect(() => {
@@ -48,12 +50,12 @@ function AddEditLoanCard({ type = "add" }) {
     if (data.duration > 0 && data.duration < 48) {
       const resp = await addLoanCardApi(data)
       if (resp) {
-        alert("Loan Card created successfully")
+        showSnackBar("Loan Card created successfully","success")
         navigate('/admin/loan-card/all')
       }
     }
     else {
-      alert("Duration should be between 1 and 48")
+      showSnackBar("Duration should be between 1 and 48","error")
     }
 
 
@@ -66,7 +68,7 @@ function AddEditLoanCard({ type = "add" }) {
     }
     const resp = await updateLoanCardById(id, data)
     if (resp) {
-      alert("Loan Card edited successfully")
+      showSnackBar("Loan Card edited successfully","success")
       navigate('/admin/loan-card/all')
     }
   }

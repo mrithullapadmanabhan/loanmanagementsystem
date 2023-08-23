@@ -1,3 +1,4 @@
+import { useSnackbar } from "components/Snackbar";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { addMakeApi, getMakeById, updateMakeById } from 'service/admin';
@@ -10,6 +11,7 @@ function AddEditMake({ type = "add" }) {
   const [makeName, setMakeName] = useState("");
   const [selectMakeCategory, setSelectMakeCategory] = useState("");
   const { id } = useParams()
+  const showSnackBar= useSnackbar()
 
 
   useEffect(() => {
@@ -41,11 +43,11 @@ function AddEditMake({ type = "add" }) {
     }
     const resp = await addMakeApi(data)
     if (resp) {
-      alert("Make created successfully")
+      showSnackBar("Make created successfully","success")
       navigate('/admin/make/all')
     }
     else {
-      alert("Invalid Credentials")
+      showSnackBar("Invalid Credentials","error")
     }
   }
 
@@ -56,11 +58,11 @@ function AddEditMake({ type = "add" }) {
     }
     const resp = await updateMakeById(id, data)
     if (resp) {
-      alert("Make edited successfully")
+      showSnackBar("Make edited successfully","success")
       navigate('/admin/make/all')
     }
     else {
-      alert("error")
+      showSnackBar("error","error")
     }
   }
 

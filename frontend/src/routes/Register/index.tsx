@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Form } from "components";
 import { employeeRegister } from "service/auth";
+import { useSnackbar } from "components/Snackbar";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -85,13 +86,15 @@ function SignUp() {
       initialData: "",
     }
   ];
+  const showSnackBar=useSnackbar()
 
   const handleSubmit = async (data: any) => {
     const res = await employeeRegister(data);
     if (res) {
       navigate("/login");
     } else {
-      alert("Invalid Credentials");
+  
+      showSnackBar("Invalid Credentials","error");
     }
   };
 
