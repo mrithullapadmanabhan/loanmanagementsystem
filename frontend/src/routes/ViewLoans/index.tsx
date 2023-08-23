@@ -1,5 +1,5 @@
-import Sidebar from 'components/Sidebar'
-import React, { useRef, useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { getEmployeeLoansApi } from 'service/loan'
 
 
@@ -7,13 +7,19 @@ function ViewLoans() {
   const [tableData, setTableData] = useState<any[]>([])
 
 
-  useEffect(()=>{
+  useEffect(() => {
     getLoans()
-  },[])
+  }, [])
+  const navigate = useNavigate()
 
-  async function getLoans(){
-    const resp=await getEmployeeLoansApi()
-    setTableData(resp)
+  async function getLoans() {
+    const resp = await getEmployeeLoansApi()
+    if (Object.keys(resp).length > 0) {
+      setTableData(resp);
+    }
+    else {
+      navigate("/NotFound")
+    }
   }
 
   return (
@@ -37,16 +43,16 @@ function ViewLoans() {
                   </td>
                 </tr>
               </thead>
-              
-                  <tbody className="text-sm text-todayQ-black">
-                  {tableData.map((result, index) => (
-                    <tr key={index}>
-                      <td className="text-left">{result?.id}</td>
-                      <td className="text-black py-4 px-2 text-left">{result?.loan?.category?.name}</td>
-                      <td className="py-4 px-2 text-left">{result?.loan?.duration}</td>
-                      <td className="py-4 px-2 text-left">{result?.issueDate}</td>
-                    </tr>
-                  ))}
+
+              <tbody className="text-sm text-todayQ-black">
+                {tableData.map((result, index) => (
+                  <tr key={index}>
+                    <td className="text-left">{result?.id}</td>
+                    <td className="text-black py-4 px-2 text-left">{result?.loan?.category?.name}</td>
+                    <td className="py-4 px-2 text-left">{result?.loan?.duration}</td>
+                    <td className="py-4 px-2 text-left">{result?.issueDate}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

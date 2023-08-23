@@ -1,22 +1,21 @@
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { DeletePopup } from 'components'
-import Sidebar from 'components/Sidebar'
 import Table from 'components/Table'
-import React, { useRef, useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { deleteCategoryById, getCategoriesApi } from 'service/admin'
 
 
 function AllCategories() {
   const [data, setTableData] = useState<any[]>([])
-  const [popupOpen,setPopupOpen] = useState(false)
-  const [selectedId,setSelectedId]=useState("")
+  const [popupOpen, setPopupOpen] = useState(false)
+  const [selectedId, setSelectedId] = useState("")
 
-  function closePopup(){
+  function closePopup() {
     setPopupOpen(false)
   }
-  const fields: any=[
+  const fields: any = [
     {
       key: "id",
       label: "Category ID"
@@ -26,26 +25,26 @@ function AllCategories() {
       label: "Category Name"
     },
     {
-        key: "actions",
-        label: "Actions"
+      key: "actions",
+      label: "Actions"
     }
 
   ]
 
-  
-  const navigate=useNavigate()
-  const actions: any=[
+
+  const navigate = useNavigate()
+  const actions: any = [
     {
       label: <FontAwesomeIcon icon={faPenToSquare} />,
-      onClick: (id: any)=>{
+      onClick: (id: any) => {
         console.log(id)
         navigate(`/admin/category/edit/${data[id].id}`)
-        
+
       },
     },
     {
       label: <FontAwesomeIcon icon={faTrash} />,
-      onClick: (id: any)=>{
+      onClick: (id: any) => {
         console.log(id)
         setSelectedId(data[id].id)
         setPopupOpen(true)
@@ -55,42 +54,47 @@ function AllCategories() {
 
 
 
-  useEffect(()=>{
+  useEffect(() => {
     getCategories()
-  },[])
+  }, [])
 
-  async function getCategories(){
-    const resp=await getCategoriesApi()
-    const data=resp.map((category: any) => ({
-        ...category,
-        id : category.id,
-        name: category.name
-      }));
-    setTableData(data);
+  async function getCategories() {
+    const resp = await getCategoriesApi()
+    const data = resp.map((category: any) => ({
+      ...category,
+      id: category.id,
+      name: category.name
+    }));
+    if (Object.keys(data).length > 0) {
+      setTableData(data);
+    }
+    else {
+      navigate("/NotFound")
+    }
   }
 
-  async function deleteCategory(){
-    const resp=await deleteCategoryById(selectedId)
-    if(resp==true){
+  async function deleteCategory() {
+    const resp = await deleteCategoryById(selectedId)
+    if (resp == true) {
       alert("Category Deleted sucessfully")
       window.location.reload()
     }
-    else{
+    else {
       alert("Some error occured")
     }
   }
 
   return (
     <div>
-      {popupOpen && <DeletePopup closePopup={closePopup} onSubmit={deleteCategory}/>}
+      {popupOpen && <DeletePopup closePopup={closePopup} onSubmit={deleteCategory} />}
       <div className="p-4 sm:p-8 md:p-11 flex flex-col gap-12">
         <div className="w-full  flex flex-col justify-center gap-4 mb-6 lg:mb-0">
-    
+
           <div className='flex gap-10 mb-5 justify-between'>
             <h1 className=" text-xl font-semibold">All Categories</h1>
             <Link to="/admin/category/add"><Link to="/admin/category/add"><button className={`bg-[#4338CA] normal-button`}>Add Category</button></Link></Link>
           </div>
-          <Table fields={fields} data={data} actions={actions}/>
+          <Table fields={fields} data={data} actions={actions} />
         </div>
       </div>
     </div>
