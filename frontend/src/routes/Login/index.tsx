@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Form } from "components";
 import { apiLogin } from "service/auth";
+import { useSnackbar } from "components/Snackbar";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -32,11 +33,13 @@ const Login = () => {
       initialData: "",
     },
   ];
+  const showSnackBar= useSnackbar()
 
   const handleSubmit = async (data: any) => {
     const res = await apiLogin(data);
     if (res) {
       navigate("/");
+      showSnackBar("Login successful","success")
     } else {
       alert("Invalid Credentials");
     }
