@@ -4,6 +4,7 @@ export { default as AddEditItem } from './AddEditItem';
 export { default as AddEditLoanCard } from './AddEditLoanCard';
 export { default as AddEditMake } from './AddEditMake';
 export { default as Admin } from './Admin';
+export { default as AdminDashboard } from "./AdminDashboard";
 export { default as AllCategories } from './AllCategories';
 export { default as AllEmployees } from './AllEmployees';
 export { default as AllItems } from './AllItems';

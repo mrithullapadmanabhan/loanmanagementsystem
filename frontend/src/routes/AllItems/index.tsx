@@ -76,12 +76,8 @@ function AllItems() {
       category: itemcard.make.category.name,
       make: itemcard.make.name
     }));
-    if (Object.keys(data).length > 0) {
-      setTableData(data);
-    }
-    else {
-      navigate("/NotFound")
-    }
+    setTableData(data);
+
   }
 
   async function deleteItem() {

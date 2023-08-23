@@ -66,12 +66,8 @@ function AllEmployees() {
 
   async function getEmployees() {
     const resp = await getEmployeesApi()
-    if (Object.keys(resp).length > 0) {
-      setTableData(resp);
-    }
-    else {
-      navigate("/NotFound")
-    }
+    setTableData(resp);
+
   }
 
   async function deleteEmployee() {

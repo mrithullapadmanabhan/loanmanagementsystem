@@ -65,12 +65,8 @@ function AllCategories() {
       id: category.id,
       name: category.name
     }));
-    if (Object.keys(data).length > 0) {
-      setTableData(data);
-    }
-    else {
-      navigate("/NotFound")
-    }
+    setTableData(data);
+
   }
 
   async function deleteCategory() {
