@@ -2,6 +2,7 @@ package com.app.backend.controlleradvice;
 
 import java.sql.Timestamp;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,18 +14,32 @@ import com.app.backend.exception.ResourceNotFoundException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> entityNotFound(
-            ResourceNotFoundException exception) {
+        @ExceptionHandler(ResourceNotFoundException.class)
+        public ResponseEntity<ExceptionResponse> entityNotFound(
+                        ResourceNotFoundException exception) {
 
-        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
-                .message(exception.getMessage())
-                .timestamp(new Timestamp(System.currentTimeMillis()).toString())
-                .build();
+                ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                                .message(exception.getMessage())
+                                .timestamp(new Timestamp(System.currentTimeMillis()).toString())
+                                .build();
 
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(exceptionResponse);
-    }
+                return ResponseEntity
+                                .status(HttpStatus.NOT_FOUND)
+                                .body(exceptionResponse);
+        }
+
+        @ExceptionHandler(DataIntegrityViolationException.class)
+        public ResponseEntity<ExceptionResponse> entityNotFound(
+                        DataIntegrityViolationException exception) {
+
+                ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                                .message(exception.getMessage())
+                                .timestamp(new Timestamp(System.currentTimeMillis()).toString())
+                                .build();
+
+                return ResponseEntity
+                                .status(HttpStatus.NOT_FOUND)
+                                .body(exceptionResponse);
+        }
 
 }
