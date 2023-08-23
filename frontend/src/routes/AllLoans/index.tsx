@@ -76,12 +76,9 @@ function AllLoans() {
       ...loancard,
       category: loancard.category.name
     }));
-    if (Object.keys(data).length > 0) {
-      setTableData(data);
-    }
-    else {
-      navigate("/NotFound")
-    }
+    setTableData(data);
+
+
   }
 
   return (

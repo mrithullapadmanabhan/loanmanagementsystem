@@ -14,12 +14,8 @@ function ViewEmployeeItems() {
   const navigate = useNavigate()
   async function getLoans() {
     const resp = await getEmployeeLoansApi()
-    if (Object.keys(resp).length > 0) {
-      setTableData(resp);
-    }
-    else {
-      navigate("/NotFound")
-    }
+    setTableData(resp);
+
   }
 
   return (
