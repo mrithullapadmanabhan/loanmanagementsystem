@@ -79,6 +79,7 @@ function SignUp() {
       name: "doj",
       type: "date",
       min: "1990-01-01",
+      max: new Date().toISOString().split('T')[0],
       label: "Date of Joining",
       placeholder: "dd-mm-yyyy",
       initialData: "",

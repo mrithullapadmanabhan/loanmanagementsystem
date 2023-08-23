@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.app.backend.communication.request.CategoryCreateUpdateRequest;
@@ -39,14 +40,18 @@ public class CategoryServiceImplementation implements CategoryService {
                 CategoryResponse.class);
     }
 
-    @Transactional
     @Override
     public CategoryResponse create(CategoryCreateUpdateRequest request) {
-        Category category = Category.builder()
-                .name(request.getName())
-                .build();
+        try {
+            Category category = Category.builder()
+                    .name(request.getName())
+                    .build();
 
-        return mapper.map(categoryRepository.save(category), CategoryResponse.class);
+            return mapper.map(categoryRepository.save(category), CategoryResponse.class);
+
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException("Category should be unique");
+        }
     }
 
     @Transactional

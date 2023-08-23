@@ -1,3 +1,4 @@
+import { SnackbarProvider } from "components/Snackbar";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import {
@@ -119,7 +120,9 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (<SnackbarProvider>
+    <RouterProvider router={router} />
+    </SnackbarProvider>);
 };
 
 export default App;

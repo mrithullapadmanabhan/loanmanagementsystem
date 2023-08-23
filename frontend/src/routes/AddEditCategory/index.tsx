@@ -1,9 +1,11 @@
+import { useSnackbar } from "components/Snackbar";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { addCategoryApi, getCategoryById, updateCategoryById } from 'service/admin';
 
 function AddEditCategory({ type = "add" }) {
   const navigate = useNavigate();
+  const showSnackBar= useSnackbar()
 
   const [categoryname, setCategoryName] = useState("");
 
@@ -36,15 +38,21 @@ function AddEditCategory({ type = "add" }) {
     if (regexPattern.test(data.name)) {
       const resp = await addCategoryApi(data)
       if (resp) {
-        alert("Category created successfully")
+        
+        showSnackBar("Category created successfully","success")
+
         navigate('/admin/category/all')
       }
       else {
-        alert("Invalid Credentials")
+        
+        showSnackBar("Invalid Credentials","error")
+        
       }
     }
     else {
-      alert("The category name can have only alphabets")
+      
+      showSnackBar("The category name can have only alphabets","error")
+
     }
 
   }
@@ -55,11 +63,11 @@ function AddEditCategory({ type = "add" }) {
     }
     const resp = await updateCategoryById(id, data)
     if (resp) {
-      alert("Category edited successfully")
+      showSnackBar("Category edited successfully","success")
       navigate('/admin/category/all')
     }
     else {
-      alert("Invalid Credentials");
+      showSnackBar("Invalid Credentials","error");
     }
   }
 

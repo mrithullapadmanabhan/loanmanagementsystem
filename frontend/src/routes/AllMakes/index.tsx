@@ -74,7 +74,7 @@ function AllMakes() {
     const resp = await getMakesApi()
     const data = resp.map((make: any) => ({
       ...make,
-      category: make.category.name
+      // category: make.category.name
     }));
     setTableData(data);
 

@@ -73,8 +73,8 @@ function AllItems() {
     const resp = await getItemsApi()
     const data = resp.map((itemcard: any) => ({
       ...itemcard,
-      category: itemcard.make.category.name,
-      make: itemcard.make.name
+      category: itemcard?.make?.category?.name,
+      make: itemcard?.make?.name
     }));
     setTableData(data);
 
