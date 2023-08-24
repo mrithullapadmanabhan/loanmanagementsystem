@@ -3,51 +3,20 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Form } from "components";
 import { apiLogin } from "service/auth";
-import { useSnackbar } from "components/Snackbar";
+import { loginFormFields } from "./formFields";
 
 const Login = () => {
   const navigate = useNavigate();
-
-  const formFields = [
-    {
-      fieldType: "input",
-      name: "email",
-      type: "text",
-      label: "Email",
-      placeholder: "test@test.com",
-      errorMessage: "Invalid Email",
-      regex:
-        "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])",
-      initialData: "",
-    },
-    {
-      fieldType: "input",
-      name: "password",
-      type: "password",
-      label: "Password",
-      placeholder: "********",
-      errorMessage:
-        "Invalid Password. Must contain atleast 1 Uppercase character, 1 Lowercase character, 1 number, 1 symbol and have minimum length of 8",
-      regex:
-        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,}$",
-      initialData: "",
-    },
-  ];
-  const showSnackBar= useSnackbar()
 
   const handleSubmit = async (data: any) => {
     const res = await apiLogin(data);
     if (res) {
       navigate("/");
-      showSnackBar("Login successful","success")
-    } else {
-      showSnackBar("Invalid Credentials","error");
     }
   };
 
   const submitButton = {
     text: "Login",
-    color: "#4338CA",
   };
 
   useEffect(() => {
@@ -63,7 +32,7 @@ const Login = () => {
             Or{" "}
             <Link
               to="/register"
-              className={`text-[#4338CA] font-semibold text-sm`}
+              className={`text-indigo-700 font-semibold text-sm`}
             >
               Create an account
             </Link>
@@ -71,7 +40,7 @@ const Login = () => {
         </div>
         <Form
           onSubmit={handleSubmit}
-          formFields={formFields}
+          formFields={loginFormFields}
           submitButton={submitButton}
         />
       </div>

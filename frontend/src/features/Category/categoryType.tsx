@@ -1,7 +1,7 @@
 export interface categoryObjectType {
-    name: string,
+  name: string;
 }
 
 export interface categoryType extends categoryObjectType {
-    id: string,
+  id: string;
 }

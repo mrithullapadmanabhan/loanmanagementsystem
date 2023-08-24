@@ -2,22 +2,22 @@ import api from "./api";
 
 export const isLoggedIn = () => {
   const access = localStorage.getItem("accessToken");
-  return (
-    access != null &&
-    (!window.location.href.includes("/login") ||
-      !window.location.href.includes("/register"))
+  return access !== null;
+};
+
+export const isPageAuthenticationRequired = () => {
+  return !(
+    window.location.href.includes("/login") ||
+    window.location.href.includes("/register")
   );
 };
 
 export const logout = () => {
-
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
   localStorage.removeItem("employeeID");
   localStorage.removeItem("roles");
-
-
-}
+};
 
 type loginData = {
   email: string;
@@ -48,5 +48,5 @@ export const apiLogin = async (data: loginData) => {
 export const isAdmin = () => {
   const roles = localStorage.getItem("roles");
   const roleArray = roles?.split(",");
-  return roleArray?.includes("ADMIN")
-}
+  return roleArray?.includes("ADMIN");
+};

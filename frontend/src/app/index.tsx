@@ -1,27 +1,8 @@
-import { SnackbarProvider } from "components/Snackbar";
+import MakeAddEdit from "features/Make/makeAddEdit";
+import MakeList from "features/Make/makeList";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import {
-  AddEditCategory,
-  AddEditEmployee,
-  AddEditItem,
-  AddEditLoanCard,
-  AddEditMake,
-  Admin,
-  AllCategories,
-  AllEmployees,
-  AllItems,
-  AllLoans,
-  AllMakes,
-  ApplyLoan,
-  Login,
-  NotFound,
-  Register,
-  Root,
-  ViewEmployeeItems,
-  ViewLoans
-} from "routes";
-
+import { Login, NotFound, Register, Root } from "routes";
 
 const router = createBrowserRouter([
   {
@@ -38,91 +19,23 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: "loan/apply",
-        element: <ApplyLoan />,
+        path: "make",
+        element: <MakeList />,
       },
       {
-        path: "loans",
-        element: <ViewLoans />,
+        path: "make/:id",
+        element: <MakeAddEdit type="edit" />
       },
       {
-        path: "employee/items",
-        element: <ViewEmployeeItems />
-      },
-      {
-        path: "admin/",
-        element: <Admin />,
-        children: [
-          {
-            path: "employee/all",
-            element: <AllEmployees />
-          },
-          {
-            path: "item/all",
-            element: <AllItems />
-          },
-          {
-            path: "make/all",
-            element: <AllMakes />
-          },
-          {
-            path: "loan-card/all",
-            element: <AllLoans />
-          },
-          {
-            path: "employee/edit/:id",
-            element: <AddEditEmployee type="edit" />
-          },
-          {
-            path: "employee/add",
-            element: <AddEditEmployee />
-          },
-          {
-            path: "item/add",
-            element: <AddEditItem />
-          },
-          {
-            path: "item/edit/:id",
-            element: <AddEditItem type="edit" />
-          },
-          {
-            path: "loan-card/add",
-            element: <AddEditLoanCard />
-          },
-          {
-            path: "make/add",
-            element: <AddEditMake />
-          },
-          {
-            path: "loan-card/edit/:id",
-            element: <AddEditLoanCard type="edit" />
-          },
-          {
-            path: "make/edit/:id",
-            element: <AddEditMake type="edit" />
-          },
-          {
-            path: "category/add",
-            element: <AddEditCategory type="add" />
-          },
-          {
-            path: "category/all",
-            element: <AllCategories />
-          },
-          {
-            path: "category/edit/:id",
-            element: <AddEditCategory type="edit" />
-          }
-        ]
-      },
+        path: "make/create",
+        element: <MakeAddEdit type="add" />
+      }
     ],
   },
 ]);
 
 const App = () => {
-  return (<SnackbarProvider>
-    <RouterProvider router={router} />
-    </SnackbarProvider>);
+  return <RouterProvider router={router} />;
 };
 
 export default App;

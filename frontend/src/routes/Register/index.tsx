@@ -1,107 +1,33 @@
 import { Link, useNavigate } from "react-router-dom";
 
+import { useDispatch, useSelector } from "app/hooks";
 import { Form } from "components";
-import { employeeRegister } from "service/auth";
-import { useSnackbar } from "components/Snackbar";
+import {
+  create as createEmployee,
+  employeeStatus,
+} from "features/Employee/employeeSlice";
+import { employeeObjectType } from "features/Employee/employeeType";
+import { useEffect } from "react";
+import { registerFormFields } from "./formFields";
 
-function SignUp() {
+function Register() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const formFields = [
-    {
-      fieldType: "input",
-      name: "email",
-      type: "text",
-      label: "Email",
-      placeholder: "test@test.com",
-      errorMessage: "Invalid Email",
-      regex:
-        "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])",
-      initialData: "",
-    },
-    {
-      fieldType: "input",
-      name: "password",
-      type: "password",
-      label: "Password",
-      placeholder: "********",
-      errorMessage:
-        "Invalid Password. Must contain atleast 1 Uppercase character, 1 Lowercase character, 1 number, 1 symbol and have minimum length of 8",
-      regex:
-        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,}$",
-      initialData: "",
-    },
-    {
-      fieldType: "input",
-      name: "name",
-      type: "text",
-      label: "Name",
-      placeholder: "John doe",
-      initialData: "",
-    },
-    {
-      fieldType: "input",
-      name: "designation",
-      type: "text",
-      label: "Designation",
-      placeholder: "Manager",
-      initialData: "",
-    },
-    {
-      fieldType: "input",
-      name: "department",
-      type: "text",
-      label: "Department",
-      placeholder: "Technology",
-      initialData: "",
-    },
-    {
-      fieldType: "dropdown",
-      name: "gender",
-      options: [
-        { value: "male", label: "Male" },
-        { value: "female", label: "Female" },
-        { value: "other", label: "Other" }
-      ],
-      label: "Gender",
-      placeholder: "Male",
-      initialData: "",
-    },
-    {
-      fieldType: "input",
-      name: "dob",
-      type: "date",
-      max: "2005-12-31",
-      label: "Date of Birth",
-      placeholder: "dd-mm-yyyy",
-      initialData: "",
-    },
-    {
-      fieldType: "input",
-      name: "doj",
-      type: "date",
-      min: "1990-01-01",
-      max: new Date().toISOString().split('T')[0],
-      label: "Date of Joining",
-      placeholder: "dd-mm-yyyy",
-      initialData: "",
-    }
-  ];
-  const showSnackBar=useSnackbar()
+  const status = useSelector(employeeStatus);
 
-  const handleSubmit = async (data: any) => {
-    const res = await employeeRegister(data);
-    if (res) {
-      navigate("/login");
-    } else {
-  
-      showSnackBar("Invalid Credentials","error");
-    }
+  const handleSubmit = async (data: employeeObjectType) => {
+    dispatch(createEmployee(data));
   };
 
   const submitButton = {
     text: "Register",
-    color: "#4338CA",
   };
+
+  useEffect(() => {
+    if (status === "succeeded") {
+      navigate("/login");
+    }
+  }, [navigate, status]);
 
   return (
     <div className="flex justify-center mb-10">
@@ -114,7 +40,7 @@ function SignUp() {
             Or{" "}
             <Link
               to="/login"
-              className={`text-[#4338CA] font-semibold text-sm`}
+              className={`text-indigo-700 font-semibold text-sm`}
             >
               login to your account
             </Link>
@@ -122,7 +48,7 @@ function SignUp() {
         </div>
         <Form
           onSubmit={handleSubmit}
-          formFields={formFields}
+          formFields={registerFormFields}
           submitButton={submitButton}
         />
       </div>
@@ -130,4 +56,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default Register;

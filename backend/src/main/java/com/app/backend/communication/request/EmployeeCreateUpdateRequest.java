@@ -29,7 +29,7 @@ public class EmployeeCreateUpdateRequest {
 	private String password;
 
 	@NotBlank(message = "Name cannot be blank")
-	@Size(min = 5, max = 28, message = "Name can only be from 5 to 15 characters")
+	@Size(min = 5, max = 30, message = "Name can only be from 5 to 30 characters")
 	private String name;
 
 	@NotBlank(message = "Designation cannot be blank")
