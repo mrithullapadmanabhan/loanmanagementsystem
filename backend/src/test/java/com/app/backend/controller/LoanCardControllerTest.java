@@ -1,4 +1,4 @@
-package com.app.backend;
+package com.app.backend.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
