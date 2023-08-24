@@ -12,6 +12,7 @@ import { createAsyncThunk } from "app/hooks";
 
 import { selectCategoryById } from "features/Category/categorySlice";
 import { initialStateType } from "features/common/initialStateType";
+import { toast } from "react-toastify";
 import {
   createMake,
   deleteMake,
@@ -25,36 +26,57 @@ import { makeObjectType, makeType } from "./makeType";
 const makeAdapter = createEntityAdapter<makeType>();
 
 export const get = createAsyncThunk<makeType[]>("make/get", async () => {
-  return await getMakes();
+  return await toast.promise(getMakes(), {
+    pending: "Fetching Makes",
+    error: "Error while getting makes",
+  });
 });
 export const getById = createAsyncThunk<makeType, string>(
   "make/getById",
   async (id) => {
-    return await getMake(id);
+    return await toast.promise(getMake(id), {
+      pending: "Fetching Make",
+      error: "Error while getting make",
+    });
   }
 );
 export const getByCategory = createAsyncThunk<makeType[], string>(
   "make/getByCategory",
   async (categoryId) => {
-    return await getMakesByCategory(categoryId);
+    return await toast.promise(getMakesByCategory(categoryId), {
+      pending: "Fetching Makes",
+      error: "Error while getting makes",
+    });
   }
 );
 export const create = createAsyncThunk<makeType, makeObjectType>(
   "make/create",
   async (data) => {
-    return await createMake(data);
+    return await toast.promise(createMake(data), {
+      pending: "Creating Make",
+      success: "Created Make successfully",
+      error: "Error while creating make"
+    });
   }
 );
 export const update = createAsyncThunk<
   makeType,
   { id: string; data: makeType }
 >("make/update", async ({ id, data }) => {
-  return await updateMake(id, data);
+  return await toast.promise(updateMake(id, data), {
+    pending: "Updating Make",
+    success: "Updated Make successfully",
+    error: "Error while updating make"
+  });
 });
 export const remove = createAsyncThunk<string, string>(
   "make/delete",
   async (id) => {
-    await deleteMake(id);
+    await toast.promise(deleteMake(id), {
+      pending: "Deleting Make",
+      success: "Deleted Make successfully",
+      error: "Error while deleting make"
+    });
     return id;
   }
 );

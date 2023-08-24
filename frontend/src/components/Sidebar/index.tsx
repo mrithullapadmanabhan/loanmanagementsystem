@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { isAdmin, logout } from "service/auth";
-import adminOptions, { employeeOptions } from "./sidebarOptions";
+import { adminOptions, employeeOptions } from "./sidebarOptions";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const Sidebar = () => {
                 key={index}
                 className={`flex justify-start items-center cursor-pointer space-x-4 hover:text-todayQ-green`}
                 onClick={() => {
-                  if (label == "Logout") {
+                  if (label === "Logout") {
                     logout();
                   }
                   navigate(route);

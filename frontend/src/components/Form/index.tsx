@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface formFieldsType {
   label: string;
@@ -31,34 +31,42 @@ export type FormPropsType = {
 };
 
 const Form = ({ onSubmit, formFields, submitButton }: FormPropsType) => {
-  const [formData, setFormData] = useState(
-    Object.fromEntries(
-      Object.entries(formFields).map(([name, value]) => [
+  const [formData, setFormData] = useState<{ [name: string]: string }>({})
+  const [formError, setFormError] = useState<{ [name: string]: boolean }>({})
+
+  useEffect(() => {
+    setFormData(Object.fromEntries(
+      Object.entries(formFields).map(([name, { initialData }]) => [
         name,
-        { value: value.initialData, error: false },
+        initialData.toString(),
       ])
-    )
-  );
+    ));
+    setFormError(Object.fromEntries(
+      Object.entries(formFields).map(([name, _]) => [
+        name,
+        false,
+      ])
+    ))
+  }, [formFields])
 
   const handleChange = (event: { target: { name: string; value: string } }) => {
     const { name, value } = event.target;
     setFormData({
       ...formData,
-      [name]: {
-        error:
-          formFields[name].regex !== null &&
-          !value.toString().match(new RegExp(formFields[name].regex!)),
-        value,
-      },
+      [name]: value
     });
+    setFormError({
+      ...formError,
+      [name]:
+        formFields[name].regex !== null &&
+        !value.toString().match(new RegExp(formFields[name].regex!))
+    })
   };
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     onSubmit(
-      Object.fromEntries(
-        Object.entries(formData).map(([name, { value }]) => [name, value])
-      )
+      formData
     );
   };
 
@@ -75,7 +83,7 @@ const Form = ({ onSubmit, formFields, submitButton }: FormPropsType) => {
                 <select
                   name={name}
                   id={name}
-                  value={formData[name].value}
+                  value={formData[name]}
                   placeholder={fields.placeholder}
                   onChange={handleChange}
                   disabled={fields.disabled}
@@ -95,14 +103,14 @@ const Form = ({ onSubmit, formFields, submitButton }: FormPropsType) => {
                   type={fields.type}
                   id={name}
                   name={name}
-                  value={formData[name].value}
+                  value={formData[name]}
                   onChange={handleChange}
                   placeholder={fields.placeholder}
                   className="input"
                   disabled={fields.disabled}
                 />
               )}
-              {formData[name].error && (
+              {formError[name] && (
                 <span className="text-sm text-red-600">
                   {fields.errorMessage}
                 </span>

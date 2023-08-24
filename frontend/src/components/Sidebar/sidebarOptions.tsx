@@ -14,7 +14,7 @@ export const employeeOptions = [
   { label: "Logout", Icon: faRightFromBracket, route: "login" },
 ];
 
-export default [
+export const adminOptions = [
   {
     label: "View Loan cards",
     Icon: faMoneyBillWave,

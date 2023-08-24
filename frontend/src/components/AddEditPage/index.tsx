@@ -4,7 +4,7 @@ export interface AddEditPagePropsType {
   entityName: string;
   type: "add" | "edit";
   fields: formPropsFieldsType;
-  handleSubmit: (data: any) => {};
+  handleSubmit: (data: any) => void;
 }
 
 const AddEditPage = ({
