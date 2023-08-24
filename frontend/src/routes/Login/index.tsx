@@ -12,8 +12,6 @@ const Login = () => {
     const res = await apiLogin(data);
     if (res) {
       navigate("/");
-    } else {
-      alert("Invalid Credentials");
     }
   };
 
