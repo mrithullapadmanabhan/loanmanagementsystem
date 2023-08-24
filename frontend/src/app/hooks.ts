@@ -10,6 +10,6 @@ import type { AppDispatch, RootState } from "./store";
 export const useDispatch = () => useGenericDispatch<AppDispatch>();
 export const useSelector: TypedUseSelectorHook<RootState> = useGenericSelector;
 export const createAsyncThunk = genericCreateAsyncThunk.withTypes<{
-  state: RootState
-  dispatch: AppDispatch
-}>()
+  state: RootState;
+  dispatch: AppDispatch;
+}>();

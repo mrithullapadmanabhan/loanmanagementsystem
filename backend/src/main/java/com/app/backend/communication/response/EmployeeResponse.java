@@ -28,6 +28,6 @@ public class EmployeeResponse {
 
     private Date doj;
 
-    private UUID user;
+    private String email;
 
 }

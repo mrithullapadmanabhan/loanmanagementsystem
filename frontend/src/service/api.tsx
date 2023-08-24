@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
-const baseURL = "http://localhost:8080/api"
+const baseURL = "http://localhost:8080/api";
 const api = axios.create({
   baseURL: baseURL,
 });
@@ -28,7 +27,9 @@ api.interceptors.response.use(
 
       try {
         const refreshToken = localStorage.getItem("refreshToken");
-        const res = await axios.post(`${baseURL}/auth/refresh`, { refreshToken });
+        const res = await axios.post(`${baseURL}/auth/refresh`, {
+          refreshToken,
+        });
 
         const { accessToken } = res.data;
         localStorage.setItem("accessToken", accessToken);
@@ -54,11 +55,25 @@ api.interceptors.response.use(
 
 export default api;
 
-export const getApi = async <Type,>(url: string) => await api.get(url) as Type;
-export const getByIdApi = async <Type,>(url: string, id: string) => await api.get(`${url}/${id}`) as Type;
-export const createApi = async <Type, InputDataType>(url: string, data: InputDataType) => await api.post(url, data) as Type;
-export const updateApi = async <Type,>(url: string, id: string, data: Type) => await api.put(`${url}/${id}`, data) as Type;
-export const deleteApi = async (url: string, id: string) => { await api.delete(`${url}/${id}`) }
-
-
-
+export const getApi = async <Type,>(url: string) => {
+  const response = await api.get(url);
+  return response.data as Type;
+};
+export const getByIdApi = async <Type,>(url: string, id: string) => {
+  const response = await api.get(`${url}/${id}`);
+  return response.data as Type;
+};
+export const createApi = async <Type, InputDataType>(
+  url: string,
+  data: InputDataType
+) => {
+  const response = await api.post(url, data);
+  return response.data as Type;
+};
+export const updateApi = async <Type,>(url: string, id: string, data: Type) => {
+  const response = await api.put(`${url}/${id}`, data);
+  return response.data as Type;
+};
+export const deleteApi = async (url: string, id: string) => {
+  await api.delete(`${url}/${id}`);
+};

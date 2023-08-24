@@ -1,148 +1,116 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-type FormType = {
-  onSubmit: (data: unknown) => unknown;
-  formFields: {
-    fieldType: string;
-    name: string;
-    type?: null | string;
-    label: string;
-    placeholder: string;
-    regex?: string;
-    errorMessage?: string;
-    options?: null | { label: string, value: string }[];
-    initialData: string | number | readonly string[];
-    max?: string;
-    min?: string;
-  }[];
+interface formFieldsType {
+  label: string;
+  regex: string | null;
+  errorMessage: string | null;
+  initialData: string | number;
+  placeholder: string;
+  disabled: boolean;
+}
+
+interface formFieldsTypeInput extends formFieldsType {
+  type: "text" | "date" | "password";
+}
+
+interface formFieldsTypeSelect extends formFieldsType {
+  type: "select";
+  options: { value: string; label: string }[];
+}
+
+export type formPropsFieldsType = {
+  [name: string]: formFieldsTypeInput | formFieldsTypeSelect;
+};
+
+export type FormPropsType = {
+  onSubmit: (data: any) => void;
+  formFields: formPropsFieldsType;
   submitButton: {
     text: string;
-    color: string;
   };
 };
 
-const Form = ({ onSubmit, formFields, submitButton }: FormType) => {
-
-  useEffect(() => {
-
-  }, formFields)
-
+const Form = ({ onSubmit, formFields, submitButton }: FormPropsType) => {
   const [formData, setFormData] = useState(
     Object.fromEntries(
-      formFields.map((field) => [field.name, field.initialData])
+      Object.entries(formFields).map(([name, value]) => [
+        name,
+        { value: value.initialData, error: false },
+      ])
     )
   );
 
-  useEffect(() => {
-    setFormData(Object.fromEntries(
-      formFields.map((field) => [field.name, field.initialData])
-    ))
-  }, formFields)
-
-  console.log(formFields)
-  console.log(formData)
-  const [formError, setFormError] = useState(
-    Object.fromEntries(formFields.map((field) => [field.name, ""]))
-  );
-  const fieldValidationDetails = Object.fromEntries(
-    formFields.map((field) => [
-      field.name,
-      { regex: field.regex, message: field.errorMessage },
-    ])
-  );
-
   const handleChange = (event: { target: { name: string; value: string } }) => {
+    const { name, value } = event.target;
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value,
-    });
-    validateField(event.target.name, event.target.value);
-  };
-
-  const validateField = (name: string, value: string) => {
-    if (fieldValidationDetails[name] && fieldValidationDetails[name].regex) {
-      const regExp = new RegExp(fieldValidationDetails[name].regex!);
-      if (value !== undefined && !regExp.test(value)) {
-        setFormError({
-          ...formError,
-          [name]: fieldValidationDetails[name].message!,
-        });
-        return;
-      }
-    }
-
-    setFormError({
-      ...formError,
-      [name]: "",
+      [name]: {
+        error:
+          formFields[name].regex !== null &&
+          !value.toString().match(new RegExp(formFields[name].regex!)),
+        value,
+      },
     });
   };
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    onSubmit(formData);
+    onSubmit(
+      Object.fromEntries(
+        Object.entries(formData).map(([name, { value }]) => [name, value])
+      )
+    );
   };
-
-
-  // const handleSubmit = async (event: React.FormEvent) => {
-  //   event.preventDefault();
-
-  // Check for form-level validation before submitting
-  // let hasErrors = false;
-  // for (const field of formFields) {
-  //   if (fieldValidationDetails[field.name]?.regex) {
-  //     const regExp = new RegExp(fieldValidationDetails[field.name].regex!);
-  //     if (!regExp.test(field.name)) {
-  //       setFormError({
-  //         ...formError,
-  //         [field.name]: fieldValidationDetails[field.name].message!,
-  //       });
-  //       hasErrors = true;
-  //     }
-  //   }
-  // }
-
-  // if (!hasErrors) {
-  //   onSubmit(formData);
-  // }
-  // };
-
 
   return (
     <>
-      <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
-        {formFields.map((field) => (
-          <div className="form-group" key={field.name}>
-            <label htmlFor="username" className="input-label">
-              {field.label}
-            </label>
-            {field.fieldType == 'input' && <input
-              type={field.type!}
-              id={field.name}
-              name={field.name}
-              value={formData[field.name]}
-              onChange={handleChange}
-              placeholder={field.placeholder}
-              className="input"
-              max={field.max}
-              min={field.min}
-            />}
-            {field.fieldType == "dropdown" && (
-              <select name={field.name} id={field.name} value={formData[field.name]} onChange={handleChange} className='input'>
-                <option value={""} disabled hidden>Select {field.name}</option>
-                {field.options?.map((option) => (<option value={option.value} key={option.value}>{option.label}</option>))}
-              </select>
-            )}
-            {formError[field.name] !== "" && (
-              <span className="text-sm text-red-600">
-                {formError[field.name]}
-              </span>
-            )}
-          </div>
-        ))}
-        <button
-          className={`bg-[#4338CA] long-button`}
-          type="submit"
-        >
+      <form className="mt-8 space-y-8" onSubmit={handleSubmit}>
+        {Object.entries(formFields).map(([name, fields]) => {
+          return (
+            <div className="form-group" key={name}>
+              <label htmlFor="username" className="input-label">
+                {fields.label}
+              </label>
+              {fields.type === "select" ? (
+                <select
+                  name={name}
+                  id={name}
+                  value={formData[name].value}
+                  placeholder={fields.placeholder}
+                  onChange={handleChange}
+                  disabled={fields.disabled}
+                  className="input"
+                >
+                  <option value={""} disabled hidden>
+                    Select {name}
+                  </option>
+                  {fields.options.map(({ value, label }) => (
+                    <option value={value} key={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type={fields.type}
+                  id={name}
+                  name={name}
+                  value={formData[name].value}
+                  onChange={handleChange}
+                  placeholder={fields.placeholder}
+                  className="input"
+                  disabled={fields.disabled}
+                />
+              )}
+              {formData[name].error && (
+                <span className="text-sm text-red-600">
+                  {fields.errorMessage}
+                </span>
+              )}
+            </div>
+          );
+        })}
+        <button className={"bg-violet-700 long-button"} type="submit">
           {submitButton.text}
         </button>
       </form>

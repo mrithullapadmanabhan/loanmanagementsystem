@@ -39,8 +39,8 @@ public class ModelMapperConfig {
 
                 modelMapper.typeMap(Employee.class, EmployeeResponse.class)
                                 .addMappings((mapper) -> {
-                                        mapper.map(employee -> employee.getUser().getId(),
-                                                        EmployeeResponse::setUser);
+                                        mapper.map(employee -> employee.getUser().getEmail(),
+                                                        EmployeeResponse::setEmail);
                                 });
 
                 modelMapper.typeMap(ItemCard.class, ItemCardResponse.class)

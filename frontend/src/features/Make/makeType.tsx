@@ -1,8 +1,8 @@
 export interface makeObjectType {
-    name: string,
-    category: string
+  name: string;
+  category: string;
 }
 
 export interface makeType extends makeObjectType {
-    id: string,
+  id: string;
 }

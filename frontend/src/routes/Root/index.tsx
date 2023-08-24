@@ -1,51 +1,32 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from "react-router-dom";
 
-import {
-  faChair,
-  faCubes,
-  faMoneyBillWave,
-  faRightFromBracket,
-  faSitemap,
-  faUser
-} from "@fortawesome/free-solid-svg-icons";
+import Sidebar from "components/Sidebar";
+import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import { isLoggedIn, isPageAuthenticationRequired } from "service/auth";
 
-import Sidebar from 'components/Sidebar';
-import { useEffect } from 'react';
-import { isAdmin, isLoggedIn } from 'service/auth';
-
-
-const employeeOptions = [
-  { label: "View Loans", Icon: faMoneyBillWave, route: "/loans" },
-  { label: "View Items Purchased", Icon: faChair, route: "/employee/items" },
-  { label: "Apply for loan", Icon: faMoneyBillWave, route: "/loan/apply" },
-  { label: "Logout", Icon: faRightFromBracket, route: "login" }
-];
-
-const adminOptions = [
-  { label: "View Loan cards", Icon: faMoneyBillWave, route: "/admin/loan-card/all" },
-  { label: "View Employees", Icon: faUser, route: "admin/employee/all" },
-  { label: "View Items", Icon: faChair, route: "admin/item/all" },
-  { label: "View Makes", Icon: faCubes, route: "admin/make/all" },
-  { label: "View Categories", Icon: faSitemap, route: "admin/category/all" },
-  { label: "Logout", Icon: faRightFromBracket, route: "login" }
-];
+import "react-toastify/dist/ReactToastify.css";
 
 const Root = () => {
   const loggedIn = isLoggedIn();
-  const admin = isAdmin();
-  const navigate = useNavigate()
+  const pageAuthRequired = isPageAuthenticationRequired();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loggedIn) {
-      navigate('/login')
+    if (!loggedIn && pageAuthRequired) {
+      navigate("/login");
     }
-  }, [loggedIn])
-
+  }, [loggedIn, pageAuthRequired, navigate]);
 
   return (
     <>
-      <div className={loggedIn ? 'overflow-hidden ml-0 sm:ml-[240px]' : 'overflow-hidden ml-0'}>
-        {loggedIn && <Sidebar options={admin ? adminOptions : employeeOptions} isAdmin={admin} />}
+      <div
+        className={
+          "overflow-hidden ml-0" + (pageAuthRequired ? " sm:ml-[240px]" : "")
+        }
+      >
+        {loggedIn && pageAuthRequired && <Sidebar />}
+        <ToastContainer theme="dark" />
         <Outlet />
       </div>
     </>

@@ -13,7 +13,7 @@ export const store = configureStore({
     employeeLoan: employeeLoanSlice,
     itemCard: itemCardSlice,
     loanCard: loanCardSlice,
-    make: makeSlice
+    make: makeSlice,
   },
 });
 
