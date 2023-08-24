@@ -1,5 +1,6 @@
 import {
   createEntityAdapter,
+  createSelector,
   createSlice,
   isFulfilled,
   isPending,
@@ -9,6 +10,7 @@ import { RootState } from "app/store";
 
 import { createAsyncThunk } from "app/hooks";
 
+import { selectCategoryById } from "features/Category/categorySlice";
 import { initialStateType } from "features/common/initialStateType";
 import {
   createLoanCard,
@@ -84,6 +86,17 @@ export default loanCardSlice.reducer;
 
 export const { selectAll: selectAllLoanCard, selectById: selectLoanCardById } =
   loanCardAdapter.getSelectors((state: RootState) => state.loanCard);
+
+export const selectLoanCardTableData = createSelector(
+  [selectAllLoanCard, (state) => state],
+  (loanCards, state) =>
+    loanCards.map((loanCard) => {
+      return {
+        ...loanCard,
+        category: selectCategoryById(state, loanCard.category)?.name,
+      };
+    })
+);
 
 export const loanCardStatus = (state: RootState) => state.loanCard.status;
 export const loanCardError = (state: RootState) => state.loanCard.error;

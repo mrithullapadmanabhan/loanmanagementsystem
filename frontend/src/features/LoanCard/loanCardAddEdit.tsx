@@ -3,10 +3,10 @@ import AddEditPage from "components/AddEditPage";
 import { categoryStatus, get as getCategories, selectAllCategory } from "features/Category/categorySlice";
 import { useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import { create, getById, selectMakeById, update } from "./makeSlice";
+import { create, getById, selectLoanCardById, update } from "./loanCardSlice";
 
 
-const MakeAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
+const LoanCardAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ const MakeAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
         }
     }, [categorystatus, dispatch]);
 
-    const data = useSelector((state) => selectMakeById(state, id!));
+    const data = useSelector((state) => selectLoanCardById(state, id!));
 
     useEffect(() => {
         if (type === 'edit') {
@@ -52,11 +52,20 @@ const MakeAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
             initialData: data ? data.name : "",
             disabled: false,
         },
+        duration: {
+            type: "text" as const,
+            label: "Duration (in years)",
+            placeholder: "",
+            errorMessage: null,
+            regex: null,
+            initialData: data ? data.duration : "",
+            disabled: false,
+        }
     }
 
     return (
         <AddEditPage
-            entityName="Make"
+            entityName="LoanCard"
             type={type}
             fields={fields}
             handleSubmit={
@@ -66,11 +75,11 @@ const MakeAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
                     } else {
                         dispatch(create(data));
                     }
-                    navigate('/admin/make');
+                    navigate('/admin/loanCard');
                 }
             }
         />
     )
 }
 
-export default MakeAddEdit;
+export default LoanCardAddEdit;

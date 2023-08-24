@@ -85,6 +85,16 @@ export const selectByEmployee = createSelector(
     employeeLoans.filter((loan) => loan.employee === employeeId)
 );
 
+export const selectEmployeeLoanTableData = createSelector(
+  [selectAllEmployeeLoan, (state) => state],
+  (employeeLoans, state) =>
+    employeeLoans.map((employeeLoan) => {
+      return {
+        ...employeeLoan
+      };
+    })
+);
+
 export const employeeLoanStatus = (state: RootState) =>
   state.employeeLoan.status;
 export const employeeLoanError = (state: RootState) => state.employeeLoan.error;

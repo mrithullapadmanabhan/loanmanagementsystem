@@ -6,13 +6,13 @@ import {
   get as getCategories,
 } from "features/Category/categorySlice";
 import { useEffect } from "react";
-import { get, makeStatus, remove, selectMakeTableData } from "./makeSlice";
+import { get, loanCardStatus, remove, selectLoanCardTableData } from "./loanCardSlice";
 
-const MakeList = () => {
+const LoanCardList = () => {
   const dispatch = useDispatch();
 
-  const makes = useSelector(selectMakeTableData);
-  const status = useSelector(makeStatus);
+  const loanCards = useSelector(selectLoanCardTableData);
+  const status = useSelector(loanCardStatus);
 
   const categorystatus = useSelector(categoryStatus);
 
@@ -31,7 +31,7 @@ const MakeList = () => {
   const fields = [
     {
       key: "id",
-      label: "Make ID",
+      label: "LoanCard ID",
     },
     {
       key: "category",
@@ -42,6 +42,10 @@ const MakeList = () => {
       label: "Name",
     },
     {
+      key: "duration",
+      label: "Duration (in years)",
+    },
+    {
       key: "actions",
       label: "Actions",
     },
@@ -49,16 +53,16 @@ const MakeList = () => {
 
   return (
     <ListPage
-      entityName="Make"
-      entityNamePlural="Makes"
+      entityName="LoanCard"
+      entityNamePlural="LoanCards"
       removeItem={(id) => {
         dispatch(remove(id));
       }}
       fields={fields}
-      data={makes as unknown as { [key: string]: string }[]}
-      editUrl={(id) => `/admin/make/${id}`}
+      data={loanCards as unknown as { [key: string]: string }[]}
+      editUrl={(id) => `/admin/loanCard/${id}`}
     />
   );
 };
 
-export default MakeList;
+export default LoanCardList;

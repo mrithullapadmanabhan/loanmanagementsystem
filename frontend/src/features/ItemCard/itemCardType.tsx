@@ -1,7 +1,7 @@
 export interface itemCardObjectType {
   description: string;
   value: string;
-  make: number;
+  make: string;
 }
 
 export interface itemCardType extends itemCardObjectType {

@@ -5,16 +5,19 @@ import {
   categoryStatus,
   get as getCategories,
 } from "features/Category/categorySlice";
+import { get as getMakes, makeStatus } from "features/Make/makeSlice";
 import { useEffect } from "react";
-import { get, makeStatus, remove, selectMakeTableData } from "./makeSlice";
+import { get, itemCardStatus, remove, selectItemCardTableData } from "./itemCardSlice";
 
-const MakeList = () => {
+const ItemCardList = () => {
   const dispatch = useDispatch();
 
-  const makes = useSelector(selectMakeTableData);
-  const status = useSelector(makeStatus);
+  const itemCards = useSelector(selectItemCardTableData);
+  const status = useSelector(itemCardStatus);
 
   const categorystatus = useSelector(categoryStatus);
+  const makestatus = useSelector(makeStatus);
+
 
   useEffect(() => {
     if (status === "idle") {
@@ -28,18 +31,32 @@ const MakeList = () => {
     }
   }, [categorystatus, dispatch]);
 
+  useEffect(() => {
+    if (makestatus === "idle") {
+      dispatch(getMakes());
+    }
+  }, [makestatus, dispatch]);
+
   const fields = [
     {
       key: "id",
-      label: "Make ID",
+      label: "ItemCard ID",
     },
     {
       key: "category",
       label: "Category",
     },
     {
-      key: "name",
-      label: "Name",
+      key: "make",
+      label: "Make",
+    },
+    {
+      key: "description",
+      label: "Description",
+    },
+    {
+      key: "value",
+      label: "Value (in $)",
     },
     {
       key: "actions",
@@ -49,16 +66,16 @@ const MakeList = () => {
 
   return (
     <ListPage
-      entityName="Make"
-      entityNamePlural="Makes"
+      entityName="ItemCard"
+      entityNamePlural="ItemCards"
       removeItem={(id) => {
         dispatch(remove(id));
       }}
       fields={fields}
-      data={makes as unknown as { [key: string]: string }[]}
-      editUrl={(id) => `/admin/make/${id}`}
+      data={itemCards as unknown as { [key: string]: string }[]}
+      editUrl={(id) => `/admin/itemCard/${id}`}
     />
   );
 };
 
-export default MakeList;
+export default ItemCardList;

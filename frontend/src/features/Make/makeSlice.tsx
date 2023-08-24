@@ -114,6 +114,12 @@ export default makeSlice.reducer;
 export const { selectAll: selectAllMake, selectById: selectMakeById } =
   makeAdapter.getSelectors((state: RootState) => state.make);
 
+export const selectMakeByCategory = createSelector(
+  [selectAllMake, (_, categoryId) => categoryId],
+  (makes, categoryId) =>
+    makes.filter((make) => (make.category === categoryId))
+);
+
 export const selectMakeTableData = createSelector(
   [selectAllMake, (state) => state],
   (makes, state) =>

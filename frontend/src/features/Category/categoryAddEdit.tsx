@@ -1,27 +1,17 @@
 import { useDispatch, useSelector } from "app/hooks";
 import AddEditPage from "components/AddEditPage";
-import { categoryStatus, get as getCategories, selectAllCategory } from "features/Category/categorySlice";
 import { useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import { create, getById, selectMakeById, update } from "./makeSlice";
+import { create, getById, selectCategoryById, update } from "./categorySlice";
 
 
-const MakeAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
+const CategoryAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const { id } = useParams();
 
-    const categories = useSelector(selectAllCategory);
-    const categorystatus = useSelector(categoryStatus);
-
-    useEffect(() => {
-        if (categorystatus === "idle") {
-            dispatch(getCategories());
-        }
-    }, [categorystatus, dispatch]);
-
-    const data = useSelector((state) => selectMakeById(state, id!));
+    const data = useSelector((state) => selectCategoryById(state, id!));
 
     useEffect(() => {
         if (type === 'edit') {
@@ -31,19 +21,9 @@ const MakeAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
 
 
     const fields = {
-        categoryID: {
-            type: "select" as const,
-            label: "Category",
-            placeholder: "",
-            errorMessage: null,
-            regex: null,
-            initialData: data ? data.category : "",
-            options: categories.map((category) => { return { value: category.id, label: category.name } }),
-            disabled: type === "edit",
-        },
         name: {
             type: "text" as const,
-            label: "Name",
+            label: "Category Name",
             placeholder: "",
             errorMessage:
                 "Name cannot be blank",
@@ -56,7 +36,7 @@ const MakeAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
 
     return (
         <AddEditPage
-            entityName="Make"
+            entityName="Category"
             type={type}
             fields={fields}
             handleSubmit={
@@ -66,11 +46,11 @@ const MakeAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
                     } else {
                         dispatch(create(data));
                     }
-                    navigate('/admin/make');
+                    navigate('/admin/category');
                 }
             }
         />
     )
 }
 
-export default MakeAddEdit;
+export default CategoryAddEdit;

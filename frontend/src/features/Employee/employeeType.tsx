@@ -5,7 +5,7 @@ export interface employeeObjectType {
   gender: string;
   dob: string;
   doj: string;
-  user: string;
+  email: string;
 }
 
 export interface employeeType extends employeeObjectType {

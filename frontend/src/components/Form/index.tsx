@@ -16,6 +16,7 @@ interface formFieldsTypeInput extends formFieldsType {
 interface formFieldsTypeSelect extends formFieldsType {
   type: "select";
   options: { value: string; label: string }[];
+  optionsFilter?: (data: { [name: string]: string }, option: { value: string; label: string }) => boolean;
 }
 
 export type formPropsFieldsType = {
@@ -90,9 +91,13 @@ const Form = ({ onSubmit, formFields, submitButton }: FormPropsType) => {
                   className="input"
                 >
                   <option value={""} disabled hidden>
-                    Select {name}
+                    Select {fields.label}
                   </option>
-                  {fields.options.map(({ value, label }) => (
+                  {fields.optionsFilter !== undefined ? fields.options.filter((field) => fields.optionsFilter!(formData, field)).map(({ value, label }) => (
+                    <option value={value} key={value}>
+                      {label}
+                    </option>
+                  )) : fields.options.map(({ value, label }) => (
                     <option value={value} key={value}>
                       {label}
                     </option>

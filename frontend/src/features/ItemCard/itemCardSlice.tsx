@@ -1,5 +1,6 @@
 import {
   createEntityAdapter,
+  createSelector,
   createSlice,
   isFulfilled,
   isPending,
@@ -9,6 +10,8 @@ import { RootState } from "app/store";
 
 import { createAsyncThunk } from "app/hooks";
 
+import { selectCategoryById } from "features/Category/categorySlice";
+import { selectMakeById } from "features/Make/makeSlice";
 import { initialStateType } from "features/common/initialStateType";
 import {
   createItemCard,
@@ -100,6 +103,19 @@ export default itemCardSlice.reducer;
 
 export const { selectAll: selectAllItemCard, selectById: selectItemCardById } =
   itemCardAdapter.getSelectors((state: RootState) => state.itemCard);
+
+export const selectItemCardTableData = createSelector(
+  [selectAllItemCard, (state) => state],
+  (itemCards, state) =>
+    itemCards.map((itemCard) => {
+      const make = selectMakeById(state, itemCard.make)
+      return {
+        ...itemCard,
+        make: make?.name,
+        category: selectCategoryById(state, (make?.category)!)?.name
+      };
+    })
+);
 
 export const itemCardStatus = (state: RootState) => state.itemCard.status;
 export const itemCardError = (state: RootState) => state.itemCard.error;
