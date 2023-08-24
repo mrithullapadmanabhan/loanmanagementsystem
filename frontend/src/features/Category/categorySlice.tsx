@@ -8,8 +8,8 @@ import {
 import { RootState } from "app/store";
 
 import { createAsyncThunk } from "app/hooks";
-
 import { initialStateType } from "features/common/initialStateType";
+import { toast } from "react-toastify";
 import {
   createCategory,
   deleteCategory,
@@ -24,31 +24,50 @@ const categoryAdapter = createEntityAdapter<categoryType>();
 export const get = createAsyncThunk<categoryType[]>(
   "category/get",
   async () => {
-    return await getCategories();
+    return await toast.promise(getCategories(), {
+      pending: "Fetching Categories",
+      success: "Fetched Categories succesfully",
+      error: "Error while fetching Categories",
+    });
   }
 );
 export const getById = createAsyncThunk<categoryType, string>(
   "category/getById",
   async (id) => {
-    return await getCategory(id);
+    return await toast.promise(getCategory(id), {
+      pending: "Fetching Category",
+      error: "Error while fetching Category",
+    });
   }
 );
 export const create = createAsyncThunk<categoryType, categoryObjectType>(
   "category/create",
   async (data) => {
-    return await createCategory(data);
+    return await toast.promise(createCategory(data), {
+      pending: "Creating Category",
+      success: "Created Category succesfully",
+      error: "Error while creating Category ",
+    });
   }
 );
 export const update = createAsyncThunk<
   categoryType,
   { id: string; data: categoryType }
 >("category/update", async ({ id, data }) => {
-  return await updateCategory(id, data);
+  return await toast.promise(updateCategory(id, data), {
+    pending: "Updating Category ",
+    success: "Updated Category succesfully",
+    error: "Error while updating Category ",
+  });
 });
 export const remove = createAsyncThunk<string, string>(
   "category/delete",
   async (id) => {
-    await deleteCategory(id);
+    await toast.promise(deleteCategory(id), {
+      pending: "Deleting Category",
+      success: "Deleted Category succesfully",
+      error: "Error while deleting Category ",
+    });
     return id;
   }
 );

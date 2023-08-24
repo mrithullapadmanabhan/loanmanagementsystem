@@ -8,8 +8,8 @@ import {
 import { RootState } from "app/store";
 
 import { createAsyncThunk } from "app/hooks";
-
 import { initialStateType } from "features/common/initialStateType";
+import { toast } from "react-toastify";
 import {
   createItemCard,
   deleteItemCard,
@@ -26,43 +26,67 @@ const itemCardAdapter = createEntityAdapter<itemCardType>();
 export const get = createAsyncThunk<itemCardType[]>(
   "itemCard/get",
   async () => {
-    return await getItemCards();
+    return await toast.promise(getItemCards(), {
+      pending: "Fetching ItemCards",
+      error: "Error while fetching ItemCards",
+    });
   }
 );
 export const getById = createAsyncThunk<itemCardType, string>(
   "itemCard/getById",
   async (id) => {
-    return await getItemCard(id);
+    return await toast.promise(getItemCard(id), {
+      pending: "Fetching ItemCard",
+      error: "Error while fetching ItemCard",
+    });
   }
 );
 export const getByEmployee = createAsyncThunk<itemCardType[], string>(
   "itemCard/getByEmployee",
   async (employeeID) => {
-    return await getItemCardsByEmployee(employeeID);
+    return await toast.promise(getItemCardsByEmployee(employeeID), {
+      pending: "Fetching ItemCards",
+      error: "Error while fetching ItemCards",
+    });
   }
 );
 export const getByMake = createAsyncThunk<itemCardType[], string>(
   "itemCard/getByMake",
   async (makeId) => {
-    return await getItemCardsByMake(makeId);
+    return await toast.promise(getItemCardsByMake(makeId), {
+      pending: "Fetching ItemCards",
+      error: "Error while fetching ItemCards",
+    });
   }
 );
 export const create = createAsyncThunk<itemCardType, itemCardObjectType>(
   "itemCard/create",
   async (data) => {
-    return await createItemCard(data);
+    return await toast.promise(createItemCard(data), {
+      pending: "Creating ItemCard",
+      success: "Created ItemCard succesfully",
+      error: "Error while creating ItemCard ",
+    });
   }
 );
 export const update = createAsyncThunk<
   itemCardType,
   { id: string; data: itemCardType }
 >("itemCard/update", async ({ id, data }) => {
-  return await updateItemCard(id, data);
+  return await toast.promise(updateItemCard(id, data), {
+    pending: "Updating ItemCard ",
+    success: "Updated ItemCard succesfully",
+    error: "Error while updating ItemCard ",
+  });
 });
 export const remove = createAsyncThunk<string, string>(
   "itemCard/delete",
   async (id) => {
-    await deleteItemCard(id);
+    await toast.promise(deleteItemCard(id), {
+      pending: "Deleting ItemCard",
+      success: "Deleted ItemCard succesfully",
+      error: "Error while deleting ItemCard ",
+    });
     return id;
   }
 );

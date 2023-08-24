@@ -8,8 +8,8 @@ import {
 import { RootState } from "app/store";
 
 import { createAsyncThunk } from "app/hooks";
-
 import { initialStateType } from "features/common/initialStateType";
+import { toast } from "react-toastify";
 import {
   createLoanCard,
   deleteLoanCard,
@@ -24,31 +24,50 @@ const loanCardAdapter = createEntityAdapter<loanCardType>();
 export const get = createAsyncThunk<loanCardType[]>(
   "loanCard/get",
   async () => {
-    return await getLoanCards();
+    return await toast.promise(getLoanCards(), {
+      pending: "Fetching LoanCards",
+      success: "Fetched LoanCards succesfully",
+      error: "Error while fetching LoanCards",
+    });
   }
 );
 export const getById = createAsyncThunk<loanCardType, string>(
   "loanCard/getById",
   async (id) => {
-    return await getLoanCard(id);
+    return await toast.promise(getLoanCard(id), {
+      pending: "Fetching LoanCard",
+      error: "Error while fetching LoanCard",
+    });
   }
 );
 export const create = createAsyncThunk<loanCardType, loanCardObjectType>(
   "loanCard/create",
   async (data) => {
-    return await createLoanCard(data);
+    return await toast.promise(createLoanCard(data), {
+      pending: "Creating LoanCard",
+      success: "Created LoanCard succesfully",
+      error: "Error while creating LoanCard ",
+    });
   }
 );
 export const update = createAsyncThunk<
   loanCardType,
   { id: string; data: loanCardType }
 >("loanCard/update", async ({ id, data }) => {
-  return await updateLoanCard(id, data);
+  return await toast.promise(updateLoanCard(id, data), {
+    pending: "Updating LoanCard ",
+    success: "Updated LoanCard succesfully",
+    error: "Error while updating LoanCard ",
+  });
 });
 export const remove = createAsyncThunk<string, string>(
   "loanCard/delete",
   async (id) => {
-    await deleteLoanCard(id);
+    await toast.promise(deleteLoanCard(id), {
+      pending: "Deleting LoanCard",
+      success: "Deleted LoanCard succesfully",
+      error: "Error while deleting LoanCard ",
+    });
     return id;
   }
 );

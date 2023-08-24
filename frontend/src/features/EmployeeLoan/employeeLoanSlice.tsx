@@ -9,8 +9,8 @@ import {
 import { RootState } from "app/store";
 
 import { createAsyncThunk } from "app/hooks";
-
 import { initialStateType } from "features/common/initialStateType";
+import { toast } from "react-toastify";
 import {
   createEmployeeLoan,
   getEmployeeLoans,
@@ -24,25 +24,39 @@ const employeeLoanAdapter = createEntityAdapter<employeeLoanType>();
 export const get = createAsyncThunk<employeeLoanType[]>(
   "employeeLoan/get",
   async () => {
-    return await getLoans();
+    return await toast.promise(getLoans(), {
+      pending: "Fetching Loans",
+      error: "Error while fetching Loans",
+    });
   }
 );
 export const getByEmployeeId = createAsyncThunk<employeeLoanType[], string>(
   "employeeLoan/getByEmployee",
   async (employeeId) => {
-    return await getEmployeeLoans(employeeId);
+    return await toast.promise(getEmployeeLoans(employeeId), {
+      pending: "Fetching EmployeeLoans",
+      error: "Error while fetching EmployeeLoans",
+    });
   }
 );
 export const create = createAsyncThunk<
   employeeLoanType,
   employeeLoanObjectType
 >("employeeLoan/create", async (data) => {
-  return await createEmployeeLoan(data);
+  return await toast.promise(createEmployeeLoan(data), {
+    pending: "Creating EmployeeLoan",
+    success: "Created EmployeeLoan succesfully",
+    error: "Error while creating EmployeeLoan ",
+  });
 });
 export const updateStatus = createAsyncThunk<employeeLoanType, string>(
   "employeeLoan/markCompleted",
   async (id) => {
-    return await markCompleted(id);
+    return await toast.promise(markCompleted(id), {
+      pending: "Updating the status of EmployeeLoan ",
+      success: "Updated the status of EmployeeLoan succesfully",
+      error: "Error while updating the status of EmployeeLoan ",
+    });
   }
 );
 
