@@ -1,4 +1,4 @@
-package com.app.backend;
+package com.app.backend.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
@@ -30,14 +30,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.app.backend.communication.request.CategoryCreateUpdateRequest;
 import com.app.backend.communication.response.CategoryResponse;
-import com.app.backend.repository.CategoryRepository;
-import com.app.backend.repository.EmployeeLoanRepository;
-import com.app.backend.repository.EmployeeRepository;
-import com.app.backend.repository.ItemCardRepository;
-import com.app.backend.repository.LoanCardRepository;
-import com.app.backend.repository.MakeRepository;
-import com.app.backend.repository.RoleRepository;
-import com.app.backend.repository.UserRepository;
 import com.app.backend.service.CategoryService;
 import com.app.backend.service.EmployeeLoanService;
 import com.app.backend.service.EmployeeService;
@@ -80,30 +72,6 @@ public class CategoryControllerTest {
 
         @MockBean
         private JWTService jwtService;
-
-        @MockBean
-        private CategoryRepository categoryRepository;
-
-        @MockBean
-        private EmployeeRepository employeeRepository;
-
-        @MockBean
-        private EmployeeLoanRepository employeeLoanRepository;
-
-        @MockBean
-        private ItemCardRepository itemCardRepository;
-
-        @MockBean
-        private LoanCardRepository loanCardRepository;
-
-        @MockBean
-        private MakeRepository makeRepository;
-
-        @MockBean
-        private RoleRepository roleRepository;
-
-        @MockBean
-        private UserRepository userRepository;
 
         ObjectMapper mapper = new ObjectMapper()
                         .findAndRegisterModules()
@@ -158,7 +126,7 @@ public class CategoryControllerTest {
         }
 
         @Test
-        public void getCategoryByIDtTest() throws Exception {
+        public void getCategoryByIDTest() throws Exception {
 
                 CategoryResponse category = new CategoryResponse();
                 UUID id = UUID.randomUUID();

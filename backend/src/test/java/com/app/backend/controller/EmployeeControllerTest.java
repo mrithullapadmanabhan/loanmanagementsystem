@@ -1,4 +1,4 @@
-package com.app.backend;
+package com.app.backend.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -29,14 +29,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.app.backend.communication.request.EmployeeCreateUpdateRequest;
 import com.app.backend.communication.response.EmployeeResponse;
-import com.app.backend.repository.CategoryRepository;
-import com.app.backend.repository.EmployeeLoanRepository;
-import com.app.backend.repository.EmployeeRepository;
-import com.app.backend.repository.ItemCardRepository;
-import com.app.backend.repository.LoanCardRepository;
-import com.app.backend.repository.MakeRepository;
-import com.app.backend.repository.RoleRepository;
-import com.app.backend.repository.UserRepository;
 import com.app.backend.service.CategoryService;
 import com.app.backend.service.EmployeeLoanService;
 import com.app.backend.service.EmployeeService;
@@ -79,30 +71,6 @@ public class EmployeeControllerTest {
 
         @MockBean
         private JWTService jwtService;
-
-        @MockBean
-        private CategoryRepository categoryRepository;
-
-        @MockBean
-        private EmployeeRepository employeeRepository;
-
-        @MockBean
-        private EmployeeLoanRepository employeeLoanRepository;
-
-        @MockBean
-        private ItemCardRepository itemCardRepository;
-
-        @MockBean
-        private LoanCardRepository loanCardRepository;
-
-        @MockBean
-        private MakeRepository makeRepository;
-
-        @MockBean
-        private RoleRepository roleRepository;
-
-        @MockBean
-        private UserRepository userRepository;
 
         ObjectMapper mapper = new ObjectMapper()
                         .findAndRegisterModules()
@@ -176,18 +144,17 @@ public class EmployeeControllerTest {
 
         @Test
         public void deleteTest() throws Exception {
+
                 UUID num = UUID.fromString("acde070d-8c4c-4f0d-9d8a-162843c10333");
                 employeeService.delete(num);
                 mvc.perform(delete("/api/employee/{num}", num)
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNoContent());
-                // .andExpect(jsonPath("$[0].id",
-                // Matchers.equalTo(employeeList.get(0).getId().toString())));
 
         }
 
         @Test
-        public void update() throws Exception {
+        public void updateTest() throws Exception {
 
                 EmployeeCreateUpdateRequest employeeRequest = new EmployeeCreateUpdateRequest();
                 UUID num = UUID.fromString("acde070d-8c4c-4f0d-9d8a-162843c10333");
