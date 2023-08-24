@@ -22,7 +22,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -30,21 +29,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import com.app.backend.communication.request.LoanCreateRequest;
 import com.app.backend.communication.response.EmployeeLoanResponse;
 import com.app.backend.model.Category;
-// import com.app.backend.communication.response.EmployeeRegisterResponse;
-// import com.app.backend.communication.response.LoanCreateResponse;
 import com.app.backend.model.Employee;
 import com.app.backend.model.ItemCard;
 import com.app.backend.model.LoanCard;
 import com.app.backend.model.LoanStatusEnum;
 import com.app.backend.model.Make;
-import com.app.backend.repository.CategoryRepository;
-import com.app.backend.repository.EmployeeLoanRepository;
 import com.app.backend.repository.EmployeeRepository;
-import com.app.backend.repository.ItemCardRepository;
-import com.app.backend.repository.LoanCardRepository;
-import com.app.backend.repository.MakeRepository;
-import com.app.backend.repository.RoleRepository;
-import com.app.backend.repository.UserRepository;
 import com.app.backend.service.CategoryService;
 import com.app.backend.service.EmployeeLoanService;
 import com.app.backend.service.EmployeeService;
@@ -91,43 +81,13 @@ public class EmployeeLoanControllerTest {
       @MockBean
       private JWTService jwtService;
 
-      @MockBean
-      private CategoryRepository categoryRepository;
-
-      @MockBean
-      private EmployeeLoanRepository employeeLoanRepository;
-
-      @MockBean
-      private ItemCardRepository itemCardRepository;
-
-      @MockBean
-      private LoanCardRepository loanCardRepository;
-
-      @MockBean
-      private MakeRepository makeRepository;
-
-      @MockBean
-      private RoleRepository roleRepository;
-
-      @MockBean
-      private UserRepository userRepository;
-
-      @MockBean
-      JdbcTemplate jdbcTemplate;
-
       ObjectMapper mapper = new ObjectMapper().findAndRegisterModules()
                   .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-      /**
-       * @return
-       * @throws Exception
-       */
-
       @Test
-      public void create() throws Exception {
+      public void createTest() throws Exception {
 
             LoanCreateRequest loanRequest = new LoanCreateRequest();
-            // LoanCreationResponse loanResponse = new LoanCreationResponse();
             UUID num = UUID.fromString("acde070d-8c4c-4f0d-9d8a-162843c10333");
             UUID num1 = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
             Date date = new Date(0);
@@ -188,14 +148,10 @@ public class EmployeeLoanControllerTest {
             String result = requestResult.getResponse().getContentAsString();
             System.out.print(result);
             assertEquals(response, result);
-
       }
 
-      /**
-       * @throws Exception
-       */
       @Test
-      public void markCompleted() throws Exception {
+      public void markCompletedTest() throws Exception {
             EmployeeLoanResponse employeeLoan = new EmployeeLoanResponse();
 
             Date date = new Date(0);
@@ -203,7 +159,6 @@ public class EmployeeLoanControllerTest {
             employeeLoan.setId(num);
             employeeLoan.setIssueDate(date);
             employeeLoan.setStatus(null);
-            // employeeLoan.setEmployee(null);
             List<EmployeeLoanResponse> list = new ArrayList<>();
             list.add(employeeLoan);
             Mockito.when(employeeLoanService.setCompleted(num)).thenReturn(employeeLoan);
@@ -221,7 +176,6 @@ public class EmployeeLoanControllerTest {
             employeeLoan.setId(num);
             employeeLoan.setIssueDate(date);
             employeeLoan.setStatus(null);
-            // employeeLoan.setEmployee(null);
             List<EmployeeLoanResponse> list = new ArrayList<>();
             list.add(employeeLoan);
             Mockito.when(employeeLoanService.get(num)).thenReturn(list);

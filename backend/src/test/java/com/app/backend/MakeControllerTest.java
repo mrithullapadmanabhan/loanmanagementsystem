@@ -31,14 +31,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import com.app.backend.communication.request.MakeCreateUpdateRequest;
 import com.app.backend.communication.response.MakeResponse;
 import com.app.backend.model.Category;
-import com.app.backend.repository.CategoryRepository;
-import com.app.backend.repository.EmployeeLoanRepository;
-import com.app.backend.repository.EmployeeRepository;
-import com.app.backend.repository.ItemCardRepository;
-import com.app.backend.repository.LoanCardRepository;
-import com.app.backend.repository.MakeRepository;
-import com.app.backend.repository.RoleRepository;
-import com.app.backend.repository.UserRepository;
 import com.app.backend.service.CategoryService;
 import com.app.backend.service.EmployeeLoanService;
 import com.app.backend.service.EmployeeService;
@@ -81,30 +73,6 @@ public class MakeControllerTest {
 
         @MockBean
         private JWTService jwtService;
-
-        @MockBean
-        private CategoryRepository categoryRepository;
-
-        @MockBean
-        private EmployeeRepository employeeRepository;
-
-        @MockBean
-        private EmployeeLoanRepository employeeLoanRepository;
-
-        @MockBean
-        private ItemCardRepository itemCardRepository;
-
-        @MockBean
-        private LoanCardRepository loanCardRepository;
-
-        @MockBean
-        private MakeRepository makeRepository;
-
-        @MockBean
-        private RoleRepository roleRepository;
-
-        @MockBean
-        private UserRepository userRepository;
 
         ObjectMapper mapper = new ObjectMapper()
                         .findAndRegisterModules()
