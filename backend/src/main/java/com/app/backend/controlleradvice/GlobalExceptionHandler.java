@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -25,6 +26,18 @@ public class GlobalExceptionHandler {
 
                 return ResponseEntity
                                 .status(HttpStatus.NOT_FOUND)
+                                .body(exceptionResponse);
+        }
+
+        @ExceptionHandler(MethodArgumentNotValidException.class)
+        public ResponseEntity<ExceptionResponse> argumentNotValid(MethodArgumentNotValidException exception) {
+                ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                                .message(exception.getMessage())
+                                .timestamp(new Timestamp(System.currentTimeMillis()).toString())
+                                .build();
+
+                return ResponseEntity
+                                .status(HttpStatus.BAD_REQUEST)
                                 .body(exceptionResponse);
         }
 
