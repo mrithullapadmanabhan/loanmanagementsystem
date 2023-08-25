@@ -1,5 +1,6 @@
 import {
   createEntityAdapter,
+  createSelector,
   createSlice,
   isFulfilled,
   isPending,
@@ -77,8 +78,14 @@ const categorySlice = createSlice({
   initialState: categoryAdapter.getInitialState({
     status: "idle",
     error: "",
+    selected: ""
   } as initialStateType),
-  reducers: {},
+  reducers: {
+    selectCategory(state, action) {
+      const { id } = action.payload
+      state.selected = id
+    }
+  },
   extraReducers(builder) {
     builder
       .addCase(get.fulfilled, categoryAdapter.setAll)
@@ -99,10 +106,15 @@ const categorySlice = createSlice({
   },
 });
 
+export const { selectCategory } = categorySlice.actions
 export default categorySlice.reducer;
 
-export const { selectAll: selectAllCategory, selectById: selectCategoryById } =
+export const { selectAll: selectAllCategory, selectById: selectCategoryById, selectEntities: selectCategoryEntities } =
   categoryAdapter.getSelectors((state: RootState) => state.category);
+
+export const selectCategorySelected = createSelector(
+  [selectCategoryEntities, (state: RootState) => state.category.selected], (categories, id) => id && categories[id]
+)
 
 export const categoryStatus = (state: RootState) => state.category.status;
 export const categoryError = (state: RootState) => state.category.error;

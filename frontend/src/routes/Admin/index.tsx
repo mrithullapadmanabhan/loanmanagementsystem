@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { isAdmin } from 'service/auth';
 
 
@@ -9,6 +10,7 @@ const Admin = () => {
 
   useEffect(() => {
     if (!admin) {
+      toast.error('You are not an admin. This route is protected')
       navigate('/')
     }
   }, [admin, navigate])

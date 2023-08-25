@@ -8,9 +8,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export const employeeOptions = [
-  { label: "Apply for loan", Icon: faMoneyBillWave, route: "/employee/loan/create" },
-  { label: "View Loans", Icon: faMoneyBillWave, route: "/employee/loanCard" },
-  { label: "View Items Purchased", Icon: faChair, route: "/employee/itemCard" },
+  { label: "Apply for loan", Icon: faMoneyBillWave, route: "/loan/create" },
+  { label: "View Loans", Icon: faMoneyBillWave, route: "/loan" },
+  { label: "View Items Purchased", Icon: faChair, route: "/item" },
   { label: "Logout", Icon: faRightFromBracket, route: "/login" },
 ];
 

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 interface formFieldsType {
   label: string;
-  regex: string | null;
-  errorMessage: string | null;
+  regex?: string;
+  errorMessage?: string;
   initialData: string | number;
   placeholder: string;
   disabled: boolean;
@@ -16,7 +16,7 @@ interface formFieldsTypeInput extends formFieldsType {
 interface formFieldsTypeSelect extends formFieldsType {
   type: "select";
   options: { value: string; label: string }[];
-  optionsFilter?: (data: { [name: string]: string }, option: { value: string; label: string }) => boolean;
+  changeFunction?: (id: string) => void;
 }
 
 export type formPropsFieldsType = {
@@ -52,6 +52,7 @@ const Form = ({ onSubmit, formFields, submitButton }: FormPropsType) => {
 
   const handleChange = (event: { target: { name: string; value: string } }) => {
     const { name, value } = event.target;
+    const fields = formFields[name]
     setFormData({
       ...formData,
       [name]: value
@@ -59,9 +60,13 @@ const Form = ({ onSubmit, formFields, submitButton }: FormPropsType) => {
     setFormError({
       ...formError,
       [name]:
-        formFields[name].regex !== null &&
-        !value.toString().match(new RegExp(formFields[name].regex!))
+        fields.regex !== undefined &&
+        !value.toString().match(new RegExp(fields.regex!))
     })
+
+    if (fields.type === 'select') {
+      fields.changeFunction && fields.changeFunction(value);
+    }
   };
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
@@ -89,15 +94,12 @@ const Form = ({ onSubmit, formFields, submitButton }: FormPropsType) => {
                   onChange={handleChange}
                   disabled={fields.disabled}
                   className="input"
+                  required={true}
                 >
                   <option value={""} disabled hidden>
                     Select {fields.label}
                   </option>
-                  {fields.optionsFilter !== undefined ? fields.options.filter((field) => fields.optionsFilter!(formData, field)).map(({ value, label }) => (
-                    <option value={value} key={value}>
-                      {label}
-                    </option>
-                  )) : fields.options.map(({ value, label }) => (
+                  {fields.options.map(({ value, label }) => (
                     <option value={value} key={value}>
                       {label}
                     </option>
