@@ -153,10 +153,10 @@ export const selectItemCardTableData = createSelector(
   }
 );
 
-export const selectItemCardSelected = createSelector(
+export const selectItemCardByMake = createSelector(
   [selectAllItemCard, selectMakeSelected],
   (items, make) => {
-    return make !== "" && make && items.filter((item) => item.make === make.id).at(0)
+    return make !== "" && make !== undefined && items.filter((item) => item.make === make.id).at(0)
   }
 )
 

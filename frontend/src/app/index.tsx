@@ -70,7 +70,7 @@ const router = createBrowserRouter([
           },
           {
             path: "loan",
-            element: <EmployeeList />
+            element: <EmployeeLoanList />
           },
           {
             path: "loan/create",

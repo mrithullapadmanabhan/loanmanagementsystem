@@ -43,7 +43,7 @@ const LoanCardAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
             type: "text" as const,
             label: "Duration (in months)",
             placeholder: "",
-            regex: "/^[1-9][0-9]*$/",
+            regex: "^[1-9][0-9]*$",
             errorMessage: "Duration can only be a non zero number",
             initialData: data ? data.duration : "",
             disabled: false,
