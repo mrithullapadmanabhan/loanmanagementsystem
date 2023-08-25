@@ -101,7 +101,7 @@ const employeeSlice = createSlice({
 
 export default employeeSlice.reducer;
 
-export const { selectAll: selectAllEmployee, selectById: selectEmployeeById } =
+export const { selectAll: selectAllEmployee, selectById: selectEmployeeById, selectEntities: selectEmployeeEntities } =
   employeeAdapter.getSelectors((state: RootState) => state.employee);
 
 export const employeeStatus = (state: RootState) => state.employee.status;

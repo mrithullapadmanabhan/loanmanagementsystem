@@ -6,8 +6,9 @@ import { Link, useNavigate } from "react-router-dom";
 export interface ListPagePropsType {
   entityName: string;
   entityNamePlural: string;
-  removeItem: (id: string) => void;
+  removeItem?: (id: string) => void;
   editUrl: (id: string) => string;
+  createUrl?: string;
   fields: {
     key: string;
     label: string;
@@ -24,6 +25,7 @@ function ListPage({
   data,
   removeItem,
   editUrl,
+  createUrl,
 }: ListPagePropsType) {
   const navigate = useNavigate();
 
@@ -37,19 +39,18 @@ function ListPage({
         navigate(editUrl(id));
       },
       buttonColor: "green",
+    }
+  ].concat(removeItem ? [{
+    label: "Delete",
+    onClick: ({ id }: { id: string }) => {
+      setSelectedId(id);
+      setPopupOpen(true);
     },
-    {
-      label: "Delete",
-      onClick: ({ id }: { id: string }) => {
-        setSelectedId(id);
-        setPopupOpen(true);
-      },
-      buttonColor: "red",
-    },
-  ];
+    buttonColor: "red",
+  }] : []);
 
   function deleteItem() {
-    removeItem(selectedId);
+    removeItem!(selectedId);
     setPopupOpen(false);
   }
 
@@ -67,12 +68,10 @@ function ListPage({
         <div className="w-full  flex flex-col justify-center gap-4 mb-6 lg:mb-0">
           <div className="flex gap-10 mb-5 justify-between">
             <h1 className="text-5xl font-semibold">{entityNamePlural}</h1>
-            <Link to="/admin/item/add">
-              <Link to="/admin/item/add">
-                <button className={`bg-indigo-700 normal-button`}>
-                  Add {entityName}
-                </button>
-              </Link>
+            <Link to={createUrl ? createUrl : `/admin/${entityName}/create`}>
+              <button className={`bg-indigo-700 normal-button`}>
+                Add {entityName}
+              </button>
             </Link>
           </div>
           <Table fields={fields} data={data} actions={actions} />

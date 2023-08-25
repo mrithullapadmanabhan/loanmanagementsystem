@@ -7,7 +7,7 @@ import {
 } from "service/api";
 import { itemCardObjectType, itemCardType } from "./itemCardType";
 
-export const baseURL = "/itemCard";
+export const baseURL = "/itemcard";
 
 export const getItemCards = async () => await getApi<itemCardType[]>(baseURL);
 export const getItemCard = async (id: string) =>

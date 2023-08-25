@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "app/hooks";
-import ListPage from "components/ListPage";
+import { ListPage } from "components";
 
 import {
   categoryStatus,

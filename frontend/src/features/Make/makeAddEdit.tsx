@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "app/hooks";
-import AddEditPage from "components/AddEditPage";
+import { AddEditPage } from "components";
 import { categoryStatus, get as getCategories, selectAllCategory } from "features/Category/categorySlice";
 import { useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
@@ -35,8 +35,6 @@ const MakeAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
             type: "select" as const,
             label: "Category",
             placeholder: "",
-            errorMessage: null,
-            regex: null,
             initialData: data ? data.category : "",
             options: categories.map((category) => { return { value: category.id, label: category.name } }),
             disabled: type === "edit",
@@ -62,7 +60,7 @@ const MakeAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
             handleSubmit={
                 (data: any) => {
                     if (type === "edit") {
-                        dispatch(update({ id: data.id, data }));
+                        dispatch(update({ id: id!, data }));
                     } else {
                         dispatch(create(data));
                     }

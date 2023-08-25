@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "app/hooks";
-import ListPage from "components/ListPage";
+import { ListPage } from "components";
 
 import {
   categoryStatus,
@@ -7,12 +7,16 @@ import {
 } from "features/Category/categorySlice";
 import { get as getMakes, makeStatus } from "features/Make/makeSlice";
 import { useEffect } from "react";
-import { get, itemCardStatus, remove, selectItemCardTableData } from "./itemCardSlice";
+import { isAdmin } from "service/auth";
+import { get, getByEmployee, itemCardStatus, remove, selectItemCardTableData } from "./itemCardSlice";
 
 const ItemCardList = () => {
   const dispatch = useDispatch();
+  const admin = isAdmin();
 
-  const itemCards = useSelector(selectItemCardTableData);
+  const employeeId = localStorage.getItem("employeeId");
+
+  const itemCards = useSelector((state) => selectItemCardTableData(state, employeeId));
   const status = useSelector(itemCardStatus);
 
   const categorystatus = useSelector(categoryStatus);
@@ -21,7 +25,9 @@ const ItemCardList = () => {
 
   useEffect(() => {
     if (status === "idle") {
-      dispatch(get());
+      admin ?
+        dispatch(get()) :
+        employeeId !== null && dispatch(getByEmployee(employeeId))
     }
   }, [status, dispatch]);
 

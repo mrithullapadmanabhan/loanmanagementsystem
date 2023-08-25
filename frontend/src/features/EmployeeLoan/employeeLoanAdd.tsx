@@ -1,25 +1,18 @@
 import { useDispatch, useSelector } from "app/hooks";
 import { AddEditPage } from "components";
 import { categoryStatus, get as getCategories, selectAllCategory, selectCategory, selectCategorySelected } from "features/Category/categorySlice";
+import { selectItemCardSelected } from "features/ItemCard/itemCardSlice";
 import { getByCategory as getMakesByCategory, makeStatus, selectAllMake, selectMake, selectMakeSelected } from "features/Make/makeSlice";
-import { useEffect } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
-import { create, getById, selectItemCardById, update } from "./itemCardSlice";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { create } from "./employeeLoanSlice";
 
 
-const ItemCardAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
+const EmployeeLoanAdd = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { id } = useParams();
-
-    const data = useSelector((state) => selectItemCardById(state, id!));
-
-    useEffect(() => {
-        if (type === 'edit') {
-            dispatch(getById(id!));
-        }
-    }, [id, dispatch, type])
+    const employeeID = localStorage.getItem("employeeID")
 
     const categories = useSelector(selectAllCategory);
     const categorystatus = useSelector(categoryStatus);
@@ -41,8 +34,17 @@ const ItemCardAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
         }
     }, [makestatus, dispatch, selectedCategory]);
 
+    const itemCard = useSelector(selectItemCardSelected)
+
 
     const fields = {
+        employeeID: {
+            type: "text" as const,
+            label: "Employee ID",
+            placeholder: "",
+            initialData: employeeID !== null ? employeeID : "",
+            disabled: true,
+        },
         categoryID: {
             type: "select" as const,
             name: "Category",
@@ -69,43 +71,34 @@ const ItemCardAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
         },
         description: {
             type: "text" as const,
-            label: "Description",
+            label: "Item Description",
             placeholder: "",
-            errorMessage:
-                "Description cannot be blank",
-            regex:
-                "^.{1,}$",
-            initialData: data ? data.description : "",
-            disabled: false,
+            initialData: itemCard ? itemCard.description : "",
+            disabled: true,
         },
         value: {
-            type: "text" as const,
-            label: "Value (in $)",
+            type: "date" as const,
+            label: "Item Make",
             placeholder: "",
-            regex: "^[1-9][0-9]*$",
-            errorMessage: "Value can only be a non zero number",
-            initialData: data ? data.value : "",
-            disabled: false,
-        }
-    }
+            initialData: itemCard ? itemCard.value : "",
+            disabled: true,
+        },
+    };
+
 
     return (
         <AddEditPage
-            entityName="ItemCard"
-            type={type}
+            entityName="Loan"
+            type="add"
             fields={fields}
             handleSubmit={
                 (data: any) => {
-                    if (type === "edit") {
-                        dispatch(update({ id: id!, data }));
-                    } else {
-                        dispatch(create(data));
-                    }
-                    navigate('/admin/itemCard');
+                    dispatch(create(data));
+                    navigate('/admin/employeeLoan');
                 }
             }
         />
     )
 }
 
-export default ItemCardAddEdit;
+export default EmployeeLoanAdd;

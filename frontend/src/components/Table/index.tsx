@@ -6,9 +6,7 @@ export interface TablePropsType {
   data: {
     [key: string]: string;
   }[];
-  actions:
-    | { label: string; buttonColor: string; onClick: (data: any) => void }[]
-    | null;
+  actions?: { label: string; buttonColor: string; onClick: (data: any) => void }[]
 }
 
 const Table = ({ fields, data, actions }: TablePropsType) => {

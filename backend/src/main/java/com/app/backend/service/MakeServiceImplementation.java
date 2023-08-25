@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionSystemException;
 
 import com.app.backend.communication.request.MakeCreateUpdateRequest;
 import com.app.backend.communication.response.MakeResponse;
@@ -14,7 +15,6 @@ import com.app.backend.model.Make;
 import com.app.backend.repository.CategoryRepository;
 import com.app.backend.repository.MakeRepository;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -47,7 +47,6 @@ public class MakeServiceImplementation implements MakeService {
         return category.getMakes().stream().map((make) -> mapper.map(make, MakeResponse.class)).toList();
     }
 
-    @Transactional
     @Override
     public MakeResponse create(MakeCreateUpdateRequest request) {
         Category category = categoryRepository.findById(request.getCategoryID())
@@ -57,11 +56,14 @@ public class MakeServiceImplementation implements MakeService {
                 .name(request.getName())
                 .category(category)
                 .build();
+        try {
+            return mapper.map(makeRepository.save(make), MakeResponse.class);
+        } catch (TransactionSystemException e) {
+            throw new TransactionSystemException("Make can't be empty");
+        }
 
-        return mapper.map(makeRepository.save(make), MakeResponse.class);
     }
 
-    @Transactional
     @Override
     public MakeResponse update(UUID id, @Valid MakeCreateUpdateRequest request) {
         Make make = makeRepository.findById(id)
@@ -69,7 +71,11 @@ public class MakeServiceImplementation implements MakeService {
 
         make.setName(request.getName());
 
-        return mapper.map(makeRepository.save(make), MakeResponse.class);
+        try {
+            return mapper.map(makeRepository.save(make), MakeResponse.class);
+        } catch (TransactionSystemException e) {
+            throw new TransactionSystemException("Make can't be empty");
+        }
     }
 
     @Override

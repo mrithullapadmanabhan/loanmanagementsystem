@@ -10,7 +10,7 @@ import { RootState } from "app/store";
 
 import { createAsyncThunk } from "app/hooks";
 
-import { selectCategoryById } from "features/Category/categorySlice";
+import { selectCategoryEntities } from "features/Category/categorySlice";
 import { initialStateType } from "features/common/initialStateType";
 import { toast } from "react-toastify";
 import {
@@ -86,8 +86,14 @@ const makeSlice = createSlice({
   initialState: makeAdapter.getInitialState({
     status: "idle",
     error: "",
+    selected: ""
   } as initialStateType),
-  reducers: {},
+  reducers: {
+    selectMake(state, action) {
+      const { id } = action.payload
+      state.selected = id
+    }
+  },
   extraReducers(builder) {
     builder
       .addCase(get.fulfilled, makeAdapter.setAll)
@@ -109,9 +115,10 @@ const makeSlice = createSlice({
   },
 });
 
+export const { selectMake } = makeSlice.actions
 export default makeSlice.reducer;
 
-export const { selectAll: selectAllMake, selectById: selectMakeById } =
+export const { selectAll: selectAllMake, selectById: selectMakeById, selectEntities: selectMakeEntities } =
   makeAdapter.getSelectors((state: RootState) => state.make);
 
 export const selectMakeByCategory = createSelector(
@@ -121,15 +128,19 @@ export const selectMakeByCategory = createSelector(
 );
 
 export const selectMakeTableData = createSelector(
-  [selectAllMake, (state) => state],
-  (makes, state) =>
+  [selectAllMake, selectCategoryEntities],
+  (makes, categories) =>
     makes.map((make) => {
       return {
         ...make,
-        category: selectCategoryById(state, make.category)?.name,
+        category: categories[make.category]?.name,
       };
     })
 );
+
+export const selectMakeSelected = createSelector(
+  [selectMakeEntities, (state: RootState) => state.make.selected], (makes, id) => id && makes[id]
+)
 
 export const makeStatus = (state: RootState) => state.make.status;
 export const makeError = (state: RootState) => state.make.error;
