@@ -7,7 +7,7 @@ import {
 } from "service/api";
 import { loanCardObjectType, loanCardType } from "./loanCardType";
 
-export const baseURL = "/loanCard";
+export const baseURL = "/loancard";
 
 export const getLoanCards = async () => await getApi<loanCardType[]>(baseURL);
 export const getLoanCard = async (id: string) =>

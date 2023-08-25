@@ -10,8 +10,9 @@ import { RootState } from "app/store";
 
 import { createAsyncThunk } from "app/hooks";
 
-import { selectCategoryById } from "features/Category/categorySlice";
-import { selectMakeById } from "features/Make/makeSlice";
+import { selectCategoryEntities } from "features/Category/categorySlice";
+import { selectAllLoanCard } from "features/LoanCard/loanCardSlice";
+import { selectMakeEntities, selectMakeSelected } from "features/Make/makeSlice";
 import { initialStateType } from "features/common/initialStateType";
 import { toast } from "react-toastify";
 import {
@@ -126,21 +127,38 @@ const itemCardSlice = createSlice({
 
 export default itemCardSlice.reducer;
 
-export const { selectAll: selectAllItemCard, selectById: selectItemCardById } =
+export const { selectAll: selectAllItemCard, selectById: selectItemCardById, selectEntities: selectItemEntites } =
   itemCardAdapter.getSelectors((state: RootState) => state.itemCard);
 
 export const selectItemCardTableData = createSelector(
-  [selectAllItemCard, (state) => state],
-  (itemCards, state) =>
-    itemCards.map((itemCard) => {
-      const make = selectMakeById(state, itemCard.make)
+  [
+    selectAllItemCard,
+    selectMakeEntities,
+    selectCategoryEntities,
+    selectAllLoanCard,
+    (_state, employeeId) => employeeId
+  ],
+  (itemCards, makes, categories, loans, employeeID) => {
+    if (employeeID) {
+      const l = loans.map((loan) => loan.category)
+      itemCards = itemCards.filter((item) => makes[item.make]?.category && makes[item.make]!.category in l)
+    }
+    return itemCards.map((itemCard) => {
       return {
         ...itemCard,
-        make: make?.name,
-        category: selectCategoryById(state, (make?.category)!)?.name
+        make: makes[itemCard.make]?.name,
+        category: makes[itemCard.make] && categories[makes[itemCard.make]!.category]?.name
       };
     })
+  }
 );
+
+export const selectItemCardSelected = createSelector(
+  [selectAllItemCard, selectMakeSelected],
+  (items, make) => {
+    return make !== "" && make && items.filter((item) => item.make === make.id).at(0)
+  }
+)
 
 export const itemCardStatus = (state: RootState) => state.itemCard.status;
 export const itemCardError = (state: RootState) => state.itemCard.error;

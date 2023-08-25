@@ -10,7 +10,7 @@ import { RootState } from "app/store";
 
 import { createAsyncThunk } from "app/hooks";
 
-import { selectCategoryById } from "features/Category/categorySlice";
+import { selectCategoryEntities } from "features/Category/categorySlice";
 import { initialStateType } from "features/common/initialStateType";
 import { toast } from "react-toastify";
 import {
@@ -104,16 +104,16 @@ const loanCardSlice = createSlice({
 
 export default loanCardSlice.reducer;
 
-export const { selectAll: selectAllLoanCard, selectById: selectLoanCardById } =
+export const { selectAll: selectAllLoanCard, selectById: selectLoanCardById, selectEntities: selectLoanEntities } =
   loanCardAdapter.getSelectors((state: RootState) => state.loanCard);
 
 export const selectLoanCardTableData = createSelector(
-  [selectAllLoanCard, (state) => state],
-  (loanCards, state) =>
+  [selectAllLoanCard, selectCategoryEntities],
+  (loanCards, categories) =>
     loanCards.map((loanCard) => {
       return {
         ...loanCard,
-        category: selectCategoryById(state, loanCard.category)?.name,
+        category: categories[loanCard.category]?.name,
       };
     })
 );

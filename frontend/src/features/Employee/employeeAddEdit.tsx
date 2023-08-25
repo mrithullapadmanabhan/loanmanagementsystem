@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "app/hooks";
-import { Form } from "components";
-import AddEditPage from "components/AddEditPage";
+import { AddEditPage, Form } from "components";
 import { useEffect } from 'react';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { create, employeeStatus, getById, selectEmployeeById, update } from "./employeeSlice";
@@ -82,8 +81,6 @@ const EmployeeAddEdit = ({ type }: { type: 'add' | 'edit' | 'register' }) => {
             ],
             label: "Gender",
             placeholder: "Male",
-            regex: null,
-            errorMessage: null,
             initialData: data ? data.gender : "",
             disabled: false,
         },
@@ -91,8 +88,6 @@ const EmployeeAddEdit = ({ type }: { type: 'add' | 'edit' | 'register' }) => {
             type: "date" as const,
             label: "Date of Birth",
             placeholder: "dd-mm-yyyy",
-            regex: null,
-            errorMessage: null,
             initialData: data ? data.dob : "",
             disabled: false,
         },
@@ -100,8 +95,6 @@ const EmployeeAddEdit = ({ type }: { type: 'add' | 'edit' | 'register' }) => {
             type: "date" as const,
             label: "Date of Joining",
             placeholder: "dd-mm-yyyy",
-            regex: null,
-            errorMessage: null,
             initialData: data ? data.doj : "",
             disabled: false,
         },
@@ -154,7 +147,7 @@ const EmployeeAddEdit = ({ type }: { type: 'add' | 'edit' | 'register' }) => {
             handleSubmit={
                 (data: any) => {
                     if (type === "edit") {
-                        dispatch(update({ id: data.id, data }));
+                        dispatch(update({ id: id!, data }));
                     } else {
                         dispatch(create(data));
                     }

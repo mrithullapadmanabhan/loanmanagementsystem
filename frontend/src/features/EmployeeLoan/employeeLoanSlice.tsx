@@ -9,6 +9,10 @@ import {
 import { RootState } from "app/store";
 
 import { createAsyncThunk } from "app/hooks";
+import { selectCategoryEntities } from "features/Category/categorySlice";
+import { selectEmployeeEntities } from "features/Employee/employeeSlice";
+import { selectItemEntites } from "features/ItemCard/itemCardSlice";
+import { selectLoanEntities } from "features/LoanCard/loanCardSlice";
 import { initialStateType } from "features/common/initialStateType";
 import { toast } from "react-toastify";
 import {
@@ -93,20 +97,27 @@ export const {
   selectById: selectEmployeeLoanById,
 } = employeeLoanAdapter.getSelectors((state: RootState) => state.employeeLoan);
 
-export const selectByEmployee = createSelector(
-  [selectAllEmployeeLoan, (_, employeeId: string) => employeeId],
-  (employeeLoans, employeeId) =>
-    employeeLoans.filter((loan) => loan.employee === employeeId)
-);
-
 export const selectEmployeeLoanTableData = createSelector(
-  [selectAllEmployeeLoan, (state) => state],
-  (employeeLoans, state) =>
-    employeeLoans.map((employeeLoan) => {
+  [
+    selectAllEmployeeLoan,
+    selectCategoryEntities,
+    selectItemEntites,
+    selectLoanEntities,
+    selectEmployeeEntities,
+    (_state, isAdmin, _employeeId) => isAdmin,
+    (_state, _isAdmin, employeeID) => employeeID
+  ],
+  (employeeLoans, categories, items, loans, employees, isAdmin, employeeID) => {
+    const finalLoans = isAdmin ? employeeLoans : employeeLoans.filter((loan) => (loan.employee === employeeID));
+    return finalLoans.map((employeeLoan) => {
       return {
-        ...employeeLoan
+        ...employeeLoan,
+        employee: employees[employeeLoan.employee]?.name,
+        category: loans[employeeLoan.loan] && categories[loans[employeeLoan.loan]!.category]?.name,
+        item: items[employeeLoan.item]?.description,
       };
     })
+  }
 );
 
 export const employeeLoanStatus = (state: RootState) =>
