@@ -140,12 +140,12 @@ public class LoanCardControllerTest {
                                 .andExpect(jsonPath("$[0].id",
                                                 Matchers.equalTo(loanCardList.get(0).getId().toString())))
                                 .andExpect(jsonPath("$[0].category",
-                                                Matchers.equalTo(loanCardList.get(0).getCategory())))
+                                                Matchers.equalTo(loanCardList.get(0).getCategory().toString())))
                                 .andExpect(jsonPath("$[1].id",
                                                 Matchers.equalTo(loanCardList.get(1).getId().toString())))
                                 .andExpect(jsonPath("$[1].category",
                                                 Matchers.equalTo(
-                                                                loanCardList.get(1).getCategory())));
+                                                                loanCardList.get(1).getCategory().toString())));
         }
 
         @Test
@@ -171,7 +171,7 @@ public class LoanCardControllerTest {
                                 .andExpect(jsonPath("$.id", Matchers.equalTo(loanCard.getId().toString())))
                                 .andExpect(jsonPath("$.duration", Matchers.equalTo(loanCard.getDuration())))
                                 .andExpect(jsonPath("$.category",
-                                                Matchers.equalTo(loanCard.getCategory())));
+                                                Matchers.equalTo(loanCard.getCategory().toString())));
         }
 
         @Test
