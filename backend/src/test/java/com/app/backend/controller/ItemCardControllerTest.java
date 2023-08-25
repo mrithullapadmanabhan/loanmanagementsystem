@@ -103,7 +103,7 @@ public class ItemCardControllerTest {
                 String itemCardRequestString = mapper.writeValueAsString(itemCardRequest);
                 String itemCardResponseString = mapper.writeValueAsString(itemCardResponse);
 
-                MvcResult requestResult = mvc.perform(post("/api/itemcard/create")
+                MvcResult requestResult = mvc.perform(post("/api/itemcard")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .characterEncoding("utf-8")
                                 .content(itemCardRequestString))
@@ -152,11 +152,11 @@ public class ItemCardControllerTest {
                                 .andExpect(jsonPath("$[0].id",
                                                 Matchers.equalTo(itemCardList.get(0).getId().toString())))
                                 .andExpect(jsonPath("$[0].make",
-                                                Matchers.equalTo(itemCardList.get(0).getMake())))
+                                                Matchers.equalTo(itemCardList.get(0).getMake().toString())))
                                 .andExpect(jsonPath("$[1].id",
                                                 Matchers.equalTo(itemCardList.get(1).getId().toString())))
                                 .andExpect(jsonPath("$[1].make",
-                                                Matchers.equalTo(itemCardList.get(1).getMake())));
+                                                Matchers.equalTo(itemCardList.get(1).getMake().toString())));
         }
 
         @Test
@@ -199,11 +199,11 @@ public class ItemCardControllerTest {
                                 .andExpect(jsonPath("$[0].id",
                                                 Matchers.equalTo(itemCardList.get(0).getId().toString())))
                                 .andExpect(jsonPath("$[0].make",
-                                                Matchers.equalTo(itemCardList.get(0).getMake())))
+                                                Matchers.equalTo(itemCardList.get(0).getMake().toString())))
                                 .andExpect(jsonPath("$[1].id",
                                                 Matchers.equalTo(itemCardList.get(1).getId().toString())))
                                 .andExpect(jsonPath("$[1].make",
-                                                Matchers.equalTo(itemCardList.get(1).getMake())));
+                                                Matchers.equalTo(itemCardList.get(1).getMake().toString())));
         }
 
         @Test
@@ -233,7 +233,7 @@ public class ItemCardControllerTest {
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$.id", Matchers.equalTo(itemCard.getId().toString())))
                                 .andExpect(jsonPath("$.make",
-                                                Matchers.equalTo(itemCard.getMake())));
+                                                Matchers.equalTo(itemCard.getMake().toString())));
         }
 
         @Test
