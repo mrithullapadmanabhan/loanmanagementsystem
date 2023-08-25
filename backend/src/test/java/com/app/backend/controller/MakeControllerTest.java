@@ -137,10 +137,10 @@ public class MakeControllerTest {
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$[0].id", Matchers.equalTo(makeList.get(0).getId().toString())))
                                 .andExpect(jsonPath("$[0].category",
-                                                Matchers.equalTo(makeList.get(0).getCategory())))
+                                                Matchers.equalTo(makeList.get(0).getCategory().toString())))
                                 .andExpect(jsonPath("$[1].id", Matchers.equalTo(makeList.get(1).getId().toString())))
                                 .andExpect(jsonPath("$[1].category",
-                                                Matchers.equalTo(makeList.get(1).getCategory())));
+                                                Matchers.equalTo(makeList.get(1).getCategory().toString())));
         }
 
         @Test
@@ -172,10 +172,10 @@ public class MakeControllerTest {
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$[0].id", Matchers.equalTo(makeList.get(0).getId().toString())))
                                 .andExpect(jsonPath("$[0].category",
-                                                Matchers.equalTo(makeList.get(0).getCategory())))
+                                                Matchers.equalTo(makeList.get(0).getCategory().toString())))
                                 .andExpect(jsonPath("$[1].id", Matchers.equalTo(makeList.get(1).getId().toString())))
                                 .andExpect(jsonPath("$[1].category",
-                                                Matchers.equalTo(makeList.get(1).getCategory())));
+                                                Matchers.equalTo(makeList.get(1).getCategory().toString())));
         }
 
         @Test

@@ -30,7 +30,7 @@ public class Make {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "Make name cannot be blank")
+    @NotBlank
     private String name;
 
     @ManyToOne(fetch = FetchType.EAGER)

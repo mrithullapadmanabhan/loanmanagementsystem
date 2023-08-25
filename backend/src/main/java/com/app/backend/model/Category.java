@@ -32,7 +32,7 @@ public class Category {
     private UUID id;
 
     @Column(unique = true)
-    @NotBlank(message = "Category name cannot be blank")
+    @NotBlank
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
