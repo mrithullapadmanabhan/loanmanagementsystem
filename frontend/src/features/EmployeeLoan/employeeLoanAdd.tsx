@@ -1,16 +1,19 @@
 import { useDispatch, useSelector } from "app/hooks";
 import { AddEditPage } from "components";
 import { categoryStatus, get as getCategories, selectAllCategory, selectCategory, selectCategorySelected } from "features/Category/categorySlice";
-import { selectItemCardSelected } from "features/ItemCard/itemCardSlice";
-import { getByCategory as getMakesByCategory, makeStatus, selectAllMake, selectMake, selectMakeSelected } from "features/Make/makeSlice";
+import { employeeStatus, get as getEmployees, selectAllEmployee } from "features/Employee/employeeSlice";
+import { get as getItemCards, selectItemCardByMake } from "features/ItemCard/itemCardSlice";
+import { get as getMakes, makeStatus, selectMake, selectMakeByCategory, selectMakeSelected } from "features/Make/makeSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { isAdmin } from "service/auth";
 import { create } from "./employeeLoanSlice";
 
 
 const EmployeeLoanAdd = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const admin = isAdmin();
 
     const employeeID = localStorage.getItem("employeeID")
 
@@ -24,21 +27,46 @@ const EmployeeLoanAdd = () => {
         }
     }, [categorystatus, dispatch]);
 
-    const makes = useSelector(selectAllMake);
+    const makes = useSelector(selectMakeByCategory);
     const makestatus = useSelector(makeStatus);
     const selectedMake = useSelector(selectMakeSelected);
 
     useEffect(() => {
-        if (makestatus === "idle" && selectedCategory !== "" && selectedCategory !== undefined) {
-            dispatch(getMakesByCategory(selectedCategory.id));
+        if (makestatus === "idle") {
+            dispatch(getMakes());
         }
-    }, [makestatus, dispatch, selectedCategory]);
+    }, [makestatus, dispatch]);
 
-    const itemCard = useSelector(selectItemCardSelected)
+    const employees = useSelector(selectAllEmployee)
+    const employeestatus = useSelector(employeeStatus)
+
+    useEffect(() => {
+        if (employeestatus === "idle") {
+            dispatch(getEmployees());
+        }
+    }, [makestatus, dispatch]);
+
+    const itemcardstatus = useSelector(makeStatus);
+    const selectedItemCard = useSelector(selectItemCardByMake)
+
+    useEffect(() => {
+        if (itemcardstatus === "idle") {
+            dispatch(getItemCards())
+        }
+    }, [itemcardstatus, dispatch])
+
 
 
     const fields = {
-        employeeID: {
+        employeeID: admin ? {
+            type: "select" as const,
+            name: "EmployeeID",
+            options: employees.map((employee) => { return { value: employee.id, label: employee.name } }),
+            label: "Employee",
+            placeholder: "",
+            initialData: "",
+            disabled: false,
+        } : {
             type: "text" as const,
             label: "Employee ID",
             placeholder: "",
@@ -50,7 +78,7 @@ const EmployeeLoanAdd = () => {
             name: "Category",
             options: categories.map((category) => { return { value: category.id, label: category.name } }),
             label: "Category",
-            placeholder: "Male",
+            placeholder: "",
             initialData: selectedCategory !== undefined && selectedCategory !== "" ? selectedCategory.id : "",
             changeFunction: (id: string) => {
                 dispatch(selectCategory({ id: id }))
@@ -73,14 +101,14 @@ const EmployeeLoanAdd = () => {
             type: "text" as const,
             label: "Item Description",
             placeholder: "",
-            initialData: itemCard ? itemCard.description : "",
+            initialData: selectedItemCard !== undefined && selectedItemCard ? selectedItemCard.description : "",
             disabled: true,
         },
         value: {
-            type: "date" as const,
-            label: "Item Make",
+            type: "text" as const,
+            label: "Value",
             placeholder: "",
-            initialData: itemCard ? itemCard.value : "",
+            initialData: selectedItemCard !== undefined && selectedItemCard ? selectedItemCard.value : "",
             disabled: true,
         },
     };

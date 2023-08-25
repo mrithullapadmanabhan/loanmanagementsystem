@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "app/hooks";
 import { AddEditPage } from "components";
 import { categoryStatus, get as getCategories, selectAllCategory, selectCategory, selectCategorySelected } from "features/Category/categorySlice";
-import { getByCategory as getMakesByCategory, makeStatus, selectAllMake, selectMake, selectMakeSelected } from "features/Make/makeSlice";
+import { get as getMakes, makeStatus, selectMake, selectMakeByCategory, selectMakeSelected } from "features/Make/makeSlice";
 import { useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { create, getById, selectItemCardById, update } from "./itemCardSlice";
@@ -31,13 +31,13 @@ const ItemCardAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
         }
     }, [categorystatus, dispatch]);
 
-    const makes = useSelector(selectAllMake);
+    const makes = useSelector(selectMakeByCategory);
     const makestatus = useSelector(makeStatus);
     const selectedMake = useSelector(selectMakeSelected);
 
     useEffect(() => {
-        if (makestatus === "idle" && selectedCategory !== "" && selectedCategory !== undefined) {
-            dispatch(getMakesByCategory(selectedCategory.id));
+        if (makestatus === "idle") {
+            dispatch(getMakes());
         }
     }, [makestatus, dispatch, selectedCategory]);
 

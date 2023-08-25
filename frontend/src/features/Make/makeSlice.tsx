@@ -10,7 +10,7 @@ import { RootState } from "app/store";
 
 import { createAsyncThunk } from "app/hooks";
 
-import { selectCategoryEntities } from "features/Category/categorySlice";
+import { selectCategoryEntities, selectCategorySelected } from "features/Category/categorySlice";
 import { initialStateType } from "features/common/initialStateType";
 import { toast } from "react-toastify";
 import {
@@ -122,9 +122,10 @@ export const { selectAll: selectAllMake, selectById: selectMakeById, selectEntit
   makeAdapter.getSelectors((state: RootState) => state.make);
 
 export const selectMakeByCategory = createSelector(
-  [selectAllMake, (_, categoryId) => categoryId],
-  (makes, categoryId) =>
-    makes.filter((make) => (make.category === categoryId))
+  [selectAllMake, selectCategorySelected],
+  (makes, category) => category !== "" && category ?
+    makes.filter((make) => (make.category === category.id)) :
+    [],
 );
 
 export const selectMakeTableData = createSelector(

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Form } from "components";
+import { toast } from "react-toastify";
 import { apiLogin } from "service/auth";
 import { loginFormFields } from "./formFields";
 
@@ -12,6 +13,8 @@ const Login = () => {
     const res = await apiLogin(data);
     if (res) {
       navigate("/");
+    } else {
+      toast.error("Invalid credentials entered")
     }
   };
 
