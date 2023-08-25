@@ -41,10 +41,10 @@ const EmployeeLoanAdd = () => {
     const employeestatus = useSelector(employeeStatus)
 
     useEffect(() => {
-        if (employeestatus === "idle") {
+        if (employeestatus === "idle" && admin) {
             dispatch(getEmployees());
         }
-    }, [makestatus, dispatch]);
+    }, [employeestatus, dispatch, admin]);
 
     const itemcardstatus = useSelector(makeStatus);
     const selectedItemCard = useSelector(selectItemCardByMake)
@@ -122,7 +122,9 @@ const EmployeeLoanAdd = () => {
             handleSubmit={
                 (data: any) => {
                     dispatch(create(data));
-                    navigate('/admin/employeeLoan');
+                    admin ?
+                        navigate('/admin/loan') :
+                        navigate('/loan')
                 }
             }
         />
