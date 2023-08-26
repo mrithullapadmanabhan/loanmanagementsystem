@@ -2,9 +2,7 @@ import {
   createEntityAdapter,
   createSelector,
   createSlice,
-  isFulfilled,
-  isPending,
-  isRejected,
+  isAnyOf
 } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 
@@ -85,8 +83,6 @@ const makeSlice = createSlice({
   name: "makes",
   initialState: makeAdapter.getInitialState({
     status: "idle",
-    error: "",
-    selected: ""
   } as initialStateType),
   reducers: {
     selectMake(state, action) {
@@ -102,15 +98,14 @@ const makeSlice = createSlice({
       .addCase(create.fulfilled, makeAdapter.addOne)
       .addCase(update.fulfilled, makeAdapter.setOne)
       .addCase(remove.fulfilled, makeAdapter.removeOne)
-      .addMatcher(isPending, (state, _) => {
+      .addMatcher(isAnyOf(get.pending, getById.pending, getByCategory.pending, create.pending, update.pending, remove.pending), (state, _) => {
         state.status = "loading";
       })
-      .addMatcher(isFulfilled, (state, _) => {
+      .addMatcher(isAnyOf(get.fulfilled, getById.fulfilled, getByCategory.pending, create.fulfilled, update.fulfilled, remove.fulfilled), (state, _) => {
         state.status = "succeeded";
       })
-      .addMatcher(isRejected, (state, action) => {
+      .addMatcher(isAnyOf(get.rejected, getById.rejected, getByCategory.rejected, create.rejected, update.rejected, remove.rejected), (state, _) => {
         state.status = "failed";
-        state.error = action.error.message ? action.error.message : null;
       });
   },
 });

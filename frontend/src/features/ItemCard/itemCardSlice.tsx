@@ -2,9 +2,7 @@ import {
   createEntityAdapter,
   createSelector,
   createSlice,
-  isFulfilled,
-  isPending,
-  isRejected,
+  isAnyOf
 } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 
@@ -100,7 +98,6 @@ const itemCardSlice = createSlice({
   name: "itemCards",
   initialState: itemCardAdapter.getInitialState({
     status: "idle",
-    error: "",
   } as initialStateType),
   reducers: {},
   extraReducers(builder) {
@@ -112,15 +109,14 @@ const itemCardSlice = createSlice({
       .addCase(create.fulfilled, itemCardAdapter.addOne)
       .addCase(update.fulfilled, itemCardAdapter.setOne)
       .addCase(remove.fulfilled, itemCardAdapter.removeOne)
-      .addMatcher(isPending, (state, _) => {
+      .addMatcher(isAnyOf(get.pending, getById.pending, getByEmployee.pending, getByMake.pending, create.pending, update.pending, remove.pending), (state, _) => {
         state.status = "loading";
       })
-      .addMatcher(isFulfilled, (state, _) => {
+      .addMatcher(isAnyOf(get.fulfilled, getById.fulfilled, getByEmployee.fulfilled, getByMake.fulfilled, create.fulfilled, update.fulfilled, remove.fulfilled), (state, _) => {
         state.status = "succeeded";
       })
-      .addMatcher(isRejected, (state, action) => {
+      .addMatcher(isAnyOf(get.rejected, getById.rejected, getByEmployee.rejected, getByMake.rejected, create.rejected, update.rejected, remove.rejected), (state, _) => {
         state.status = "failed";
-        state.error = action.error.message ? action.error.message : null;
       });
   },
 });
@@ -139,11 +135,11 @@ export const selectItemCardTableData = createSelector(
     (_state, employeeId) => employeeId
   ],
   (itemCards, makes, categories, loans, employeeID) => {
-    if (employeeID) {
-      const l = loans.map((loan) => loan.category)
-      itemCards = itemCards.filter((item) => makes[item.make]?.category && makes[item.make]!.category in l)
-    }
-    return itemCards.map((itemCard) => {
+    const l = loans.map((loan) => loan.category)
+
+    const finalitems = employeeID !== null ? itemCards : itemCards.filter((item) => makes[item.make]?.category && makes[item.make]!.category in l)
+
+    return finalitems.map((itemCard) => {
       return {
         ...itemCard,
         make: makes[itemCard.make]?.name,

@@ -5,16 +5,16 @@ import {
   categoryStatus,
   get as getCategories,
 } from "features/Category/categorySlice";
-import { getByEmployee, get as getItemCards, itemCardStatus } from "features/ItemCard/itemCardSlice";
+import { get as getItemCards, itemCardStatus } from "features/ItemCard/itemCardSlice";
 import { get as getLoanCards, loanCardStatus } from "features/LoanCard/loanCardSlice";
 import { useEffect } from "react";
 import { isAdmin } from "service/auth";
-import { employeeLoanStatus, get, selectEmployeeLoanTableData } from "./employeeLoanSlice";
+import { employeeLoanStatus, get, getByEmployeeId, selectEmployeeLoanTableData, updateStatus } from "./employeeLoanSlice";
 
 const EmployeeLoanList = () => {
   const dispatch = useDispatch();
   const admin = isAdmin();
-  const employeeId = localStorage.getItem("employeeId");
+  const employeeId = localStorage.getItem("employeeID");
 
   const employeeLoans = useSelector((state) => selectEmployeeLoanTableData(state, admin, employeeId));
   const status = useSelector(employeeLoanStatus);
@@ -28,9 +28,9 @@ const EmployeeLoanList = () => {
     if (status === "idle") {
       admin ?
         dispatch(get()) :
-        employeeId !== null && dispatch(getByEmployee(employeeId))
+        employeeId !== null && dispatch(getByEmployeeId(employeeId))
     }
-  }, [status, dispatch]);
+  }, [status, dispatch, admin, employeeId]);
 
   useEffect(() => {
     if (categorystatus === "idle") {
@@ -69,23 +69,29 @@ const EmployeeLoanList = () => {
       label: "Issue Date",
     },
     {
-      key: "returnDate",
-      label: "Return Date"
+      key: "status",
+      label: "Status"
     },
-    {
-      key: "actions",
-      label: "Actions",
-    },
-  ];
+  ].concat(
+    admin ? [
+      {
+        key: "actions",
+        label: "Actions",
+      }
+    ] : []
+  )
 
   return (
     <ListPage
-      entityName="Employee Loan"
-      entityNamePlural="Employee Loans"
+      entityName={admin ? "Employee Loan" : "Loan"}
+      entityNamePlural={admin ? "Employee Loans" : "Loans"}
       fields={fields}
       data={employeeLoans as unknown as { [key: string]: string }[]}
       editUrl={(id) => `/admin/loan/${id}`}
       createUrl={"/loan/create"}
+      action={(id) => { dispatch(updateStatus(id)) }}
+      actionLabel="Mark Completed"
+      disableAdd={admin}
     />
   );
 };

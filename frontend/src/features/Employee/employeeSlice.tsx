@@ -1,9 +1,7 @@
 import {
   createEntityAdapter,
   createSlice,
-  isFulfilled,
-  isPending,
-  isRejected,
+  isAnyOf
 } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 
@@ -76,7 +74,6 @@ const employeeSlice = createSlice({
   name: "employees",
   initialState: employeeAdapter.getInitialState({
     status: "idle",
-    error: "",
   } as initialStateType),
   reducers: {},
   extraReducers(builder) {
@@ -86,15 +83,14 @@ const employeeSlice = createSlice({
       .addCase(create.fulfilled, employeeAdapter.setOne)
       .addCase(update.fulfilled, employeeAdapter.setOne)
       .addCase(remove.fulfilled, employeeAdapter.removeOne)
-      .addMatcher(isPending, (state, _) => {
+      .addMatcher(isAnyOf(get.pending, getById.pending, create.pending, update.pending, remove.pending), (state, _) => {
         state.status = "loading";
       })
-      .addMatcher(isFulfilled, (state, _) => {
+      .addMatcher(isAnyOf(get.fulfilled, getById.fulfilled, create.fulfilled, update.fulfilled, remove.fulfilled), (state, _) => {
         state.status = "succeeded";
       })
-      .addMatcher(isRejected, (state, action) => {
+      .addMatcher(isAnyOf(get.rejected, getById.rejected, create.rejected, update.rejected, remove.rejected), (state, _) => {
         state.status = "failed";
-        state.error = action.error.message ? action.error.message : null;
       });
   },
 });

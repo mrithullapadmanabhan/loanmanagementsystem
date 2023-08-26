@@ -2,9 +2,7 @@ import {
   createEntityAdapter,
   createSelector,
   createSlice,
-  isFulfilled,
-  isPending,
-  isRejected,
+  isAnyOf
 } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 
@@ -68,7 +66,6 @@ const employeeLoanSlice = createSlice({
   name: "employeeLoans",
   initialState: employeeLoanAdapter.getInitialState({
     status: "idle",
-    error: "",
   } as initialStateType),
   reducers: {},
   extraReducers(builder) {
@@ -77,15 +74,14 @@ const employeeLoanSlice = createSlice({
       .addCase(getByEmployeeId.fulfilled, employeeLoanAdapter.setMany)
       .addCase(create.fulfilled, employeeLoanAdapter.setOne)
       .addCase(updateStatus.fulfilled, employeeLoanAdapter.setOne)
-      .addMatcher(isPending, (state, _) => {
+      .addMatcher(isAnyOf(get.pending, getByEmployeeId.pending, create.pending, updateStatus.pending), (state, _) => {
         state.status = "loading";
       })
-      .addMatcher(isFulfilled, (state, _) => {
+      .addMatcher(isAnyOf(get.fulfilled, getByEmployeeId.fulfilled, create.fulfilled, updateStatus.fulfilled), (state, _) => {
         state.status = "succeeded";
       })
-      .addMatcher(isRejected, (state, action) => {
+      .addMatcher(isAnyOf(get.rejected, getByEmployeeId.rejected, create.rejected, updateStatus.rejected), (state, _) => {
         state.status = "failed";
-        state.error = action.error.message ? action.error.message : null;
       });
   },
 });
