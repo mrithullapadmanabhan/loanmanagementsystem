@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionSystemException;
 
 import com.app.backend.communication.request.LoanCardCreateUpdateRequest;
 import com.app.backend.communication.response.LoanCardResponse;
@@ -41,7 +43,6 @@ public class LoanCardServiceImplementation implements LoanCardService {
 				LoanCardResponse.class);
 	}
 
-	@Transactional
 	@Override
 	public LoanCardResponse create(LoanCardCreateUpdateRequest request) {
 		Category category = categoryRepository.findById(request.getCategoryID())
@@ -51,19 +52,28 @@ public class LoanCardServiceImplementation implements LoanCardService {
 				.duration(request.getDuration())
 				.category(category)
 				.build();
-
-		return mapper.map(loanCardRepository.save(loanCard), LoanCardResponse.class);
+		try {
+			return mapper.map(loanCardRepository.save(loanCard), LoanCardResponse.class);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityViolationException("Loan Card for the selected category already exists");
+		} catch (TransactionSystemException e) {
+			throw new TransactionSystemException("Loan Card Duration should be >=1");
+		}
 	}
 
 	@Transactional
 	@Override
 	public LoanCardResponse update(UUID id, @Valid LoanCardCreateUpdateRequest request) {
 		LoanCard loanCard = loanCardRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("LoanCard with this ID does not exist"));
+				.orElseThrow(() -> new ResourceNotFoundException("Loan Card with this ID does not exist"));
 
 		loanCard.setDuration(request.getDuration());
 
-		return mapper.map(loanCardRepository.save(loanCard), LoanCardResponse.class);
+		try {
+			return mapper.map(loanCardRepository.save(loanCard), LoanCardResponse.class);
+		} catch (TransactionSystemException e) {
+			throw new TransactionSystemException("Loan Card Duration should be >= 1");
+		}
 	}
 
 	@Override

@@ -2,15 +2,13 @@ import {
   createEntityAdapter,
   createSelector,
   createSlice,
-  isFulfilled,
-  isPending,
-  isRejected,
+  isAnyOf
 } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 
 import { createAsyncThunk } from "app/hooks";
 
-import { selectCategoryById } from "features/Category/categorySlice";
+import { selectCategoryEntities } from "features/Category/categorySlice";
 import { initialStateType } from "features/common/initialStateType";
 import { toast } from "react-toastify";
 import {
@@ -79,7 +77,6 @@ const loanCardSlice = createSlice({
   name: "loanCards",
   initialState: loanCardAdapter.getInitialState({
     status: "idle",
-    error: "",
   } as initialStateType),
   reducers: {},
   extraReducers(builder) {
@@ -89,31 +86,30 @@ const loanCardSlice = createSlice({
       .addCase(create.fulfilled, loanCardAdapter.addOne)
       .addCase(update.fulfilled, loanCardAdapter.setOne)
       .addCase(remove.fulfilled, loanCardAdapter.removeOne)
-      .addMatcher(isPending, (state, _) => {
+      .addMatcher(isAnyOf(get.pending, getById.pending, create.pending, update.pending, remove.pending), (state, _) => {
         state.status = "loading";
       })
-      .addMatcher(isFulfilled, (state, _) => {
+      .addMatcher(isAnyOf(get.fulfilled, getById.fulfilled, create.fulfilled, update.fulfilled, remove.fulfilled), (state, _) => {
         state.status = "succeeded";
       })
-      .addMatcher(isRejected, (state, action) => {
+      .addMatcher(isAnyOf(get.rejected, getById.rejected, create.rejected, update.rejected, remove.rejected), (state, _) => {
         state.status = "failed";
-        state.error = action.error.message ? action.error.message : null;
       });
   },
 });
 
 export default loanCardSlice.reducer;
 
-export const { selectAll: selectAllLoanCard, selectById: selectLoanCardById } =
+export const { selectAll: selectAllLoanCard, selectById: selectLoanCardById, selectEntities: selectLoanEntities } =
   loanCardAdapter.getSelectors((state: RootState) => state.loanCard);
 
 export const selectLoanCardTableData = createSelector(
-  [selectAllLoanCard, (state) => state],
-  (loanCards, state) =>
+  [selectAllLoanCard, selectCategoryEntities],
+  (loanCards, categories) =>
     loanCards.map((loanCard) => {
       return {
         ...loanCard,
-        category: selectCategoryById(state, loanCard.category)?.name,
+        category: categories[loanCard.category]?.name,
       };
     })
 );

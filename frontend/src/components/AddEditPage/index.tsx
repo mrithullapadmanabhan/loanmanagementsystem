@@ -14,7 +14,7 @@ const AddEditPage = ({
   handleSubmit,
 }: AddEditPagePropsType) => {
   const submitButton = {
-    text: type === "add" ? "Add New" : "Edit",
+    text: `${type === "add" ? "Add New" : "Edit"} ${entityName}`,
   };
 
   return (

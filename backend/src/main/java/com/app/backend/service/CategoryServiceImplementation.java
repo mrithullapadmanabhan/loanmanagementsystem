@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionSystemException;
 
 import com.app.backend.communication.request.CategoryCreateUpdateRequest;
 import com.app.backend.communication.response.CategoryResponse;
@@ -51,6 +52,8 @@ public class CategoryServiceImplementation implements CategoryService {
 
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Category should be unique");
+        } catch (TransactionSystemException e) {
+            throw new TransactionSystemException("Category can't be empty");
         }
     }
 
@@ -66,6 +69,8 @@ public class CategoryServiceImplementation implements CategoryService {
             return mapper.map(categoryRepository.save(category), CategoryResponse.class);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Category should be unique");
+        } catch (TransactionSystemException e) {
+            throw new TransactionSystemException("Category can't be empty");
         }
 
     }

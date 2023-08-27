@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "app/hooks";
-import ListPage from "components/ListPage";
+import { ListPage } from "components";
 
 import {
   categoryStatus,
@@ -16,6 +16,7 @@ const LoanCardList = () => {
 
   const categorystatus = useSelector(categoryStatus);
 
+
   useEffect(() => {
     if (status === "idle") {
       dispatch(get());
@@ -28,6 +29,7 @@ const LoanCardList = () => {
     }
   }, [categorystatus, dispatch]);
 
+
   const fields = [
     {
       key: "id",
@@ -36,10 +38,6 @@ const LoanCardList = () => {
     {
       key: "category",
       label: "Category",
-    },
-    {
-      key: "name",
-      label: "Name",
     },
     {
       key: "duration",

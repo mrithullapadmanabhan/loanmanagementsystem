@@ -1,9 +1,8 @@
 import {
   createEntityAdapter,
+  createSelector,
   createSlice,
-  isFulfilled,
-  isPending,
-  isRejected,
+  isAnyOf
 } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 
@@ -77,8 +76,14 @@ const categorySlice = createSlice({
   initialState: categoryAdapter.getInitialState({
     status: "idle",
     error: "",
+    selected: ""
   } as initialStateType),
-  reducers: {},
+  reducers: {
+    selectCategory(state, action) {
+      const { id } = action.payload
+      state.selected = id
+    }
+  },
   extraReducers(builder) {
     builder
       .addCase(get.fulfilled, categoryAdapter.setAll)
@@ -86,23 +91,27 @@ const categorySlice = createSlice({
       .addCase(create.fulfilled, categoryAdapter.setOne)
       .addCase(update.fulfilled, categoryAdapter.setOne)
       .addCase(remove.fulfilled, categoryAdapter.removeOne)
-      .addMatcher(isPending, (state, _) => {
+      .addMatcher(isAnyOf(get.pending, getById.pending, create.pending, update.pending, remove.pending), (state, _) => {
         state.status = "loading";
       })
-      .addMatcher(isFulfilled, (state, _) => {
+      .addMatcher(isAnyOf(get.fulfilled, getById.fulfilled, create.fulfilled, update.fulfilled, remove.fulfilled), (state, _) => {
         state.status = "succeeded";
       })
-      .addMatcher(isRejected, (state, action) => {
+      .addMatcher(isAnyOf(get.rejected, getById.rejected, create.rejected, update.rejected, remove.rejected), (state, _) => {
         state.status = "failed";
-        state.error = action.error.message ? action.error.message : null;
       });
   },
 });
 
+export const { selectCategory } = categorySlice.actions
 export default categorySlice.reducer;
 
-export const { selectAll: selectAllCategory, selectById: selectCategoryById } =
+export const { selectAll: selectAllCategory, selectById: selectCategoryById, selectEntities: selectCategoryEntities } =
   categoryAdapter.getSelectors((state: RootState) => state.category);
+
+export const selectCategorySelected = createSelector(
+  [selectCategoryEntities, (state: RootState) => state.category.selected], (categories, id) => id && categories[id]
+)
 
 export const categoryStatus = (state: RootState) => state.category.status;
 export const categoryError = (state: RootState) => state.category.error;

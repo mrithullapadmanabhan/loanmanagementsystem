@@ -2,15 +2,13 @@ import {
   createEntityAdapter,
   createSelector,
   createSlice,
-  isFulfilled,
-  isPending,
-  isRejected,
+  isAnyOf
 } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 
 import { createAsyncThunk } from "app/hooks";
 
-import { selectCategoryById } from "features/Category/categorySlice";
+import { selectCategoryEntities, selectCategorySelected } from "features/Category/categorySlice";
 import { initialStateType } from "features/common/initialStateType";
 import { toast } from "react-toastify";
 import {
@@ -85,9 +83,13 @@ const makeSlice = createSlice({
   name: "makes",
   initialState: makeAdapter.getInitialState({
     status: "idle",
-    error: "",
   } as initialStateType),
-  reducers: {},
+  reducers: {
+    selectMake(state, action) {
+      const { id } = action.payload
+      state.selected = id
+    }
+  },
   extraReducers(builder) {
     builder
       .addCase(get.fulfilled, makeAdapter.setAll)
@@ -96,40 +98,45 @@ const makeSlice = createSlice({
       .addCase(create.fulfilled, makeAdapter.addOne)
       .addCase(update.fulfilled, makeAdapter.setOne)
       .addCase(remove.fulfilled, makeAdapter.removeOne)
-      .addMatcher(isPending, (state, _) => {
+      .addMatcher(isAnyOf(get.pending, getById.pending, getByCategory.pending, create.pending, update.pending, remove.pending), (state, _) => {
         state.status = "loading";
       })
-      .addMatcher(isFulfilled, (state, _) => {
+      .addMatcher(isAnyOf(get.fulfilled, getById.fulfilled, getByCategory.pending, create.fulfilled, update.fulfilled, remove.fulfilled), (state, _) => {
         state.status = "succeeded";
       })
-      .addMatcher(isRejected, (state, action) => {
+      .addMatcher(isAnyOf(get.rejected, getById.rejected, getByCategory.rejected, create.rejected, update.rejected, remove.rejected), (state, _) => {
         state.status = "failed";
-        state.error = action.error.message ? action.error.message : null;
       });
   },
 });
 
+export const { selectMake } = makeSlice.actions
 export default makeSlice.reducer;
 
-export const { selectAll: selectAllMake, selectById: selectMakeById } =
+export const { selectAll: selectAllMake, selectById: selectMakeById, selectEntities: selectMakeEntities } =
   makeAdapter.getSelectors((state: RootState) => state.make);
 
 export const selectMakeByCategory = createSelector(
-  [selectAllMake, (_, categoryId) => categoryId],
-  (makes, categoryId) =>
-    makes.filter((make) => (make.category === categoryId))
+  [selectAllMake, selectCategorySelected],
+  (makes, category) => category !== "" && category ?
+    makes.filter((make) => (make.category === category.id)) :
+    [],
 );
 
 export const selectMakeTableData = createSelector(
-  [selectAllMake, (state) => state],
-  (makes, state) =>
+  [selectAllMake, selectCategoryEntities],
+  (makes, categories) =>
     makes.map((make) => {
       return {
         ...make,
-        category: selectCategoryById(state, make.category)?.name,
+        category: categories[make.category]?.name,
       };
     })
 );
+
+export const selectMakeSelected = createSelector(
+  [selectMakeEntities, (state: RootState) => state.make.selected], (makes, id) => id && makes[id]
+)
 
 export const makeStatus = (state: RootState) => state.make.status;
 export const makeError = (state: RootState) => state.make.error;

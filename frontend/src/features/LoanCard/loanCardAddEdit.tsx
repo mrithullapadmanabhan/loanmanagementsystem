@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "app/hooks";
-import AddEditPage from "components/AddEditPage";
+import { AddEditPage } from "components";
 import { categoryStatus, get as getCategories, selectAllCategory } from "features/Category/categorySlice";
 import { useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
@@ -35,29 +35,16 @@ const LoanCardAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
             type: "select" as const,
             label: "Category",
             placeholder: "",
-            errorMessage: null,
-            regex: null,
             initialData: data ? data.category : "",
             options: categories.map((category) => { return { value: category.id, label: category.name } }),
             disabled: type === "edit",
         },
-        name: {
-            type: "text" as const,
-            label: "Name",
-            placeholder: "",
-            errorMessage:
-                "Name cannot be blank",
-            regex:
-                "^.{1,}$",
-            initialData: data ? data.name : "",
-            disabled: false,
-        },
         duration: {
             type: "text" as const,
-            label: "Duration (in years)",
+            label: "Duration (in months)",
             placeholder: "",
-            errorMessage: null,
-            regex: null,
+            regex: "^[1-9][0-9]*$",
+            errorMessage: "Duration can only be a non zero number",
             initialData: data ? data.duration : "",
             disabled: false,
         }
@@ -71,7 +58,7 @@ const LoanCardAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
             handleSubmit={
                 (data: any) => {
                     if (type === "edit") {
-                        dispatch(update({ id: data.id, data }));
+                        dispatch(update({ id: id!, data }));
                     } else {
                         dispatch(create(data));
                     }

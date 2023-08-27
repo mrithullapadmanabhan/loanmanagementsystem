@@ -2,16 +2,15 @@ import {
   createEntityAdapter,
   createSelector,
   createSlice,
-  isFulfilled,
-  isPending,
-  isRejected,
+  isAnyOf
 } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 
 import { createAsyncThunk } from "app/hooks";
 
-import { selectCategoryById } from "features/Category/categorySlice";
-import { selectMakeById } from "features/Make/makeSlice";
+import { selectCategoryEntities } from "features/Category/categorySlice";
+import { selectAllLoanCard } from "features/LoanCard/loanCardSlice";
+import { selectMakeEntities, selectMakeSelected } from "features/Make/makeSlice";
 import { initialStateType } from "features/common/initialStateType";
 import { toast } from "react-toastify";
 import {
@@ -99,7 +98,6 @@ const itemCardSlice = createSlice({
   name: "itemCards",
   initialState: itemCardAdapter.getInitialState({
     status: "idle",
-    error: "",
   } as initialStateType),
   reducers: {},
   extraReducers(builder) {
@@ -111,36 +109,52 @@ const itemCardSlice = createSlice({
       .addCase(create.fulfilled, itemCardAdapter.addOne)
       .addCase(update.fulfilled, itemCardAdapter.setOne)
       .addCase(remove.fulfilled, itemCardAdapter.removeOne)
-      .addMatcher(isPending, (state, _) => {
+      .addMatcher(isAnyOf(get.pending, getById.pending, getByEmployee.pending, getByMake.pending, create.pending, update.pending, remove.pending), (state, _) => {
         state.status = "loading";
       })
-      .addMatcher(isFulfilled, (state, _) => {
+      .addMatcher(isAnyOf(get.fulfilled, getById.fulfilled, getByEmployee.fulfilled, getByMake.fulfilled, create.fulfilled, update.fulfilled, remove.fulfilled), (state, _) => {
         state.status = "succeeded";
       })
-      .addMatcher(isRejected, (state, action) => {
+      .addMatcher(isAnyOf(get.rejected, getById.rejected, getByEmployee.rejected, getByMake.rejected, create.rejected, update.rejected, remove.rejected), (state, _) => {
         state.status = "failed";
-        state.error = action.error.message ? action.error.message : null;
       });
   },
 });
 
 export default itemCardSlice.reducer;
 
-export const { selectAll: selectAllItemCard, selectById: selectItemCardById } =
+export const { selectAll: selectAllItemCard, selectById: selectItemCardById, selectEntities: selectItemEntites } =
   itemCardAdapter.getSelectors((state: RootState) => state.itemCard);
 
 export const selectItemCardTableData = createSelector(
-  [selectAllItemCard, (state) => state],
-  (itemCards, state) =>
-    itemCards.map((itemCard) => {
-      const make = selectMakeById(state, itemCard.make)
+  [
+    selectAllItemCard,
+    selectMakeEntities,
+    selectCategoryEntities,
+    selectAllLoanCard,
+    (_state, employeeId) => employeeId
+  ],
+  (itemCards, makes, categories, loans, employeeID) => {
+    const l = loans.map((loan) => loan.category)
+
+    const finalitems = employeeID !== null ? itemCards : itemCards.filter((item) => makes[item.make]?.category && makes[item.make]!.category in l)
+
+    return finalitems.map((itemCard) => {
       return {
         ...itemCard,
-        make: make?.name,
-        category: selectCategoryById(state, (make?.category)!)?.name
+        make: makes[itemCard.make]?.name,
+        category: makes[itemCard.make] && categories[makes[itemCard.make]!.category]?.name
       };
     })
+  }
 );
+
+export const selectItemCardByMake = createSelector(
+  [selectAllItemCard, selectMakeSelected],
+  (items, make) => {
+    return make !== "" && make !== undefined && items.filter((item) => item.make === make.id).at(0)
+  }
+)
 
 export const itemCardStatus = (state: RootState) => state.itemCard.status;
 export const itemCardError = (state: RootState) => state.itemCard.error;

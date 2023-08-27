@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "app/hooks";
-import ListPage from "components/ListPage";
+import { ListPage } from "components";
 
 import { useEffect } from "react";
 import { employeeStatus, get, remove, selectAllEmployee } from "./employeeSlice";
@@ -20,6 +20,10 @@ const EmployeeList = () => {
     {
       key: "id",
       label: "Employee ID",
+    },
+    {
+      key: "email",
+      label: "Email"
     },
     {
       key: "name",

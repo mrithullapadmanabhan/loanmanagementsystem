@@ -2,13 +2,15 @@ import {
   createEntityAdapter,
   createSelector,
   createSlice,
-  isFulfilled,
-  isPending,
-  isRejected,
+  isAnyOf
 } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 
 import { createAsyncThunk } from "app/hooks";
+import { selectCategoryEntities } from "features/Category/categorySlice";
+import { selectEmployeeEntities } from "features/Employee/employeeSlice";
+import { selectItemEntites } from "features/ItemCard/itemCardSlice";
+import { selectLoanEntities } from "features/LoanCard/loanCardSlice";
 import { initialStateType } from "features/common/initialStateType";
 import { toast } from "react-toastify";
 import {
@@ -64,7 +66,6 @@ const employeeLoanSlice = createSlice({
   name: "employeeLoans",
   initialState: employeeLoanAdapter.getInitialState({
     status: "idle",
-    error: "",
   } as initialStateType),
   reducers: {},
   extraReducers(builder) {
@@ -73,15 +74,14 @@ const employeeLoanSlice = createSlice({
       .addCase(getByEmployeeId.fulfilled, employeeLoanAdapter.setMany)
       .addCase(create.fulfilled, employeeLoanAdapter.setOne)
       .addCase(updateStatus.fulfilled, employeeLoanAdapter.setOne)
-      .addMatcher(isPending, (state, _) => {
+      .addMatcher(isAnyOf(get.pending, getByEmployeeId.pending, create.pending, updateStatus.pending), (state, _) => {
         state.status = "loading";
       })
-      .addMatcher(isFulfilled, (state, _) => {
+      .addMatcher(isAnyOf(get.fulfilled, getByEmployeeId.fulfilled, create.fulfilled, updateStatus.fulfilled), (state, _) => {
         state.status = "succeeded";
       })
-      .addMatcher(isRejected, (state, action) => {
+      .addMatcher(isAnyOf(get.rejected, getByEmployeeId.rejected, create.rejected, updateStatus.rejected), (state, _) => {
         state.status = "failed";
-        state.error = action.error.message ? action.error.message : null;
       });
   },
 });
@@ -93,20 +93,27 @@ export const {
   selectById: selectEmployeeLoanById,
 } = employeeLoanAdapter.getSelectors((state: RootState) => state.employeeLoan);
 
-export const selectByEmployee = createSelector(
-  [selectAllEmployeeLoan, (_, employeeId: string) => employeeId],
-  (employeeLoans, employeeId) =>
-    employeeLoans.filter((loan) => loan.employee === employeeId)
-);
-
 export const selectEmployeeLoanTableData = createSelector(
-  [selectAllEmployeeLoan, (state) => state],
-  (employeeLoans, state) =>
-    employeeLoans.map((employeeLoan) => {
+  [
+    selectAllEmployeeLoan,
+    selectCategoryEntities,
+    selectItemEntites,
+    selectLoanEntities,
+    selectEmployeeEntities,
+    (_state, isAdmin, _employeeId) => isAdmin,
+    (_state, _isAdmin, employeeID) => employeeID
+  ],
+  (employeeLoans, categories, items, loans, employees, isAdmin, employeeID) => {
+    const finalLoans = isAdmin ? employeeLoans : employeeLoans.filter((loan) => (loan.employee === employeeID));
+    return finalLoans.map((employeeLoan) => {
       return {
-        ...employeeLoan
+        ...employeeLoan,
+        employee: employees[employeeLoan.employee]?.name,
+        category: loans[employeeLoan.loan] && categories[loans[employeeLoan.loan]!.category]?.name,
+        item: items[employeeLoan.item]?.description,
       };
     })
+  }
 );
 
 export const employeeLoanStatus = (state: RootState) =>

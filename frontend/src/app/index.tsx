@@ -2,6 +2,8 @@ import CategoryAddEdit from "features/Category/categoryAddEdit";
 import CategoryList from "features/Category/categoryList";
 import EmployeeAddEdit from "features/Employee/employeeAddEdit";
 import EmployeeList from "features/Employee/employeeList";
+import EmployeeLoanAdd from "features/EmployeeLoan/employeeLoanAdd";
+import EmployeeLoanList from "features/EmployeeLoan/employeeLoanList";
 import ItemCardAddEdit from "features/ItemCard/itemCardAddEdit";
 import ItemCardList from "features/ItemCard/itemCardList";
 import LoanCardAddEdit from "features/LoanCard/loanCardAddEdit";
@@ -25,6 +27,18 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <EmployeeAddEdit type="register" />,
+      },
+      {
+        path: "loan/create",
+        element: <EmployeeLoanAdd />
+      },
+      {
+        path: "loan",
+        element: <EmployeeLoanList />
+      },
+      {
+        path: "item",
+        element: <ItemCardList />
       },
       {
         path: "admin/",
@@ -53,6 +67,14 @@ const router = createBrowserRouter([
           {
             path: "employee/create",
             element: <EmployeeAddEdit type="add" />
+          },
+          {
+            path: "loan",
+            element: <EmployeeLoanList />
+          },
+          {
+            path: "loan/create",
+            element: <EmployeeLoanAdd />
           },
           {
             path: "itemCard",

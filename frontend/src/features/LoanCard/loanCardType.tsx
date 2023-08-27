@@ -1,5 +1,4 @@
 export interface loanCardObjectType {
-  name: string;
   category: string;
   duration: string;
 }
