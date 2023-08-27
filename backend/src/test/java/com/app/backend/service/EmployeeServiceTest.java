@@ -108,7 +108,6 @@ public class EmployeeServiceTest {
     public void testUpdateEmployee() {
         UUID employeeId = UUID.randomUUID();
         EmployeeCreateUpdateRequest request = new EmployeeCreateUpdateRequest();
-        // Set properties in the request
 
         Employee mockEmployee = new Employee();
         User mockUser = new User();
@@ -124,7 +123,6 @@ public class EmployeeServiceTest {
         EmployeeResponse result = employeeService.update(employeeId, request);
 
         assertNotNull(result);
-        // Add more specific assertions based on the request and mocked behavior
     }
 
     @Test
