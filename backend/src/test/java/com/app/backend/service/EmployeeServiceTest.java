@@ -8,7 +8,6 @@ import com.app.backend.model.User;
 import com.app.backend.repository.EmployeeRepository;
 import com.app.backend.repository.RoleRepository;
 import com.app.backend.repository.UserRepository;
-import com.app.backend.service.EmployeeService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -39,7 +38,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class EmployeeServiceTest{
     @Autowired
-   private EmployeeService employeeService;
+    private EmployeeService employeeService;
 
     @MockBean
     EmployeeRepository employeeRepository;
@@ -110,7 +109,6 @@ public class EmployeeServiceTest{
     public void testUpdateEmployee() {
         UUID employeeId = UUID.randomUUID();
         EmployeeCreateUpdateRequest request = new EmployeeCreateUpdateRequest();
-        // Set properties in the request
 
         Employee mockEmployee = new Employee();
         User mockUser = new User();
@@ -126,7 +124,6 @@ public class EmployeeServiceTest{
         EmployeeResponse result = employeeService.update(employeeId, request);
 
         assertNotNull(result);
-        // Add more specific assertions based on the request and mocked behavior
     }
 
     @Test
