@@ -77,59 +77,57 @@ const Form = ({ onSubmit, formFields, submitButton }: FormPropsType) => {
   };
 
   return (
-    <>
-      <form className="mt-8 space-y-8" onSubmit={handleSubmit}>
-        {Object.entries(formFields).map(([name, fields]) => {
-          return (
-            <div className="form-group" key={name}>
-              <label htmlFor="username" className="input-label">
-                {fields.label}
-              </label>
-              {fields.type === "select" ? (
-                <select
-                  name={name}
-                  id={name}
-                  value={formData[name]}
-                  placeholder={fields.placeholder}
-                  onChange={handleChange}
-                  disabled={fields.disabled}
-                  className="input"
-                  required={true}
-                >
-                  <option value={""} disabled hidden>
-                    Select {fields.label}
+    <form className="mt-8 space-y-8" onSubmit={handleSubmit}>
+      {Object.entries(formFields).map(([name, fields]) => {
+        return (
+          <div className="form-group" key={name}>
+            <label htmlFor="username" className="input-label">
+              {fields.label}
+            </label>
+            {fields.type === "select" ? (
+              <select
+                name={name}
+                id={name}
+                value={formData[name]}
+                placeholder={fields.placeholder}
+                onChange={handleChange}
+                disabled={fields.disabled}
+                className="input"
+                required={true}
+              >
+                <option value={""} disabled hidden>
+                  Select {fields.label}
+                </option>
+                {fields.options.map(({ value, label }) => (
+                  <option value={value} key={value}>
+                    {label}
                   </option>
-                  {fields.options.map(({ value, label }) => (
-                    <option value={value} key={value}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <input
-                  type={fields.type}
-                  id={name}
-                  name={name}
-                  value={formData[name]}
-                  onChange={handleChange}
-                  placeholder={fields.placeholder}
-                  className="input"
-                  disabled={fields.disabled}
-                />
-              )}
-              {formError[name] && (
-                <span className="text-sm text-red-600">
-                  {fields.errorMessage}
-                </span>
-              )}
-            </div>
-          );
-        })}
-        <button className={"bg-violet-700 long-button"} type="submit">
-          {submitButton.text}
-        </button>
-      </form>
-    </>
+                ))}
+              </select>
+            ) : (
+              <input
+                type={fields.type}
+                id={name}
+                name={name}
+                value={formData[name]}
+                onChange={handleChange}
+                placeholder={fields.placeholder}
+                className="input"
+                disabled={fields.disabled}
+              />
+            )}
+            {formError[name] && (
+              <span className="text-xs text-red-600">
+                {fields.errorMessage}
+              </span>
+            )}
+          </div>
+        );
+      })}
+      <button className={"bg-blue-900 long-button"} type="submit">
+        {submitButton.text}
+      </button>
+    </form>
   );
 };
 

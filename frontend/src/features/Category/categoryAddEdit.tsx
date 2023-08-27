@@ -1,7 +1,10 @@
-import { useDispatch, useSelector } from "app/hooks";
-import { AddEditPage } from "components";
 import { useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
+
+import { useDispatch, useSelector } from "app/hooks";
+import { AddEditPage } from "components";
+
+import { entityName } from "./categoryApi";
 import { create, getById, selectCategoryById, update } from "./categorySlice";
 
 
@@ -36,13 +39,13 @@ const CategoryAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
 
     return (
         <AddEditPage
-            entityName="Category"
+            entityName={entityName}
             type={type}
             fields={fields}
             handleSubmit={
                 (data: any) => {
                     if (type === "edit") {
-                        dispatch(update({ id: id!, data }));
+                        dispatch(update({ ...data, id }));
                     } else {
                         dispatch(create(data));
                     }

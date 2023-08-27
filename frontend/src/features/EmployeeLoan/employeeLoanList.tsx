@@ -1,29 +1,27 @@
+import { useEffect } from "react";
+
 import { useDispatch, useSelector } from "app/hooks";
 import { ListPage } from "components";
+import { isAdmin } from "service/auth";
 
-import {
-  categoryStatus,
-  get as getCategories,
-} from "features/Category/categorySlice";
+import { categoryStatus, get as getCategories } from "features/Category/categorySlice";
 import { get as getItemCards, itemCardStatus } from "features/ItemCard/itemCardSlice";
 import { get as getLoanCards, loanCardStatus } from "features/LoanCard/loanCardSlice";
-import { useEffect } from "react";
-import { isAdmin } from "service/auth";
+import { get as getMakes, makeStatus } from "features/Make/makeSlice";
+import { entityName } from "./employeeLoanApi";
 import { employeeLoanStatus, get, getByEmployeeId, selectEmployeeLoanTableData, updateStatus } from "./employeeLoanSlice";
+
 
 const EmployeeLoanList = () => {
   const dispatch = useDispatch();
+
   const admin = isAdmin();
   const employeeId = localStorage.getItem("employeeID");
 
+
   const employeeLoans = useSelector((state) => selectEmployeeLoanTableData(state, admin, employeeId));
+
   const status = useSelector(employeeLoanStatus);
-
-  const categorystatus = useSelector(categoryStatus);
-  const loancardstatus = useSelector(loanCardStatus);
-  const itemcardstatus = useSelector(itemCardStatus)
-
-
   useEffect(() => {
     if (status === "idle") {
       admin ?
@@ -32,18 +30,32 @@ const EmployeeLoanList = () => {
     }
   }, [status, dispatch, admin, employeeId]);
 
+
+  const categorystatus = useSelector(categoryStatus);
   useEffect(() => {
     if (categorystatus === "idle") {
       dispatch(getCategories());
     }
   }, [categorystatus, dispatch]);
 
+
+  const makestatus = useSelector(makeStatus);
+  useEffect(() => {
+    if (makestatus === "idle") {
+      dispatch(getMakes());
+    }
+  }, [makestatus, dispatch]);
+
+
+  const loancardstatus = useSelector(loanCardStatus);
   useEffect(() => {
     if (loancardstatus === "idle") {
       dispatch(getLoanCards());
     }
   }, [loancardstatus, dispatch]);
 
+
+  const itemcardstatus = useSelector(itemCardStatus)
   useEffect(() => {
     if (itemcardstatus === "idle") {
       dispatch(getItemCards());
@@ -83,8 +95,8 @@ const EmployeeLoanList = () => {
 
   return (
     <ListPage
-      entityName={admin ? "Employee Loan" : "Loan"}
-      entityNamePlural={admin ? "Employee Loans" : "Loans"}
+      entityName={admin ? entityName : "Loan"}
+      entityNamePlural={admin ? entityName : "Loans"}
       fields={fields}
       data={employeeLoans as unknown as { [key: string]: string }[]}
       editUrl={(id) => `/admin/loan/${id}`}

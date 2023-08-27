@@ -5,6 +5,7 @@ export interface AddEditPagePropsType {
   type: "add" | "edit";
   fields: formPropsFieldsType;
   handleSubmit: (data: any) => void;
+  verb?: string
 }
 
 const AddEditPage = ({
@@ -12,18 +13,19 @@ const AddEditPage = ({
   type,
   fields,
   handleSubmit,
+  verb
 }: AddEditPagePropsType) => {
   const submitButton = {
-    text: `${type === "add" ? "Add New" : "Edit"} ${entityName}`,
+    text: `${verb ? verb : (type === "add" ? "Add New" : "Edit")} ${entityName}`,
   };
 
   return (
-    <div className="flex justify-center h-screen">
-      <div className="px-5 py-8 md:px-0 md:w-[25%] mt-12">
+    <div className="flex justify-center">
+      <div className="px-5 py-8 md:px-0 w-[80%] sm:w-[50%] md:w-[30%] my-12">
         <div className="space-y-2">
-          <h2 className="text-xl md:text-3xl font-bold text-center">
+          <h2 className="text-3xl font-bold text-center">
             {" "}
-            {type === "add" ? "Add" : "Edit"} {entityName}
+            {verb ? verb : (type === "add" ? "Add" : "Edit")} {entityName}
           </h2>
         </div>
         <Form
