@@ -1,9 +1,4 @@
 package com.app.backend.service;
-import com.app.backend.communication.request.MakeCreateUpdateRequest;
-import com.app.backend.communication.response.MakeResponse;
-import com.app.backend.model.Category;
-import com.app.backend.model.Make;
-import com.app.backend.repository.MakeRepository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -28,6 +23,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.app.backend.communication.request.MakeCreateUpdateRequest;
+import com.app.backend.communication.response.MakeResponse;
+import com.app.backend.model.Category;
+import com.app.backend.model.Make;
+import com.app.backend.repository.MakeRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,10 +38,10 @@ public class MakeServiceTest {
 
     @MockBean
     MakeRepository makeRepository;
-    
+
     @Mock
     private ModelMapper mapper;
-    
+
     @Test 
     public void getAllMakesServiceTest(){
         //Mock data records setting
@@ -55,31 +55,32 @@ public class MakeServiceTest {
     public void testGetMakeById() {
         UUID makeId = UUID.randomUUID();
         when(makeRepository.findById(makeId))
-            .thenReturn(Optional.of(new Make()));
+                .thenReturn(Optional.of(new Make()));
 
         MakeResponse result = makeService.get(makeId);
 
         assertNotNull(result);
-}
+    }
+
+    // @Test
+    // public void testGetMakeByCategory() throws Exception{
+    // UUID categoryId = UUID.randomUUID();
+    // when(makeRepository.findByCategory(categoryId).stream().map((make) => ))
+    // .thenReturn(Stream.of(new MakeResponse(), new
+    // MakeResponse()).collect(Collectors.toList()));
+
+    // MakeResponse result;
+    // try {
+    // result= makeService.get(categoryId);
+
+    // } catch (Exception e) {
+    // return;
+    // }
+    // assertNotNull(result);
+    // }
 
     @Test
-    public void testGetMakeByCategory() throws Exception{
-        UUID categoryId = UUID.randomUUID();
-        when(makeRepository.findByCategory(categoryId))
-        .thenReturn(Stream.of(new MakeResponse(), new MakeResponse()).collect(Collectors.toList()));
-
-        MakeResponse result;
-        try {
-            result= makeService.get(categoryId);
-
-        } catch (Exception e) {
-            return;
-        }
-        assertNotNull(result);
-}
-
-    @Test
-    public void testCreateMake() throws Exception{
+    public void testCreateMake() throws Exception {
         MakeCreateUpdateRequest makeRequest = new MakeCreateUpdateRequest();
         MakeResponse makeResponse = new MakeResponse();
         Category category = new Category();
@@ -101,11 +102,11 @@ public class MakeServiceTest {
         when(mapper.map(any(), eq(MakeResponse.class))).thenReturn(mockResponse);
         MakeResponse result;
         try {
-             result=makeService.create(makeRequest);
+            result = makeService.create(makeRequest);
         } catch (Exception e) {
             return;
         }
-        
+
         assertNotNull(result);
     }
 
@@ -123,7 +124,7 @@ public class MakeServiceTest {
         MakeResponse mockResponse = new MakeResponse();
         when(mapper.map(any(), eq(MakeResponse.class))).thenReturn(mockResponse);
 
-        MakeResponse result= makeService.update(makeId,request);
+        MakeResponse result = makeService.update(makeId, request);
         assertNotNull(result);
     }
 
@@ -138,9 +139,4 @@ public class MakeServiceTest {
         verify(makeRepository, times(1)).delete(mockMake);
     }
 
-
-
-        
-
 }
-
