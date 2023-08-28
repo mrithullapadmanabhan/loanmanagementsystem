@@ -15,6 +15,11 @@ const ItemCardAddEdit = ({ type }: { type: 'add' | 'edit' }) => {
     const navigate = useNavigate();
 
 
+    useEffect(() => {
+        dispatch(selectCategory(""))
+        dispatch(selectMake(""))
+    }, [dispatch]);
+
     const { id } = useParams();
     const data = useSelector((state) => selectItemCardById(state, id!));
 

@@ -2,7 +2,8 @@ import { toast } from "react-toastify"
 
 export const withToast = (
   apiCall: Promise<any>,
-  entityName: string, verb: string,
+  entityName: string,
+  verb: string,
   options: {
     pending?: boolean,
     error?: boolean,

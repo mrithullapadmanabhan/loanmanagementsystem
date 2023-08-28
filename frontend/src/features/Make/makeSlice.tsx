@@ -13,6 +13,7 @@ import { makeObjectType, makeType } from "./makeType";
 const makeAdapter = createEntityAdapter<makeType>();
 const initialState = makeAdapter.getInitialState({
   status: "idle",
+  selected: ""
 } as initialStateType);
 
 
@@ -55,8 +56,8 @@ const makeSlice = createSlice({
   initialState: initialState,
   reducers: {
     selectMake(state, action) {
-      const { id } = action.payload
-      state.selected = id
+      const { id } = action.payload;
+      state.selected = id;
     }
   },
   extraReducers(builder) {

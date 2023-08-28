@@ -21,6 +21,11 @@ const EmployeeLoanAdd = () => {
     const admin = isAdmin();
     const employeeID = localStorage.getItem("employeeID")
 
+    useEffect(() => {
+        dispatch(selectCategory(""))
+        dispatch(selectMake(""))
+    }, [dispatch]);
+
 
     const categories = useSelector(selectAllCategory);
     const selectedCategory = useSelector(selectCategorySelected);

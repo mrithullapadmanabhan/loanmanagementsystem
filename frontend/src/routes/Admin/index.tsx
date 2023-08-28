@@ -17,9 +17,7 @@ const Admin = () => {
 
 
   return (
-    <>
-      <Outlet />
-    </>
+    <Outlet />
   );
 };
 
