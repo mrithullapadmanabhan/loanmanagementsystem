@@ -19,17 +19,15 @@ const Root = () => {
   }, [loggedIn, pageAuthRequired, navigate]);
 
   return (
-    <>
-      <div
-        className={
-          "overflow-hidden transition-all duration-300" + (pageAuthRequired ? "mt-5 ml-14 md:ml-64" : "")
-        }
-      >
-        {loggedIn && pageAuthRequired && <Sidebar />}
-        <ToastContainer theme="dark" position="bottom-left" autoClose={1000} />
-        <Outlet />
-      </div>
-    </>
+    <div
+      className={
+        "overflow-hidden transition-all duration-300" + (pageAuthRequired ? "mt-10 ml-14 md:ml-64" : "")
+      }
+    >
+      {loggedIn && pageAuthRequired && <Sidebar />}
+      <ToastContainer theme="dark" position="bottom-left" autoClose={1000} />
+      <Outlet />
+    </div>
   );
 };
 

@@ -80,7 +80,7 @@ function ListPage({
         <DeletePopup closePopup={closePopup} onSubmit={deleteItem} entityName={entityName} />
       )}
 
-      <div className="p-4 sm:p-8 md:p-11 flex flex-col gap-12">
+      <div className="p-6 sm:p-8 md:p-11 flex flex-col gap-12">
         <div className="w-full flex flex-col justify-center gap-4 mb-6 lg:mb-0">
           <div className="flex gap-10 mb-10 justify-between">
             <h1 className="text-3xl font-semibold">{entityNamePlural}</h1>

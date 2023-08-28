@@ -15,16 +15,16 @@ const Sidebar = () => {
         <ul className="flex flex-col py-4 space-y-1">
           <li className="px-5 hidden md:block">
             <div className="flex flex-row items-center h-20">
-              <div className="text-lg tracking-wide text-grey-100">Welcome {admin ? " Admin" : " Employee"}</div>
+              <div className="text-lg tracking-wide text-white-800">Welcome {admin ? " Admin" : " Employee"}</div>
             </div>
           </li>
           {options.map(({ label, route, Icon }) => {
             return (<li>
-              <div onClick={() => navigate(route)} className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-gray-400 hover:text-gray-100 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
+              <div onClick={() => navigate(route)} className="relative flex flex-row items-center h-12 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-100 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                 <span className="inline-flex justify-center items-center ml-4">
                   <FontAwesomeIcon icon={Icon} />
                 </span>
-                <span className="ml-4 text-sm tracking-wide truncate">{label}</span>
+                <span className="ml-4 text-xs tracking-wide truncate">{label}</span>
               </div>
             </li>);
           })}
