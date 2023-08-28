@@ -19,7 +19,6 @@ import com.app.backend.repository.CategoryRepository;
 import com.app.backend.repository.LoanCardRepository;
 import com.app.backend.repository.MakeRepository;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -70,7 +69,6 @@ public class CategoryServiceImplementation implements CategoryService {
         }
     }
 
-    @Transactional
     @Override
     public CategoryResponse update(UUID id, @Valid CategoryCreateUpdateRequest request) {
         Category category = categoryRepository.findById(id)
