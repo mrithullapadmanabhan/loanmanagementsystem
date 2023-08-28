@@ -25,6 +25,9 @@ const EmployeeAddEdit = ({ type }: { type: 'add' | 'edit' | 'register' }) => {
     const data = useSelector((state) => selectEmployeeById(state, id!));
 
 
+    const maxDob = new Date();
+    maxDob.setFullYear(maxDob.getFullYear() - 18)
+
     const fields = {
         email: {
             type: "text" as const,
@@ -93,6 +96,7 @@ const EmployeeAddEdit = ({ type }: { type: 'add' | 'edit' | 'register' }) => {
             placeholder: "dd-mm-yyyy",
             initialData: data ? data.dob : "",
             disabled: false,
+            maxDate: maxDob.toISOString().split("T")[0],
         },
         doj: {
             type: "date" as const,
@@ -100,6 +104,7 @@ const EmployeeAddEdit = ({ type }: { type: 'add' | 'edit' | 'register' }) => {
             placeholder: "dd-mm-yyyy",
             initialData: data ? data.doj : "",
             disabled: false,
+            maxDate: new Date().toISOString().split("T")[0],
         },
     };
 
