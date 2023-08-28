@@ -74,7 +74,6 @@ public class ItemCardServiceImplementation implements ItemCardService {
 		try {
 			return mapper.map(itemCardRepository.save(itemCard), ItemCardResponse.class);
 		} catch (Exception e) {
-			System.out.println("Hello");
 			throw new DataIntegrityViolationException("Itemcard with selected Make already exists");
 		}
 	}
