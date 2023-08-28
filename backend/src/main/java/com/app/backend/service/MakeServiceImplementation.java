@@ -1,6 +1,7 @@
 package com.app.backend.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
@@ -12,8 +13,10 @@ import com.app.backend.communication.request.MakeCreateUpdateRequest;
 import com.app.backend.communication.response.MakeResponse;
 import com.app.backend.exception.ResourceNotFoundException;
 import com.app.backend.model.Category;
+import com.app.backend.model.ItemCard;
 import com.app.backend.model.Make;
 import com.app.backend.repository.CategoryRepository;
+import com.app.backend.repository.ItemCardRepository;
 import com.app.backend.repository.MakeRepository;
 
 import jakarta.validation.Valid;
@@ -25,7 +28,11 @@ public class MakeServiceImplementation implements MakeService {
 
     private final MakeRepository makeRepository;
 
+    private final ItemCardService itemCardService;
+
     private final CategoryRepository categoryRepository;
+
+    private final ItemCardRepository itemCardRepository;
 
     private final ModelMapper mapper;
 
@@ -88,6 +95,10 @@ public class MakeServiceImplementation implements MakeService {
         Make make = makeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Make with this ID does not exist"));
 
+        Optional<ItemCard> itemCard = itemCardRepository.findByMake(make);
+        if (itemCard.isPresent()) {
+            itemCardService.delete(itemCard.get().getId());
+        }
         makeRepository.delete(make);
     }
 

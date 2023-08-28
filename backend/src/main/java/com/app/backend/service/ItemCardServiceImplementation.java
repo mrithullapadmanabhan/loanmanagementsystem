@@ -11,8 +11,10 @@ import com.app.backend.communication.request.ItemCardCreateUpdateRequest;
 import com.app.backend.communication.response.ItemCardResponse;
 import com.app.backend.exception.ResourceNotFoundException;
 import com.app.backend.model.Employee;
+import com.app.backend.model.EmployeeLoan;
 import com.app.backend.model.ItemCard;
 import com.app.backend.model.Make;
+import com.app.backend.repository.EmployeeLoanRepository;
 import com.app.backend.repository.EmployeeRepository;
 import com.app.backend.repository.ItemCardRepository;
 import com.app.backend.repository.MakeRepository;
@@ -28,6 +30,8 @@ public class ItemCardServiceImplementation implements ItemCardService {
 
 	private final MakeRepository makeRepository;
 	private final EmployeeRepository employeeRepository;
+
+	private final EmployeeLoanRepository employeeLoanRepository;
 
 	private final ModelMapper mapper;
 
@@ -95,6 +99,10 @@ public class ItemCardServiceImplementation implements ItemCardService {
 		ItemCard itemCard = itemCardRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("ItemCard with this ID does not exist"));
 
+		List<EmployeeLoan> employeeLoans = employeeLoanRepository.findByItem(itemCard);
+		for (EmployeeLoan employeeLoan : employeeLoans) {
+			employeeLoanRepository.delete(employeeLoan);
+		}
 		itemCardRepository.delete(itemCard);
 	}
 
