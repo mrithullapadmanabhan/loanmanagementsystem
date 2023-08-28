@@ -60,9 +60,9 @@ public class MakeServiceImplementation implements MakeService {
         try {
             return mapper.map(makeRepository.save(make), MakeResponse.class);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("Make should be unique");
+            throw new DataIntegrityViolationException("Make name should be unique");
         } catch (TransactionSystemException e) {
-            throw new TransactionSystemException("Make can't be empty");
+            throw new TransactionSystemException("Make name can't be empty");
         }
 
     }

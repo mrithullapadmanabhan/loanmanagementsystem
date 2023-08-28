@@ -29,21 +29,21 @@ import lombok.NoArgsConstructor;
 public class ItemCard {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-	
-	@NotBlank(message="Description cannot be blank")
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
+
+	@NotBlank(message = "Description cannot be blank")
 	private String description;
-	
-	@NotNull(message="Value cannot be empty")
+
+	@NotNull(message = "Value cannot be empty")
 	private Double value;
 
-	@OneToOne(optional = false, fetch = FetchType.EAGER)
+	@OneToOne(optional = true, fetch = FetchType.EAGER)
 	@JsonManagedReference
 	private Make make;
 
 	@OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonBackReference
 	private List<EmployeeLoan> loans;
-	
+
 }

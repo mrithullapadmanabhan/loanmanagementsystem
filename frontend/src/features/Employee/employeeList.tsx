@@ -1,20 +1,24 @@
+import { useEffect } from "react";
+
 import { useDispatch, useSelector } from "app/hooks";
 import { ListPage } from "components";
 
-import { useEffect } from "react";
+import { entityName, entityNamePlural } from "./employeeApi";
 import { employeeStatus, get, remove, selectAllEmployee } from "./employeeSlice";
+
 
 const EmployeeList = () => {
   const dispatch = useDispatch();
 
   const employees = useSelector(selectAllEmployee);
-  const status = useSelector(employeeStatus);
 
+  const status = useSelector(employeeStatus);
   useEffect(() => {
     if (status === "idle") {
       dispatch(get());
     }
   }, [status, dispatch]);
+
 
   const fields = [
     {
@@ -57,8 +61,8 @@ const EmployeeList = () => {
 
   return (
     <ListPage
-      entityName="Employee"
-      entityNamePlural="Employees"
+      entityName={entityName}
+      entityNamePlural={entityNamePlural}
       removeItem={(id) => {
         dispatch(remove(id));
       }}

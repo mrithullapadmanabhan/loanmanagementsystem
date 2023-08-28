@@ -22,11 +22,11 @@ const Root = () => {
     <>
       <div
         className={
-          "overflow-hidden ml-0" + (pageAuthRequired ? " sm:ml-[240px]" : "")
+          "overflow-hidden transition-all duration-300" + (pageAuthRequired ? "mt-5 ml-14 md:ml-64" : "")
         }
       >
         {loggedIn && pageAuthRequired && <Sidebar />}
-        <ToastContainer theme="dark" />
+        <ToastContainer theme="dark" position="bottom-left" autoClose={1000} />
         <Outlet />
       </div>
     </>

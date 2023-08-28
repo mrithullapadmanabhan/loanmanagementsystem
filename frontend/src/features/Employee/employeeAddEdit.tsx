@@ -1,7 +1,10 @@
-import { useDispatch, useSelector } from "app/hooks";
-import { AddEditPage, Form } from "components";
 import { useEffect } from 'react';
 import { Link, useNavigate, useParams } from "react-router-dom";
+
+import { useDispatch, useSelector } from "app/hooks";
+import { AddEditPage, Form } from "components";
+
+import { entityName } from './employeeApi';
 import { create, employeeStatus, getById, selectEmployeeById, update } from "./employeeSlice";
 import { employeeObjectType } from "./employeeType";
 
@@ -10,16 +13,16 @@ const EmployeeAddEdit = ({ type }: { type: 'add' | 'edit' | 'register' }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { id } = useParams();
 
-    const data = useSelector((state) => selectEmployeeById(state, id!));
     const status = useSelector(employeeStatus);
-
+    const { id } = useParams();
     useEffect(() => {
         if (type === 'edit') {
             dispatch(getById(id!));
         }
     }, [id, dispatch, type])
+
+    const data = useSelector((state) => selectEmployeeById(state, id!));
 
 
     const fields = {
@@ -117,16 +120,16 @@ const EmployeeAddEdit = ({ type }: { type: 'add' | 'edit' | 'register' }) => {
 
     return type === 'register' ? (
         <div className="flex justify-center mb-10">
-            <div className="px-5 md:px-0 md:w-[25%] mt-12">
+            <div className="px-5 py-8 md:px-0 w-[80%] sm:w-[50%] md:w-[30%] mt-12">
                 <div className="space-y-2">
-                    <h2 className="text-xl md:text-3xl font-bold text-center">
+                    <h2 className="text-3xl font-bold text-center">
                         Create an Employee
                     </h2>
                     <p className="text-center">
                         Or{" "}
                         <Link
                             to="/login"
-                            className={`text-indigo-700 font-semibold text-sm`}
+                            className={`text-blue-900 font-semibold text-sm`}
                         >
                             login to your account
                         </Link>
@@ -141,13 +144,13 @@ const EmployeeAddEdit = ({ type }: { type: 'add' | 'edit' | 'register' }) => {
         </div>
     ) : (
         <AddEditPage
-            entityName="Employee"
+            entityName={entityName}
             type={type}
             fields={fields}
             handleSubmit={
                 (data: any) => {
                     if (type === "edit") {
-                        dispatch(update({ id: id!, data }));
+                        dispatch(update({ ...data, id }));
                     } else {
                         dispatch(create(data));
                     }

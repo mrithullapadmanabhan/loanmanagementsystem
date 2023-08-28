@@ -22,7 +22,7 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error && error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
@@ -49,7 +49,12 @@ api.interceptors.response.use(
       }
     }
 
-    return Promise.reject(error);
+    return (
+      error &&
+      error.response &&
+      error.response.data &&
+      error.response.data.message
+    ) ? Promise.reject(error.response.data.message) : Promise.reject(error);
   }
 );
 
@@ -59,10 +64,12 @@ export const getApi = async <Type,>(url: string) => {
   const response = await api.get(url);
   return response.data as Type;
 };
+
 export const getByIdApi = async <Type,>(url: string, id: string) => {
   const response = await api.get(`${url}/${id}`);
   return response.data as Type;
 };
+
 export const createApi = async <Type, InputDataType>(
   url: string,
   data: InputDataType
@@ -70,10 +77,12 @@ export const createApi = async <Type, InputDataType>(
   const response = await api.post(url, data);
   return response.data as Type;
 };
+
 export const updateApi = async <Type,>(url: string, id: string, data: Type) => {
   const response = await api.put(`${url}/${id}`, data);
   return response.data as Type;
 };
+
 export const deleteApi = async (url: string, id: string) => {
   await api.delete(`${url}/${id}`);
 };

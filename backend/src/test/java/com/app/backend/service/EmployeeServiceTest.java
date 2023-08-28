@@ -1,13 +1,4 @@
 package com.app.backend.service;
-import com.app.backend.communication.request.EmployeeCreateUpdateRequest;
-import com.app.backend.communication.response.EmployeeResponse;
-import com.app.backend.model.Employee;
-import com.app.backend.model.Role;
-import com.app.backend.model.RoleEnum;
-import com.app.backend.model.User;
-import com.app.backend.repository.EmployeeRepository;
-import com.app.backend.repository.RoleRepository;
-import com.app.backend.repository.UserRepository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -33,16 +24,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.app.backend.communication.request.EmployeeCreateUpdateRequest;
+import com.app.backend.communication.response.EmployeeResponse;
+import com.app.backend.model.Employee;
+import com.app.backend.model.Role;
+import com.app.backend.model.RoleEnum;
+import com.app.backend.model.User;
+import com.app.backend.repository.EmployeeRepository;
+import com.app.backend.repository.RoleRepository;
+import com.app.backend.repository.UserRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class EmployeeServiceTest{
+public class EmployeeServiceTest {
     @Autowired
     private EmployeeService employeeService;
 
     @MockBean
     EmployeeRepository employeeRepository;
-    
+
     @MockBean
     UserRepository userRepository;
 
@@ -51,7 +51,7 @@ public class EmployeeServiceTest{
 
     @Mock
     private ModelMapper mapper;
-    
+
     @Test 
     public void getAllEmployeesServiceTest(){
         //Mock data records setting
@@ -65,28 +65,27 @@ public class EmployeeServiceTest{
     public void testGetEmployeeById() {
         UUID employeeId = UUID.randomUUID();
         when(employeeRepository.findById(employeeId))
-            .thenReturn(Optional.of(new Employee()));
+                .thenReturn(Optional.of(new Employee()));
 
         EmployeeResponse result = employeeService.get(employeeId);
 
         assertNotNull(result);
-}
+    }
 
     @Test
     public void testCreateEmployee() {
         EmployeeCreateUpdateRequest employeeRequest = new EmployeeCreateUpdateRequest();
         // Set properties in the request
-                Date date = new Date(0);
+        Date date = new Date(0);
 
-                employeeRequest.setEmail("myEmail@gmail.com");
-                employeeRequest.setGender("myGender");
-                employeeRequest.setDepartment("myDepartment");
-                employeeRequest.setDesignation("myDesignation");
-                employeeRequest.setName("myName");
-                employeeRequest.setPassword("myPassword@123");
-                employeeRequest.setDob(date);
-                employeeRequest.setDoj(date);
-
+        employeeRequest.setEmail("myEmail@gmail.com");
+        employeeRequest.setGender("myGender");
+        employeeRequest.setDepartment("myDepartment");
+        employeeRequest.setDesignation("myDesignation");
+        employeeRequest.setName("myName");
+        employeeRequest.setPassword("myPassword@123");
+        employeeRequest.setDob(date);
+        employeeRequest.setDoj(date);
 
         Role mockRole = new Role();
         when(roleRepository.findByName(RoleEnum.USER)).thenReturn(Optional.of(mockRole));
@@ -136,9 +135,5 @@ public class EmployeeServiceTest{
 
         verify(employeeRepository, times(1)).delete(mockEmployee);
     }
-
-
-
-        
 
 }

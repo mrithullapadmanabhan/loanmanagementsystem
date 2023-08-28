@@ -1,19 +1,18 @@
+import { useEffect } from "react";
+
 import { useDispatch, useSelector } from "app/hooks";
 import { ListPage } from "components";
 
-import {
-  categoryStatus,
-  selectAllCategory
-} from "features/Category/categorySlice";
-import { useEffect } from "react";
-import { get, remove } from "./categorySlice";
+import { entityName, entityNamePlural } from "./categoryApi";
+import { categoryStatus, get, remove, selectAllCategory } from "./categorySlice";
+
 
 const CategoryList = () => {
   const dispatch = useDispatch();
 
   const categories = useSelector(selectAllCategory);
-  const status = useSelector(categoryStatus);
 
+  const status = useSelector(categoryStatus);
   useEffect(() => {
     if (status === "idle") {
       dispatch(get());
@@ -37,8 +36,8 @@ const CategoryList = () => {
 
   return (
     <ListPage
-      entityName="Category"
-      entityNamePlural="Categories"
+      entityName={entityName}
+      entityNamePlural={entityNamePlural}
       removeItem={(id) => {
         dispatch(remove(id));
       }}

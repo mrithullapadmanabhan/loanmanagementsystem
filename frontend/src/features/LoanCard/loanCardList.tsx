@@ -1,28 +1,28 @@
+import { useEffect } from "react";
+
 import { useDispatch, useSelector } from "app/hooks";
 import { ListPage } from "components";
+import { categoryStatus, get as getCategories, } from "features/Category/categorySlice";
 
-import {
-  categoryStatus,
-  get as getCategories,
-} from "features/Category/categorySlice";
-import { useEffect } from "react";
+import { entityName, entityNamePlural } from "./loanCardApi";
 import { get, loanCardStatus, remove, selectLoanCardTableData } from "./loanCardSlice";
+
 
 const LoanCardList = () => {
   const dispatch = useDispatch();
 
+
   const loanCards = useSelector(selectLoanCardTableData);
+
   const status = useSelector(loanCardStatus);
-
-  const categorystatus = useSelector(categoryStatus);
-
-
   useEffect(() => {
     if (status === "idle") {
       dispatch(get());
     }
   }, [status, dispatch]);
 
+
+  const categorystatus = useSelector(categoryStatus);
   useEffect(() => {
     if (categorystatus === "idle") {
       dispatch(getCategories());
@@ -41,7 +41,7 @@ const LoanCardList = () => {
     },
     {
       key: "duration",
-      label: "Duration (in years)",
+      label: "Duration (in months)",
     },
     {
       key: "actions",
@@ -49,10 +49,11 @@ const LoanCardList = () => {
     },
   ];
 
+
   return (
     <ListPage
-      entityName="LoanCard"
-      entityNamePlural="LoanCards"
+      entityName={entityName}
+      entityNamePlural={entityNamePlural}
       removeItem={(id) => {
         dispatch(remove(id));
       }}

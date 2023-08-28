@@ -1,89 +1,58 @@
-import {
-  createEntityAdapter,
-  createSelector,
-  createSlice,
-  isAnyOf
-} from "@reduxjs/toolkit";
-import { RootState } from "app/store";
+import { createEntityAdapter, createSelector, createSlice, isAnyOf } from "@reduxjs/toolkit";
 
 import { createAsyncThunk } from "app/hooks";
+import { RootState } from "app/store";
 
 import { selectCategoryEntities, selectCategorySelected } from "features/Category/categorySlice";
+
 import { initialStateType } from "features/common/initialStateType";
-import { toast } from "react-toastify";
-import {
-  createMake,
-  deleteMake,
-  getMake,
-  getMakes,
-  getMakesByCategory,
-  updateMake,
-} from "./makeApi";
+import { createMake, deleteMake, getMake, getMakes, getMakesByCategory, updateMake, } from "./makeApi";
 import { makeObjectType, makeType } from "./makeType";
 
-const makeAdapter = createEntityAdapter<makeType>();
 
-export const get = createAsyncThunk<makeType[]>("make/get", async () => {
-  return await toast.promise(getMakes(), {
-    pending: "Fetching Makes",
-    error: "Error while getting makes",
-  });
-});
-export const getById = createAsyncThunk<makeType, string>(
-  "make/getById",
-  async (id) => {
-    return await toast.promise(getMake(id), {
-      pending: "Fetching Make",
-      error: "Error while getting make",
-    });
-  }
+const makeAdapter = createEntityAdapter<makeType>();
+const initialState = makeAdapter.getInitialState({
+  status: "idle",
+} as initialStateType);
+
+
+export const get = createAsyncThunk<makeType[]>(
+  "make/get",
+  async () => await getMakes()
 );
+
 export const getByCategory = createAsyncThunk<makeType[], string>(
   "make/getByCategory",
-  async (categoryId) => {
-    return await toast.promise(getMakesByCategory(categoryId), {
-      pending: "Fetching Makes",
-      error: "Error while getting makes",
-    });
-  }
+  async (categoryId) => await getMakesByCategory(categoryId)
 );
+
+export const getById = createAsyncThunk<makeType, string>(
+  "make/getById",
+  async (id) => await getMake(id)
+);
+
 export const create = createAsyncThunk<makeType, makeObjectType>(
   "make/create",
-  async (data) => {
-    return await toast.promise(createMake(data), {
-      pending: "Creating Make",
-      success: "Created Make successfully",
-      error: "Error while creating make"
-    });
-  }
+  async (data) => createMake(data)
 );
-export const update = createAsyncThunk<
-  makeType,
-  { id: string; data: makeType }
->("make/update", async ({ id, data }) => {
-  return await toast.promise(updateMake(id, data), {
-    pending: "Updating Make",
-    success: "Updated Make successfully",
-    error: "Error while updating make"
-  });
-});
+
+export const update = createAsyncThunk<makeType, makeType>(
+  "make/update",
+  async (data) => updateMake(data.id, data)
+);
+
 export const remove = createAsyncThunk<string, string>(
   "make/delete",
   async (id) => {
-    await toast.promise(deleteMake(id), {
-      pending: "Deleting Make",
-      success: "Deleted Make successfully",
-      error: "Error while deleting make"
-    });
+    await deleteMake(id);
     return id;
   }
 );
 
+
 const makeSlice = createSlice({
   name: "makes",
-  initialState: makeAdapter.getInitialState({
-    status: "idle",
-  } as initialStateType),
+  initialState: initialState,
   reducers: {
     selectMake(state, action) {
       const { id } = action.payload
@@ -98,20 +67,32 @@ const makeSlice = createSlice({
       .addCase(create.fulfilled, makeAdapter.addOne)
       .addCase(update.fulfilled, makeAdapter.setOne)
       .addCase(remove.fulfilled, makeAdapter.removeOne)
-      .addMatcher(isAnyOf(get.pending, getById.pending, getByCategory.pending, create.pending, update.pending, remove.pending), (state, _) => {
-        state.status = "loading";
-      })
-      .addMatcher(isAnyOf(get.fulfilled, getById.fulfilled, getByCategory.pending, create.fulfilled, update.fulfilled, remove.fulfilled), (state, _) => {
-        state.status = "succeeded";
-      })
-      .addMatcher(isAnyOf(get.rejected, getById.rejected, getByCategory.rejected, create.rejected, update.rejected, remove.rejected), (state, _) => {
-        state.status = "failed";
-      });
+      .addCase('RESET', (_state) => initialState)
+      .addMatcher(
+        isAnyOf(
+          get.pending, getById.pending, getByCategory.pending, create.pending, update.pending, remove.pending
+        ), (state, _) => {
+          state.status = "loading";
+        })
+      .addMatcher(
+        isAnyOf(
+          get.fulfilled, getById.fulfilled, getByCategory.pending, create.fulfilled, update.fulfilled, remove.fulfilled
+        ), (state, _) => {
+          state.status = "succeeded";
+        })
+      .addMatcher(
+        isAnyOf(
+          get.rejected, getById.rejected, getByCategory.rejected, create.rejected, update.rejected, remove.rejected
+        ), (state, _) => {
+          state.status = "failed";
+        });
   },
 });
 
+
 export const { selectMake } = makeSlice.actions
 export default makeSlice.reducer;
+
 
 export const { selectAll: selectAllMake, selectById: selectMakeById, selectEntities: selectMakeEntities } =
   makeAdapter.getSelectors((state: RootState) => state.make);
@@ -122,6 +103,10 @@ export const selectMakeByCategory = createSelector(
     makes.filter((make) => (make.category === category.id)) :
     [],
 );
+
+export const selectMakeSelected = createSelector(
+  [selectMakeEntities, (state: RootState) => state.make.selected], (makes, id) => id && makes[id]
+)
 
 export const selectMakeTableData = createSelector(
   [selectAllMake, selectCategoryEntities],
@@ -134,9 +119,4 @@ export const selectMakeTableData = createSelector(
     })
 );
 
-export const selectMakeSelected = createSelector(
-  [selectMakeEntities, (state: RootState) => state.make.selected], (makes, id) => id && makes[id]
-)
-
 export const makeStatus = (state: RootState) => state.make.status;
-export const makeError = (state: RootState) => state.make.error;

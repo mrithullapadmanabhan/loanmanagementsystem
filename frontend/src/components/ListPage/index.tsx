@@ -38,7 +38,15 @@ function ListPage({
   const [popupOpen, setPopupOpen] = useState(false);
   const [selectedId, setSelectedId] = useState("");
 
-  const actions = [
+  const actions = action ? [
+    {
+      label: actionLabel ? actionLabel : "",
+      onClick: ({ id }: { id: string }) => {
+        action(id);
+      },
+      buttonColor: "green",
+    }
+  ] : [
     {
       label: "Edit",
       onClick: ({ id }: { id: string }) => {
@@ -46,22 +54,16 @@ function ListPage({
       },
       buttonColor: "green",
     }
-  ]
-    .concat(removeItem ? [{
+  ].concat(removeItem ? [
+    {
       label: "Delete",
       onClick: ({ id }: { id: string }) => {
         setSelectedId(id);
         setPopupOpen(true);
       },
       buttonColor: "red",
-    }] : [])
-    .concat(action ? [{
-      label: actionLabel ? actionLabel : "",
-      onClick: ({ id }: { id: string }) => {
-        action(id);
-      },
-      buttonColor: "red",
-    }] : []);
+    }
+  ] : [])
 
   function deleteItem() {
     removeItem!(selectedId);
@@ -75,15 +77,15 @@ function ListPage({
   return (
     <div>
       {popupOpen && (
-        <DeletePopup closePopup={closePopup} onSubmit={deleteItem} />
+        <DeletePopup closePopup={closePopup} onSubmit={deleteItem} entityName={entityName} />
       )}
 
       <div className="p-4 sm:p-8 md:p-11 flex flex-col gap-12">
-        <div className="w-full  flex flex-col justify-center gap-4 mb-6 lg:mb-0">
-          <div className="flex gap-10 mb-5 justify-between">
-            <h1 className="text-5xl font-semibold">{entityNamePlural}</h1>
+        <div className="w-full flex flex-col justify-center gap-4 mb-6 lg:mb-0">
+          <div className="flex gap-10 mb-10 justify-between">
+            <h1 className="text-3xl font-semibold">{entityNamePlural}</h1>
             {!disableAdd && <Link to={createUrl ? createUrl : `/admin/${entityName}/create`}>
-              <button className={`bg-indigo-700 normal-button`}>
+              <button className="bg-blue-900 dark:bg-gray-900 normal-button py-2 px-4">
                 Add {entityName}
               </button>
             </Link>}
