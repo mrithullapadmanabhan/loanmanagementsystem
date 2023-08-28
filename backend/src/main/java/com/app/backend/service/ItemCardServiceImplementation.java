@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.app.backend.communication.request.ItemCardCreateUpdateRequest;
@@ -16,7 +17,6 @@ import com.app.backend.repository.EmployeeRepository;
 import com.app.backend.repository.ItemCardRepository;
 import com.app.backend.repository.MakeRepository;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -60,7 +60,6 @@ public class ItemCardServiceImplementation implements ItemCardService {
 		return employee.getLoans().stream().map(loan -> mapper.map(loan.getItem(), ItemCardResponse.class)).toList();
 	}
 
-	@Transactional
 	@Override
 	public ItemCardResponse create(ItemCardCreateUpdateRequest request) {
 		Make make = makeRepository.findById(request.getMakeID())
@@ -72,10 +71,14 @@ public class ItemCardServiceImplementation implements ItemCardService {
 				.make(make)
 				.build();
 
-		return mapper.map(itemCardRepository.save(itemCard), ItemCardResponse.class);
+		try {
+			return mapper.map(itemCardRepository.save(itemCard), ItemCardResponse.class);
+		} catch (Exception e) {
+			System.out.println("Hello");
+			throw new DataIntegrityViolationException("Itemcard with selected Make already exists");
+		}
 	}
 
-	@Transactional
 	@Override
 	public ItemCardResponse update(UUID id, @Valid ItemCardCreateUpdateRequest request) {
 		ItemCard itemCard = itemCardRepository.findById(id)

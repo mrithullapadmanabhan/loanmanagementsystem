@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionSystemException;
 
@@ -58,8 +59,10 @@ public class MakeServiceImplementation implements MakeService {
                 .build();
         try {
             return mapper.map(makeRepository.save(make), MakeResponse.class);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException("Make name should be unique");
         } catch (TransactionSystemException e) {
-            throw new TransactionSystemException("Make can't be empty");
+            throw new TransactionSystemException("Make name can't be empty");
         }
 
     }
@@ -73,6 +76,8 @@ public class MakeServiceImplementation implements MakeService {
 
         try {
             return mapper.map(makeRepository.save(make), MakeResponse.class);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException("Make should be unique");
         } catch (TransactionSystemException e) {
             throw new TransactionSystemException("Make can't be empty");
         }

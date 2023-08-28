@@ -1,20 +1,26 @@
-import {
-  createApi,
-  deleteApi,
-  getApi,
-  getByIdApi,
-  updateApi,
-} from "service/api";
+import { withToast } from "features/common/withToast";
+import { createApi, deleteApi, getApi, getByIdApi, updateApi } from "service/api";
+
 import { loanCardObjectType, loanCardType } from "./loanCardType";
+
 
 export const baseURL = "/loancard";
 
-export const getLoanCards = async () => await getApi<loanCardType[]>(baseURL);
+export const entityName = "Loancard"
+export const entityNamePlural = "Loancards"
+
+
+export const getLoanCards = async () =>
+  await withToast(getApi<loanCardType[]>(baseURL), entityNamePlural, "Fetch", { error: true });
+
 export const getLoanCard = async (id: string) =>
-  await getByIdApi<loanCardType>(baseURL, id);
+  await withToast(getByIdApi<loanCardType>(baseURL, id), entityName, "Fetch", { error: true });
+
 export const createLoanCard = async (data: loanCardObjectType) =>
-  await createApi<loanCardType, loanCardObjectType>(baseURL, data);
+  await withToast(createApi<loanCardType, loanCardObjectType>(baseURL, data), entityName, "Creat");
+
 export const updateLoanCard = async (id: string, data: loanCardType) =>
-  await updateApi<loanCardType>(baseURL, id, data);
+  await withToast(updateApi<loanCardType>(baseURL, id, data), entityName, "Updat");
+
 export const deleteLoanCard = async (id: string) =>
-  await deleteApi(baseURL, id);
+  await withToast(deleteApi(baseURL, id), entityName, "Delet");

@@ -1,32 +1,34 @@
+import { useEffect } from "react";
+
 import { useDispatch, useSelector } from "app/hooks";
 import { ListPage } from "components";
+import { categoryStatus, get as getCategories } from "features/Category/categorySlice";
 
-import {
-  categoryStatus,
-  get as getCategories,
-} from "features/Category/categorySlice";
-import { useEffect } from "react";
+import { entityName, entityNamePlural } from "./makeApi";
 import { get, makeStatus, remove, selectMakeTableData } from "./makeSlice";
+
 
 const MakeList = () => {
   const dispatch = useDispatch();
 
+
   const makes = useSelector(selectMakeTableData);
+
   const status = useSelector(makeStatus);
-
-  const categorystatus = useSelector(categoryStatus);
-
   useEffect(() => {
     if (status === "idle") {
       dispatch(get());
     }
   }, [status, dispatch]);
 
+
+  const categorystatus = useSelector(categoryStatus);
   useEffect(() => {
     if (categorystatus === "idle") {
       dispatch(getCategories());
     }
   }, [categorystatus, dispatch]);
+
 
   const fields = [
     {
@@ -49,8 +51,8 @@ const MakeList = () => {
 
   return (
     <ListPage
-      entityName="Make"
-      entityNamePlural="Makes"
+      entityName={entityName}
+      entityNamePlural={entityNamePlural}
       removeItem={(id) => {
         dispatch(remove(id));
       }}

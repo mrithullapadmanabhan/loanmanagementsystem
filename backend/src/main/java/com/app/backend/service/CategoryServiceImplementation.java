@@ -51,9 +51,9 @@ public class CategoryServiceImplementation implements CategoryService {
             return mapper.map(categoryRepository.save(category), CategoryResponse.class);
 
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("Category should be unique");
+            throw new DataIntegrityViolationException("Category name should be unique");
         } catch (TransactionSystemException e) {
-            throw new TransactionSystemException("Category can't be empty");
+            throw new TransactionSystemException("Category name can't be empty");
         }
     }
 

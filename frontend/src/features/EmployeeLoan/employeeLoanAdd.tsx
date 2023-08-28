@@ -1,60 +1,67 @@
-import { useDispatch, useSelector } from "app/hooks";
-import { AddEditPage } from "components";
-import { categoryStatus, get as getCategories, selectAllCategory, selectCategory, selectCategorySelected } from "features/Category/categorySlice";
-import { employeeStatus, get as getEmployees, selectAllEmployee } from "features/Employee/employeeSlice";
-import { get as getItemCards, selectItemCardByMake } from "features/ItemCard/itemCardSlice";
-import { get as getMakes, makeStatus, selectMake, selectMakeByCategory, selectMakeSelected } from "features/Make/makeSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { useDispatch, useSelector } from "app/hooks";
+import { AddEditPage } from "components";
 import { isAdmin } from "service/auth";
+
+import { categoryStatus, get as getCategories, selectAllCategory, selectCategory, selectCategorySelected } from "features/Category/categorySlice";
+import { employeeStatus, get as getEmployees, selectAllEmployee } from "features/Employee/employeeSlice";
+import { get as getItemCards, itemCardStatus, selectItemCardByMake } from "features/ItemCard/itemCardSlice";
+import { get as getMakes, makeStatus, selectMake, selectMakeByCategory, selectMakeSelected } from "features/Make/makeSlice";
+
+import { entityName } from "./employeeLoanApi";
 import { create } from "./employeeLoanSlice";
 
 
 const EmployeeLoanAdd = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const admin = isAdmin();
 
+    const admin = isAdmin();
     const employeeID = localStorage.getItem("employeeID")
 
+
     const categories = useSelector(selectAllCategory);
-    const categorystatus = useSelector(categoryStatus);
     const selectedCategory = useSelector(selectCategorySelected);
 
+    const categorystatus = useSelector(categoryStatus);
     useEffect(() => {
         if (categorystatus === "idle") {
             dispatch(getCategories());
         }
     }, [categorystatus, dispatch]);
 
+
     const makes = useSelector(selectMakeByCategory);
-    const makestatus = useSelector(makeStatus);
     const selectedMake = useSelector(selectMakeSelected);
 
+    const makestatus = useSelector(makeStatus);
     useEffect(() => {
         if (makestatus === "idle") {
             dispatch(getMakes());
         }
     }, [makestatus, dispatch]);
 
-    const employees = useSelector(selectAllEmployee)
-    const employeestatus = useSelector(employeeStatus)
 
+    const employees = useSelector(selectAllEmployee)
+
+    const employeestatus = useSelector(employeeStatus)
     useEffect(() => {
         if (employeestatus === "idle" && admin) {
             dispatch(getEmployees());
         }
     }, [employeestatus, dispatch, admin]);
 
-    const itemcardstatus = useSelector(makeStatus);
+
     const selectedItemCard = useSelector(selectItemCardByMake)
 
+    const itemcardstatus = useSelector(itemCardStatus);
     useEffect(() => {
         if (itemcardstatus === "idle") {
             dispatch(getItemCards())
         }
     }, [itemcardstatus, dispatch])
-
 
 
     const fields = {
@@ -116,7 +123,7 @@ const EmployeeLoanAdd = () => {
 
     return (
         <AddEditPage
-            entityName="Loan"
+            entityName={admin ? entityName : "Loan"}
             type="add"
             fields={fields}
             handleSubmit={
@@ -127,6 +134,7 @@ const EmployeeLoanAdd = () => {
                         navigate('/loan')
                 }
             }
+            verb="Apply for"
         />
     )
 }
