@@ -70,7 +70,6 @@ public class JWTAuthFilter extends OncePerRequestFilter {
             response.setContentType("application/json");
             response.getWriter().write(new ObjectMapper().writeValueAsString(exp));
         } catch (Exception e) {
-            System.out.println(e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             ExceptionResponse exp = ExceptionResponse.builder()
                     .timestamp(new Timestamp(System.currentTimeMillis()).toString())

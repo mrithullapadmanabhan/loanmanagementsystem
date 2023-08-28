@@ -146,7 +146,6 @@ public class EmployeeLoanControllerTest {
                         .andReturn();
 
             String result = requestResult.getResponse().getContentAsString();
-            System.out.print(result);
             assertEquals(response, result);
       }
 

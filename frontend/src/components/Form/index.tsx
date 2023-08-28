@@ -10,7 +10,13 @@ interface formFieldsType {
 }
 
 interface formFieldsTypeInput extends formFieldsType {
-  type: "text" | "date" | "password";
+  type: "text" | "password";
+}
+
+interface formFieldsTypeDate extends formFieldsType {
+  type: "date";
+  minDate?: string;
+  maxDate?: string;
 }
 
 interface formFieldsTypeSelect extends formFieldsType {
@@ -20,7 +26,7 @@ interface formFieldsTypeSelect extends formFieldsType {
 }
 
 export type formPropsFieldsType = {
-  [name: string]: formFieldsTypeInput | formFieldsTypeSelect;
+  [name: string]: formFieldsTypeInput | formFieldsTypeDate | formFieldsTypeSelect;
 };
 
 export type FormPropsType = {
@@ -104,6 +110,19 @@ const Form = ({ onSubmit, formFields, submitButton }: FormPropsType) => {
                   </option>
                 ))}
               </select>
+            ) : fields.type === "date" ? (
+              <input
+                type={fields.type}
+                id={name}
+                name={name}
+                value={formData[name]}
+                onChange={handleChange}
+                placeholder={fields.placeholder}
+                className="input"
+                disabled={fields.disabled}
+                min={fields.minDate}
+                max={fields.maxDate}
+              />
             ) : (
               <input
                 type={fields.type}
