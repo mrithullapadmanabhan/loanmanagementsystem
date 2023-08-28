@@ -25,13 +25,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.app.backend.communication.request.ItemCardCreateUpdateRequest;
-import com.app.backend.communication.request.LoanCardCreateUpdateRequest;
-import com.app.backend.communication.response.EmployeeResponse;
 import com.app.backend.communication.response.ItemCardResponse;
-import com.app.backend.communication.response.LoanCardResponse;
 import com.app.backend.model.Category;
 import com.app.backend.model.ItemCard;
-import com.app.backend.model.LoanCard;
 import com.app.backend.model.Make;
 import com.app.backend.repository.ItemCardRepository;
 
