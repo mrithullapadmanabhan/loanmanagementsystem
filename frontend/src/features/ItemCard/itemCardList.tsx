@@ -31,6 +31,10 @@ const ItemCardList = () => {
     }
   }, [status, dispatch, employeeId, admin]);
 
+  useEffect(() => {
+    dispatch({ type: "RESET" });
+  }, [dispatch]);
+
 
   const categorystatus = useSelector(categoryStatus);
   useEffect(() => {

@@ -19,6 +19,10 @@ const EmployeeList = () => {
     }
   }, [status, dispatch]);
 
+  useEffect(() => {
+    dispatch({ type: "RESET" });
+  }, [dispatch]);
+
 
   const fields = [
     {

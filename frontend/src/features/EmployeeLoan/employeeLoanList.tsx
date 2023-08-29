@@ -62,6 +62,10 @@ const EmployeeLoanList = () => {
     }
   }, [itemcardstatus, dispatch]);
 
+  useEffect(() => {
+    dispatch({ type: "RESET" });
+  }, [dispatch]);
+
 
   const fields = [
     {

@@ -19,7 +19,12 @@ const MakeList = () => {
     if (status === "idle") {
       dispatch(get());
     }
+
   }, [status, dispatch]);
+
+  useEffect(() => {
+    dispatch({ type: "RESET" });
+  }, [dispatch]);
 
 
   const categorystatus = useSelector(categoryStatus);

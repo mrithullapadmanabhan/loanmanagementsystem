@@ -7,6 +7,7 @@ import { entityName, entityNamePlural } from "./categoryApi";
 import { categoryStatus, get, remove, selectAllCategory } from "./categorySlice";
 
 
+
 const CategoryList = () => {
   const dispatch = useDispatch();
 
@@ -17,7 +18,12 @@ const CategoryList = () => {
     if (status === "idle") {
       dispatch(get());
     }
+
   }, [status, dispatch]);
+
+  useEffect(() => {
+    dispatch({ type: "RESET" });
+  }, [dispatch]);
 
   const fields = [
     {
@@ -40,6 +46,7 @@ const CategoryList = () => {
       entityNamePlural={entityNamePlural}
       removeItem={(id) => {
         dispatch(remove(id));
+
       }}
       fields={fields}
       data={categories as unknown as { [key: string]: string }[]}

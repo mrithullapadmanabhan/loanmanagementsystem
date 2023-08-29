@@ -8,6 +8,7 @@ import { entityName, entityNamePlural } from "./loanCardApi";
 import { get, loanCardStatus, remove, selectLoanCardTableData } from "./loanCardSlice";
 
 
+
 const LoanCardList = () => {
   const dispatch = useDispatch();
 
@@ -20,6 +21,10 @@ const LoanCardList = () => {
       dispatch(get());
     }
   }, [status, dispatch]);
+
+  useEffect(() => {
+    dispatch({ type: "RESET" });
+  }, [dispatch]);
 
 
   const categorystatus = useSelector(categoryStatus);
